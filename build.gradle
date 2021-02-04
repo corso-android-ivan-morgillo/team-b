@@ -9,7 +9,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:4.0.0"
+        classpath "com.android.tools.build:gradle:4.0.2"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.koin:koin-gradle-plugin:$koin_version"
     }
@@ -25,9 +25,12 @@ apply plugin: 'koin'
 
 detekt {
     buildUponDefaultConfig = true // preconfigure defaults
+    //noinspection GroovyAssignabilityCheck
     config = files("$projectDir/config/detekt.yml") // point to your custom config defining rules to run, overwriting default behavior
+    //noinspection GroovyAssignabilityCheck
     baseline = file("$projectDir/config/baseline.xml") // a way of suppressing issues before introducing detekt
 
+    //noinspection GroovyAssignabilityCheck
     reports {
         html.enabled = true // observe findings in your browser with structure and code snippets
         xml.enabled = true // checkstyle like format mainly for integrations like Jenkins
