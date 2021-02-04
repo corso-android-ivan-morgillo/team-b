@@ -11,7 +11,7 @@ import coil.load
 // l'adapter ha bisogno di un viewHolder che creeremo (cocktailViewHolder)
 class CocktailAdapter : RecyclerView.Adapter<CocktailViewHolder>() {
     // lista di cocktail, inizializzata a empty
-    var cocktailsList: List<CocktailUI> = emptyList()
+    private var cocktailsList: List<CocktailUI> = emptyList()
 
     // da xml a kotlin per ogni elemento della lista
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CocktailViewHolder {
@@ -31,7 +31,7 @@ class CocktailAdapter : RecyclerView.Adapter<CocktailViewHolder>() {
     }
 
     // inizializza la lista di cocktail con quella passata come argomento
-    fun setCocktails_List(items: List<CocktailUI>) {
+    fun setCocktailsList(items: List<CocktailUI>) {
         cocktailsList = items
         notifyDataSetChanged()
     }
