@@ -20,6 +20,6 @@ class MyApplication : Application(){
 }
 
 val appModule = module {
-    //Creiamo un oggetto di tipo MainViewModel
+    // Creiamo un oggetto di tipo MainViewModel
     viewModel { MainViewModel() }
 }
