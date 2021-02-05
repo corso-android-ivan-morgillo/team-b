@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">Cocktails</string>
-    <string name="main_screen_error">Something went wrong</string>
+    <string name="main_screen_error">Qualcosa è andato storto</string>
 </resources>

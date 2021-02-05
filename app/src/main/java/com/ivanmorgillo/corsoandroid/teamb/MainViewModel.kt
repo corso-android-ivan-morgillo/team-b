@@ -1,51 +1,46 @@
 package com.ivanmorgillo.corsoandroid.teamb
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+
+private const val MAXRANGE = 10
 
 class MainViewModel : ViewModel() {
     private val imageCocktail = "https://www.thecocktaildb.com/images/media/drink/vwxrsw1478251483.jpg"
-    private val cocktailList = listOf<CocktailUI>(
+    private val cocktailList = (1..MAXRANGE).map {
         CocktailUI(
-            cocktailName = "Mojito0",
+            cocktailName = "Mojito",
             image = imageCocktail
-        ),
-        CocktailUI(
-            cocktailName = "Mojito1",
-            image = imageCocktail
-        ),
-        CocktailUI(
-            cocktailName = "Mojito2",
-            image = imageCocktail
-        ),
-        CocktailUI(
-            cocktailName = "Mojito3",
-            image = imageCocktail
-        ),
-        CocktailUI(
-            cocktailName = "Mojito4",
-            image = imageCocktail
-        ),
-        CocktailUI(
-            cocktailName = "Mojito5",
-            image = imageCocktail
-        ),
-        CocktailUI(
-            cocktailName = "Mojito6",
-            image = imageCocktail
-        ),
-        CocktailUI(
-            cocktailName = "Mojito7",
-            image = imageCocktail
-        ),
-        CocktailUI(
-            cocktailName = "Mojito8",
-            image = imageCocktail
-        ),
-        CocktailUI(
-            cocktailName = "Mojito9",
-            image = imageCocktail
-        ),
-    )
+        )
+    }
 
-    fun getCocktails() = cocktailList
+    // mutable live data: tipo contenitore di T, dove T è il nostro stato
+    // states è una variabile che la nostra activity può osservare.
+    // Quando si cambia stato questa variabile viene settata
+    val states = MutableLiveData<MainScreenState>()
+
+    fun send(event: MainScreenEvents) {
+        // controlla il tipo di evento e in base a questo fa qualcosa
+        when (event) {
+            // l'activity è pronta
+            MainScreenEvents.OnReady -> {
+                states.postValue(MainScreenState.Content(cocktailList))
+            }
+        }
+    }
+}
+
+/**
+ * Contiene gli oggetti che rappresentano lo stato in cui si può trovare la nostra schermata:
+ * Loading, Error, Content
+ */
+sealed class MainScreenState {
+    object Loading : MainScreenState()
+    object Error : MainScreenState()
+    data class Content(val coctails: List<CocktailUI>) : MainScreenState()
+}
+
+// contiene eventi che possiamo mandare al nostro view model
+sealed class MainScreenEvents {
+    object OnReady : MainScreenEvents()
 }
