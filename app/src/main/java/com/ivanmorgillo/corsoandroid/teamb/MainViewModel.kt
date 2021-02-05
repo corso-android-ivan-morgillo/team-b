@@ -9,7 +9,7 @@ class MainViewModel : ViewModel() {
     private val imageCocktail = "https://www.thecocktaildb.com/images/media/drink/vwxrsw1478251483.jpg"
     private val cocktailList = (1..MAXRANGE).map {
         CocktailUI(
-            cocktailName = "Mojito",
+            cocktailName = "Mojito" + it,
             image = imageCocktail
         )
     }
