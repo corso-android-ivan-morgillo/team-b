@@ -2,6 +2,7 @@ package com.ivanmorgillo.corsoandroid.teamb
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -28,7 +29,11 @@ class MainActivity : AppCompatActivity() {
                     cocktail_List_ProgressBar.gone()
                     adapter.setCocktailsList(state.coctails)
                 }
-                MainScreenState.Error -> TODO()
+                MainScreenState.Error -> {
+                    cocktail_List_ProgressBar.gone()
+                    Snackbar.make(cocktail_List_Root, getString(R.string.main_screen_error), Snackbar.LENGTH_SHORT)
+                        .show()
+                }
                 // quando l'aopp è in loading mostriamo progress bar
                 MainScreenState.Loading -> {
                     cocktail_List_ProgressBar.visible()
