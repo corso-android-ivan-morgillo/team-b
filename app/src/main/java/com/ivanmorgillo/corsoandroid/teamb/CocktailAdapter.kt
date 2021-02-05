@@ -1,5 +1,6 @@
 package com.ivanmorgillo.corsoandroid.teamb
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.google.android.material.card.MaterialCardView
 
 // l'adapter ha bisogno di un viewHolder che creeremo (cocktailViewHolder)
 class CocktailAdapter : RecyclerView.Adapter<CocktailViewHolder>() {
@@ -43,11 +45,20 @@ class CocktailViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     // recupera la textView dell'elemento della lista
     val name = itemView.findViewById<TextView>(R.id.cocktail_name)
     val image = itemView.findViewById<ImageView>(R.id.cocktail_image)
+    val cocktailCardView = itemView.findViewById<MaterialCardView>(R.id.cocktail_root)
+
     fun bind(item: CocktailUI) {
         // imposta lil text dell'elemento al nome del cocktail
         name.text = item.cocktailName
         name.text = item.cocktailName
         // imposta l'immagine all'elemento
         image.load(item.image)
+        image.contentDescription = item.cocktailName
+        cocktailCardView.setOnClickListener { Log.d("COCKTAIL", item.toString()) }
     }
 }
+
+data class CocktailUI(
+    val cocktailName: String,
+    val image: String,
+)
