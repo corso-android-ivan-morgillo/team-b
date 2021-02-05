@@ -1,6 +1,5 @@
 package com.ivanmorgillo.corsoandroid.teamb
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,7 @@ import coil.load
 import com.google.android.material.card.MaterialCardView
 
 // l'adapter ha bisogno di un viewHolder che creeremo (cocktailViewHolder)
-class CocktailAdapter : RecyclerView.Adapter<CocktailViewHolder>() {
+class CocktailAdapter(val onClick: (CocktailUI) -> Unit) : RecyclerView.Adapter<CocktailViewHolder>() {
     // lista di cocktail, inizializzata a empty
     private var cocktailsList: List<CocktailUI> = emptyList()
 
@@ -24,7 +23,7 @@ class CocktailAdapter : RecyclerView.Adapter<CocktailViewHolder>() {
     // Con questo metodo un elemento della lista è connesso a un viewHolder.
     // La position è l'indice dell'elemento nella lista
     override fun onBindViewHolder(holder: CocktailViewHolder, position: Int) {
-        holder.bind(cocktailsList.get(position))
+        holder.bind(cocktailsList.get(position), onClick)
     }
 
     // ritorna il numero di elementi nella lista
@@ -47,14 +46,11 @@ class CocktailViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val image = itemView.findViewById<ImageView>(R.id.cocktail_image)
     val cocktailCardView = itemView.findViewById<MaterialCardView>(R.id.cocktail_root)
 
-    fun bind(item: CocktailUI) {
-        // imposta lil text dell'elemento al nome del cocktail
-        name.text = item.cocktailName
-        name.text = item.cocktailName
-        // imposta l'immagine all'elemento
-        image.load(item.image)
+    fun bind(item: CocktailUI, onClick: (CocktailUI) -> Unit) {
+        name.text = item.cocktailName // imposta lil text dell'elemento al nome del cocktail
+        image.load(item.image) // imposta l'immagine all'elemento
         image.contentDescription = item.cocktailName
-        cocktailCardView.setOnClickListener { Log.d("COCKTAIL", item.toString()) }
+        cocktailCardView.setOnClickListener { onClick(item) }
     }
 }
 
