@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         cocktails_List.adapter = adapter
         // Chiede la lista dei cocktail tramite il ViewModel
         val cocktailList = viewModel.getCocktails()
-        adapter.setCocktails_List(cocktailList)
+        adapter.setCocktailsList(cocktailList)
     }
 }
 
