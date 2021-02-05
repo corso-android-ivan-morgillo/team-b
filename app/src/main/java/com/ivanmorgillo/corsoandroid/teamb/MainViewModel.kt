@@ -32,7 +32,7 @@ class MainViewModel : ViewModel() {
                 Log.d("COCKTAIL", event.cocktail.toString())
                 actions.postValue(MainScreenActions.NavigateToDetail(event.cocktail))
             }
-        }
+        }.exhaustive
     }
 }
 
