@@ -7,11 +7,11 @@ import androidx.lifecycle.ViewModel
 private const val MAXRANGE = 10
 
 class MainViewModel : ViewModel() {
-    private val cocktail_name = "Mojito"
+    private val cocktailName = "Mojito"
     private val imageCocktail = "https://www.thecocktaildb.com/images/media/drink/vwxrsw1478251483.jpg"
     private val cocktailList = (1..MAXRANGE).map {
         CocktailUI(
-            cocktailName = cocktail_name + it,
+            cocktailName = cocktailName + it,
             image = imageCocktail
         )
     }
