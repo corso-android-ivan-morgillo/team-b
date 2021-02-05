@@ -44,7 +44,3 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-data class CocktailUI(
-    val cocktailName: String,
-    val image: String,
-)
