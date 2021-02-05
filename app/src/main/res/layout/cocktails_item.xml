@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp">
+    android:layout_margin="8dp"
+    android:id="@+id/cocktail_root">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp">
-<!--Con padding otteniamo lo spazio all'interno del contenitore-->
+        <!--Con padding otteniamo lo spazio all'interno del contenitore-->
 
         <TextView
             android:id="@+id/cocktail_name"
@@ -22,6 +23,7 @@
             style="@style/TextAppearance.MaterialComponents.Caption"/>
 
         <ImageView
+
             android:id="@+id/cocktail_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

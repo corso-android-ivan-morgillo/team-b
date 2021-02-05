@@ -1,6 +1,7 @@
 package com.ivanmorgillo.corsoandroid.teamb
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
@@ -12,7 +13,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main) // carichiamo layout
         // collega i dati alla UI, per far cio serve adapter
-        val adapter = CocktailAdapter() // creamo adapter
+        val adapter = CocktailAdapter({
+            viewModel.send(MainScreenEvents.OnCocktailClick(it))
+        }) // creamo adapter
         // Mettiamo in comunicazione l'adapter con la recycleview
         cocktails_List.adapter = adapter
         // Chiede la lista dei cocktail tramite il ViewModel
@@ -25,26 +28,28 @@ class MainActivity : AppCompatActivity() {
         // e un observable. Questa è una lambda in quanto contiene una sola funzione
         viewModel.states.observe(this, { state ->
             when (state) {
-                is MainScreenState.Content -> {
+                is MainScreenStates.Content -> {
                     cocktail_List_ProgressBar.gone()
                     adapter.setCocktailsList(state.coctails)
                 }
-                MainScreenState.Error -> {
+                MainScreenStates.Error -> {
                     cocktail_List_ProgressBar.gone()
                     Snackbar.make(cocktail_List_Root, getString(R.string.main_screen_error), Snackbar.LENGTH_SHORT)
                         .show()
                 }
                 // quando l'aopp è in loading mostriamo progress bar
-                MainScreenState.Loading -> {
+                MainScreenStates.Loading -> {
                     cocktail_List_ProgressBar.visible()
+                }
+            }
+        })
+        viewModel.actions.observe(this, { action ->
+            when (action) {
+                is MainScreenActions.NavigateToDetail -> {
+                    Toast.makeText(this, "working progress navigate to detail", Toast.LENGTH_SHORT).show()
                 }
             }
         })
         viewModel.send(MainScreenEvents.OnReady)
     }
 }
-
-data class CocktailUI(
-    val cocktailName: String,
-    val image: String,
-)
