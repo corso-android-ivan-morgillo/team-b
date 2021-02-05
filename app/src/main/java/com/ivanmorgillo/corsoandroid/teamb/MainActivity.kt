@@ -9,14 +9,29 @@ class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModel() // Ci permette di comunicare con Koin
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_main) // carichiamo layout
         // collega i dati alla UI, per far cio serve adapter
-        val adapter = CocktailAdapter()
+        val adapter = CocktailAdapter() // creamo adapter
         // Mettiamo in comunicazione l'adapter con la recycleview
         cocktails_List.adapter = adapter
         // Chiede la lista dei cocktail tramite il ViewModel
-        val cocktailList = viewModel.getCocktails()
-        adapter.setCocktailsList(cocktailList)
+        /*val cocktailList = viewModel.getCocktails()
+        adapter.setCocktailsList(cocktailList)*/
+
+        // L'activity quando è pronta (dopo aver creato adapter e associato a questa recycler view
+        // comunica che è pronta
+        // observe prende 2 argomenti:  lifecycle(main activity è una livecycle)
+        // e un observable. Questa è una lambda in quanto contiene una sola funzione
+        viewModel.states.observe(this, { state ->
+            when (state) {
+                is MainScreenState.Content -> {
+                    adapter.setCocktailsList(state.coctails)
+                }
+                MainScreenState.Error -> TODO()
+                MainScreenState.Loading -> TODO()
+            }
+        })
+        viewModel.send(MainScreenEvents.OnReady)
     }
 }
 
