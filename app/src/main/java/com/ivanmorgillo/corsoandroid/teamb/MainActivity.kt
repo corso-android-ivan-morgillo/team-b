@@ -13,9 +13,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main) // carichiamo layout
         // collega i dati alla UI, per far cio serve adapter
-        val adapter = CocktailAdapter({
+        val adapter = CocktailAdapter {
             viewModel.send(MainScreenEvents.OnCocktailClick(it))
-        }) // creamo adapter
+        } // creamo adapter
         // Mettiamo in comunicazione l'adapter con la recycleview
         cocktails_List.adapter = adapter
         // Chiede la lista dei cocktail tramite il ViewModel
