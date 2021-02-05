@@ -24,7 +24,8 @@ class MainViewModel : ViewModel() {
         when (event) {
             // l'activity è pronta
             MainScreenEvents.OnReady -> {
-                states.postValue(MainScreenState.Content(cocktailList))
+                // states.postValue(MainScreenState.Content(cocktailList))
+                states.postValue(MainScreenState.Loading)
             }
         }
     }

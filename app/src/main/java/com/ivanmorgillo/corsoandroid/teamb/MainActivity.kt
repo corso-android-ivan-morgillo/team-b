@@ -25,10 +25,14 @@ class MainActivity : AppCompatActivity() {
         viewModel.states.observe(this, { state ->
             when (state) {
                 is MainScreenState.Content -> {
+                    cocktail_List_ProgressBar.gone()
                     adapter.setCocktailsList(state.coctails)
                 }
                 MainScreenState.Error -> TODO()
-                MainScreenState.Loading -> TODO()
+                // quando l'aopp è in loading mostriamo progress bar
+                MainScreenState.Loading -> {
+                    cocktail_List_ProgressBar.visible()
+                }
             }
         })
         viewModel.send(MainScreenEvents.OnReady)
