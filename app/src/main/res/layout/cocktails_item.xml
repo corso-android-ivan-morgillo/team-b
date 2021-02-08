@@ -1,36 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    android:id="@+id/cocktail_root">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+<com.google.android.material.card.MaterialCardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp">
+        android:layout_margin="8dp"
+        android:backgroundTint="#E0FFFF"
+        android:id="@+id/cocktail_root">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp">
         <!--Con padding otteniamo lo spazio all'interno del contenitore-->
 
         <TextView
-            android:id="@+id/cocktail_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/cocktail_image"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:text="@string/app_name"
-            style="@style/TextAppearance.MaterialComponents.Caption"/>
+                android:id="@+id/cocktail_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/cocktail_image"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="@string/app_name"
+                style="@style/TextAppearance.MaterialComponents.Caption"/>
 
         <ImageView
 
-            android:id="@+id/cocktail_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:src="@mipmap/ic_launcher" />
+                android:id="@+id/cocktail_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:src="@mipmap/ic_launcher"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
