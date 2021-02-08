@@ -20,6 +20,10 @@ class MyApplication : Application(){
 }
 
 val appModule = module {
+    /* creiamo un repository Singleton Pattern */
+    single<CocktailRepository> {
+        CocktailRepositoryImpl()
+    }
     // Creiamo un oggetto di tipo MainViewModel
-    viewModel { MainViewModel() }
+    viewModel { MainViewModel(repository = get()) }
 }

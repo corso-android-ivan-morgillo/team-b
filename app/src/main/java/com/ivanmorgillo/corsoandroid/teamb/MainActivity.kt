@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
             when (state) {
                 is MainScreenStates.Content -> {
                     cocktail_List_ProgressBar.gone()
-                    adapter.setCocktailsList(state.coctails)
+                    adapter.setCocktailsList(state.cocktails)
                 }
                 MainScreenStates.Error -> {
                     cocktail_List_ProgressBar.gone()

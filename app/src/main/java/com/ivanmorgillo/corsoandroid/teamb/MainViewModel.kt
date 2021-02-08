@@ -3,18 +3,11 @@ package com.ivanmorgillo.corsoandroid.teamb
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 
-private const val MAXRANGE = 10
-
-class MainViewModel : ViewModel() {
-    private val cocktailName = "Mojito"
-    private val imageCocktail = "https://www.thecocktaildb.com/images/media/drink/vwxrsw1478251483.jpg"
-    private val cocktailList = (1..MAXRANGE).map {
-        CocktailUI(
-            cocktailName = cocktailName + it,
-            image = imageCocktail
-        )
-    }
+/* spostiamo la generazione statica della lista all'implementazione della interfaccia */
+class MainViewModel(val repository: CocktailRepository) : ViewModel() {
 
     // mutable live data: tipo contenitore di T, dove T è il nostro stato
     // states è una variabile che la nostra activity può osservare.
@@ -23,10 +16,19 @@ class MainViewModel : ViewModel() {
     val actions = SingleLiveEvent<MainScreenActions>()
     fun send(event: MainScreenEvents) {
         // controlla il tipo di evento e in base a questo fa qualcosa
+        @Suppress("IMPLICIT_CAST_TO_ANY")
         when (event) {
             // l'activity è pronta
             MainScreenEvents.OnReady -> {
-                states.postValue(MainScreenStates.Content(cocktailList))
+                viewModelScope.launch {
+                    val cocktails = repository.loadCocktails().map {
+                        CocktailUI(
+                            cocktailName = it.name,
+                            image = it.image
+                        )
+                    }
+                    states.postValue(MainScreenStates.Content(cocktails))
+                }
             }
             is MainScreenEvents.OnCocktailClick -> {
                 Log.d("COCKTAIL", event.cocktail.toString())
@@ -43,7 +45,7 @@ class MainViewModel : ViewModel() {
 sealed class MainScreenStates {
     object Loading : MainScreenStates()
     object Error : MainScreenStates()
-    data class Content(val coctails: List<CocktailUI>) : MainScreenStates()
+    data class Content(val cocktails: List<CocktailUI>) : MainScreenStates()
 }
 
 // contiene eventi che possiamo mandare al nostro view model
