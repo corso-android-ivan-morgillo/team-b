@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "534687279234",
+    "project_id": "cocktail-6303f",
+    "storage_bucket": "cocktail-6303f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:534687279234:android:b52d6cbca2241becdb2c9b",
+        "android_client_info": {
+          "package_name": "com.apperol"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "534687279234-4hqmbdiago4mnhtco2f5iafjgn297ota.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBC0AMhCERkptfchoUfXpkcBnMG_gf3KpY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "534687279234-4hqmbdiago4mnhtco2f5iafjgn297ota.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
