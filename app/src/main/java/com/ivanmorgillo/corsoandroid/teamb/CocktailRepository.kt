@@ -1,6 +1,6 @@
 package com.ivanmorgillo.corsoandroid.teamb
 
-private const val MAXRANGE = 10
+import com.ivanmorgillo.corsoandroid.teamb.network.CocktailAPI
 
 /* Interfaccia Repository Pattern
  * tipo suspend --> rappresenta un'operazione di input output --> è un'operazione che può fallire
@@ -11,17 +11,9 @@ interface CocktailRepository {
 }
 
 /* Implementazione dell'interfaccia definita prima */
-class CocktailRepositoryImpl : CocktailRepository {
+class CocktailRepositoryImpl(private val api: CocktailAPI) : CocktailRepository {
     override suspend fun loadCocktails(): List<Cocktail> {
-        val cocktailName = "Mojito"
-        val imageCocktail = "https://www.thecocktaildb.com/images/media/drink/vwxrsw1478251483.jpg"
-        return (1..MAXRANGE).map {
-            Cocktail(
-                name = cocktailName + it,
-                image = imageCocktail,
-                idMeal = it.toString(),
-            )
-        }
+        return api.loadCocktails()
     }
 }
 
