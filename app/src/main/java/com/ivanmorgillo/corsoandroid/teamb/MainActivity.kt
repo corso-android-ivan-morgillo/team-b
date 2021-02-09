@@ -48,7 +48,12 @@ class MainActivity : AppCompatActivity() {
                 is MainScreenActions.NavigateToDetail -> {
                     Toast.makeText(this, "working progress navigate to detail", Toast.LENGTH_SHORT).show()
                 }
-            }
+                MainScreenActions.ShowNoInternetMessage -> {
+                    cocktail_List_ProgressBar.gone()
+                    Snackbar.make(cocktail_List_Root, "Check your internet connection", Snackbar.LENGTH_SHORT)
+                        .show()
+                }
+            }.exhaustive
         })
         viewModel.send(MainScreenEvents.OnReady)
     }
