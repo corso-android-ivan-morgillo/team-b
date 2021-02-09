@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError
+import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailResult
 import kotlinx.coroutines.launch
 
 /* spostiamo la generazione statica della lista all'implementazione della interfaccia */
@@ -22,13 +24,28 @@ class MainViewModel(val repository: CocktailRepository) : ViewModel() {
             MainScreenEvents.OnReady -> {
                 states.postValue(MainScreenStates.Loading)
                 viewModelScope.launch {
-                    val cocktails = repository.loadCocktails().map {
-                        CocktailUI(
-                            cocktailName = it.name,
-                            image = it.image
-                        )
-                    }
-                    states.postValue(MainScreenStates.Content(cocktails))
+                    val result = repository.loadCocktails()
+                    when (result) {
+                        is LoadCocktailResult.Failure -> {
+                            when (result.error) {
+                                LoadCocktailError.NoCocktailFound -> TODO()
+                                LoadCocktailError.NoInternet -> {
+                                    actions.postValue(MainScreenActions.ShowNoInternetMessage)
+                                }
+                                LoadCocktailError.ServerError -> TODO()
+                                LoadCocktailError.SlowInternet -> TODO()
+                            }.exhaustive
+                        }
+                        is LoadCocktailResult.Success -> {
+                            val cocktails = result.cocktails.map {
+                                CocktailUI(
+                                    cocktailName = it.name,
+                                    image = it.image
+                                )
+                            }
+                            states.postValue(MainScreenStates.Content(cocktails))
+                        }
+                    }.exhaustive
                 }
             }
             is MainScreenEvents.OnCocktailClick -> {
@@ -57,4 +74,5 @@ sealed class MainScreenEvents {
 
 sealed class MainScreenActions {
     data class NavigateToDetail(val cocktail: CocktailUI) : MainScreenActions()
+    object ShowNoInternetMessage : MainScreenActions()
 }
