@@ -20,6 +20,7 @@ class MainViewModel(val repository: CocktailRepository) : ViewModel() {
         when (event) {
             // l'activity è pronta
             MainScreenEvents.OnReady -> {
+                states.postValue(MainScreenStates.Loading)
                 viewModelScope.launch {
                     val cocktails = repository.loadCocktails().map {
                         CocktailUI(
