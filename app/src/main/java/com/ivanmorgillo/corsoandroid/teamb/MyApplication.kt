@@ -5,6 +5,10 @@ import android.os.StrictMode
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
+import timber.log.Timber
+
+import timber.log.Timber.DebugTree
+
 
 class MyApplication : Application() {
     override fun onCreate() {
@@ -15,6 +19,11 @@ class MyApplication : Application() {
             androidLogger()
             androidContext(this@MyApplication)
             modules(appModule)
+        }
+        if (BuildConfig.DEBUG) {
+            Timber.plant(DebugTree())
+        } else {
+            // Timber.plant(CrashReportingTree())
         }
     }
 
