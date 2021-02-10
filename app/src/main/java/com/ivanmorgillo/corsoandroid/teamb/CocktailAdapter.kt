@@ -45,7 +45,6 @@ class CocktailViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val name = itemView.findViewById<TextView>(R.id.cocktail_name)
     val image = itemView.findViewById<ImageView>(R.id.cocktail_image)
     val cocktailCardView = itemView.findViewById<MaterialCardView>(R.id.cocktail_root)
-
     fun bind(item: CocktailUI, onClick: (CocktailUI) -> Unit) {
         name.text = item.cocktailName // imposta lil text dell'elemento al nome del cocktail
         image.load(item.image) // imposta l'immagine all'elemento
