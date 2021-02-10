@@ -69,7 +69,9 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this, "working progress navigate to detail", Toast.LENGTH_SHORT).show()
                 }
                 MainScreenActions.NavigateToSettings -> {
+                    Timber.d(action.toString())
                     startActivity(Intent(Settings.ACTION_WIFI_SETTINGS))
+                    // "android.settings.WIFI_SETTINGS"
                 }
             }.exhaustive
         })
@@ -83,4 +85,4 @@ class MainActivity : AppCompatActivity() {
         imageViewError.setImageResource(R.drawable.errorimage)
         textViewError.setText(errore)
     }
-}// startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+}
