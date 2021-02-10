@@ -3,7 +3,16 @@ package com.ivanmorgillo.corsoandroid.teamb
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ivanmorgillo.corsoandroid.teamb.ErrorStates.ShowNoCocktailFound
+import com.ivanmorgillo.corsoandroid.teamb.ErrorStates.ShowNoInternetMessage
+import com.ivanmorgillo.corsoandroid.teamb.ErrorStates.ShowServerError
+import com.ivanmorgillo.corsoandroid.teamb.ErrorStates.ShowSlowInternet
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenActions.NavigateToDetail
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenActions.NavigateToSettings
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvents.OnReady
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenStates.Content
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenStates.Error
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenStates.Loading
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.NoCocktailFound
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.NoInternet
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.ServerError
@@ -31,20 +40,20 @@ class MainViewModel(val repository: CocktailRepository) : ViewModel() {
                 loadContent()
             }
             is MainScreenEvents.OnCocktailClick -> {
-                actions.postValue(MainScreenActions.NavigateToDetail(event.cocktail))
+                actions.postValue(NavigateToDetail(event.cocktail))
             }
             MainScreenEvents.OnRefreshClicked -> {
                 // add tracking
                 loadContent()
             }
             MainScreenEvents.OnSettingClick -> {
-                actions.postValue(MainScreenActions.NavigateToSettings)
+                actions.postValue(NavigateToSettings)
             }
         }.exhaustive
     }
 
     private fun loadContent() {
-        states.postValue(MainScreenStates.Loading)
+        states.postValue(Loading)
         viewModelScope.launch {
             val result = repository.loadCocktails()
             when (result) {
@@ -56,10 +65,10 @@ class MainViewModel(val repository: CocktailRepository) : ViewModel() {
 
     private fun onFailure(result: Failure) {
         when (result.error) {
-            NoCocktailFound -> states.postValue(MainScreenStates.Error(ErrorStates.ShowNoCocktailFound))
-            NoInternet -> states.postValue(MainScreenStates.Error(ErrorStates.ShowNoInternetMessage))
-            ServerError -> states.postValue(MainScreenStates.Error(ErrorStates.ShowServerError))
-            SlowInternet -> states.postValue(MainScreenStates.Error(ErrorStates.ShowSlowInternet))
+            NoCocktailFound -> states.postValue(Error(ShowNoCocktailFound))
+            NoInternet -> states.postValue(Error(ShowNoInternetMessage))
+            ServerError -> states.postValue(Error(ShowServerError))
+            SlowInternet -> states.postValue(Error(ShowSlowInternet))
         }.exhaustive
     }
 
@@ -70,7 +79,7 @@ class MainViewModel(val repository: CocktailRepository) : ViewModel() {
                 image = it.image
             )
         }
-        states.postValue(MainScreenStates.Content(cocktails))
+        states.postValue(Content(cocktails))
     }
 }
 

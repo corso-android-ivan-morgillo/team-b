@@ -15,7 +15,7 @@
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/innerLayout1"
+            android:id="@+id/innerLayout0"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -43,13 +43,18 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <include
-            android:id="@+id/innerLayout2"
+            android:id="@+id/innerLayout1"
             layout="@layout/layout_error"
             android:visibility="gone" />
 
         <include
+            android:id="@+id/innerLayout2"
+            layout="@layout/layout_error2"
+            android:visibility="gone" />
+
+        <include
             android:id="@+id/innerLayout3"
-            layout="@layout/layout_error"
+            layout="@layout/layout_error3"
             android:visibility="gone" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
