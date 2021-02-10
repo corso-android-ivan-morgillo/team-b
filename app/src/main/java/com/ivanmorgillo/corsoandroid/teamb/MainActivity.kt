@@ -50,31 +50,26 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this, "working progress navigate to detail", Toast.LENGTH_SHORT).show()
                 }
                 MainScreenActions.ShowNoInternetMessage -> {
-                    cocktail_List_ProgressBar.gone()
-                    setContentView(R.layout.layout_error)
-                    textViewError.setText("No Internet Connection")
-                    imageViewError.setImageResource(R.drawable.errorimage)
+                    errorCustom("No Internet Connection")
                 }
                 MainScreenActions.ShowNoCocktailFound -> {
-                    cocktail_List_ProgressBar.gone()
-                    setContentView(R.layout.layout_error)
-                    textViewError.setText("No Cocktail Found")
-                    imageViewError.setImageResource(R.drawable.errorimage)
+                    errorCustom("No Cocktail Found")
                 }
                 MainScreenActions.ShowServerError -> {
-                    cocktail_List_ProgressBar.gone()
-                    setContentView(R.layout.layout_error)
-                    textViewError.setText("Server Error")
-                    imageViewError.setImageResource(R.drawable.errorimage)
+                    errorCustom("Server Error")
                 }
                 MainScreenActions.ShowSlowInternet -> {
-                    cocktail_List_ProgressBar.gone()
-                    setContentView(R.layout.layout_error)
-                    textViewError.setText("SlowInternet")
-                    imageViewError.setImageResource(R.drawable.errorimage)
+                    errorCustom("SlowInternet")
                 }
             }.exhaustive
         })
         viewModel.send(MainScreenEvents.OnReady)
+    }
+
+    private fun errorCustom(errore: String) {
+        cocktail_List_ProgressBar.gone()
+        setContentView(R.layout.layout_error)
+        imageViewError.setImageResource(R.drawable.errorimage)
+        textViewError.setText(errore)
     }
 }// startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
