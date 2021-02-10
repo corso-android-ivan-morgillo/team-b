@@ -3,7 +3,10 @@ package com.ivanmorgillo.corsoandroid.teamb
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenActions.ShowNoCocktailFound
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenActions.ShowNoInternetMessage
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenActions.ShowServerError
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenActions.ShowSlowInternet
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvents.OnReady
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.NoCocktailFound
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.NoInternet
@@ -48,12 +51,10 @@ class MainViewModel(val repository: CocktailRepository) : ViewModel() {
 
     private fun onFailure(result: Failure) {
         when (result.error) {
-            NoCocktailFound -> TODO()
-            NoInternet -> {
-                actions.postValue(ShowNoInternetMessage)
-            }
-            ServerError -> TODO()
-            SlowInternet -> TODO()
+            NoCocktailFound -> actions.postValue(ShowNoCocktailFound)
+            NoInternet -> actions.postValue(ShowNoInternetMessage)
+            ServerError -> actions.postValue(ShowServerError)
+            SlowInternet -> actions.postValue(ShowSlowInternet)
         }.exhaustive
     }
 
@@ -87,4 +88,7 @@ sealed class MainScreenEvents {
 sealed class MainScreenActions {
     data class NavigateToDetail(val cocktail: CocktailUI) : MainScreenActions()
     object ShowNoInternetMessage : MainScreenActions()
+    object ShowNoCocktailFound : MainScreenActions()
+    object ShowServerError : MainScreenActions()
+    object ShowSlowInternet : MainScreenActions()
 }

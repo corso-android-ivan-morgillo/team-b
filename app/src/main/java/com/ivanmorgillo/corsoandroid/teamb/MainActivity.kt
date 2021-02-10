@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.layout_error.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
@@ -50,11 +51,30 @@ class MainActivity : AppCompatActivity() {
                 }
                 MainScreenActions.ShowNoInternetMessage -> {
                     cocktail_List_ProgressBar.gone()
-                    Snackbar.make(cocktail_List_Root, "Check your internet connection", Snackbar.LENGTH_SHORT)
-                        .show()
+                    setContentView(R.layout.layout_error)
+                    textViewError.setText("No Internet Connection")
+                    imageViewError.setImageResource(R.drawable.errorimage)
+                }
+                MainScreenActions.ShowNoCocktailFound -> {
+                    cocktail_List_ProgressBar.gone()
+                    setContentView(R.layout.layout_error)
+                    textViewError.setText("No Cocktail Found")
+                    imageViewError.setImageResource(R.drawable.errorimage)
+                }
+                MainScreenActions.ShowServerError -> {
+                    cocktail_List_ProgressBar.gone()
+                    setContentView(R.layout.layout_error)
+                    textViewError.setText("Server Error")
+                    imageViewError.setImageResource(R.drawable.errorimage)
+                }
+                MainScreenActions.ShowSlowInternet -> {
+                    cocktail_List_ProgressBar.gone()
+                    setContentView(R.layout.layout_error)
+                    textViewError.setText("SlowInternet")
+                    imageViewError.setImageResource(R.drawable.errorimage)
                 }
             }.exhaustive
         })
         viewModel.send(MainScreenEvents.OnReady)
     }
-}
+}// startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
