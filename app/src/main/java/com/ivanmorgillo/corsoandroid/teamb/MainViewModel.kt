@@ -3,10 +3,6 @@ package com.ivanmorgillo.corsoandroid.teamb
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ivanmorgillo.corsoandroid.teamb.MainScreenActions.ShowNoCocktailFound
-import com.ivanmorgillo.corsoandroid.teamb.MainScreenActions.ShowNoInternetMessage
-import com.ivanmorgillo.corsoandroid.teamb.MainScreenActions.ShowServerError
-import com.ivanmorgillo.corsoandroid.teamb.MainScreenActions.ShowSlowInternet
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvents.OnReady
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.NoCocktailFound
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.NoInternet
@@ -15,6 +11,7 @@ import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.SlowInterne
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailResult.Failure
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailResult.Success
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 /* spostiamo la generazione statica della lista all'implementazione della interfaccia */
 class MainViewModel(val repository: CocktailRepository) : ViewModel() {
@@ -26,19 +23,27 @@ class MainViewModel(val repository: CocktailRepository) : ViewModel() {
     val actions = SingleLiveEvent<MainScreenActions>()
     fun send(event: MainScreenEvents) {
         // controlla il tipo di evento e in base a questo fa qualcosa
+        Timber.d(event.toString())
         @Suppress("IMPLICIT_CAST_TO_ANY")
         when (event) {
             // l'activity è pronta
             OnReady -> {
-                onReady()
+                loadContent()
             }
             is MainScreenEvents.OnCocktailClick -> {
                 actions.postValue(MainScreenActions.NavigateToDetail(event.cocktail))
             }
+            MainScreenEvents.OnRefreshClicked -> {
+                // add tracking
+                loadContent()
+            }
+            MainScreenEvents.OnSettingClick -> {
+                actions.postValue(MainScreenActions.NavigateToSettings)
+            }
         }.exhaustive
     }
 
-    private fun onReady() {
+    private fun loadContent() {
         states.postValue(MainScreenStates.Loading)
         viewModelScope.launch {
             val result = repository.loadCocktails()
@@ -51,10 +56,10 @@ class MainViewModel(val repository: CocktailRepository) : ViewModel() {
 
     private fun onFailure(result: Failure) {
         when (result.error) {
-            NoCocktailFound -> actions.postValue(ShowNoCocktailFound)
-            NoInternet -> actions.postValue(ShowNoInternetMessage)
-            ServerError -> actions.postValue(ShowServerError)
-            SlowInternet -> actions.postValue(ShowSlowInternet)
+            NoCocktailFound -> states.postValue(MainScreenStates.Error(ErrorStates.ShowNoCocktailFound))
+            NoInternet -> states.postValue(MainScreenStates.Error(ErrorStates.ShowNoInternetMessage))
+            ServerError -> states.postValue(MainScreenStates.Error(ErrorStates.ShowServerError))
+            SlowInternet -> states.postValue(MainScreenStates.Error(ErrorStates.ShowSlowInternet))
         }.exhaustive
     }
 
@@ -75,7 +80,7 @@ class MainViewModel(val repository: CocktailRepository) : ViewModel() {
  */
 sealed class MainScreenStates {
     object Loading : MainScreenStates()
-    object Error : MainScreenStates()
+    data class Error(val error: ErrorStates) : MainScreenStates()
     data class Content(val cocktails: List<CocktailUI>) : MainScreenStates()
 }
 
@@ -83,12 +88,18 @@ sealed class MainScreenStates {
 sealed class MainScreenEvents {
     data class OnCocktailClick(val cocktail: CocktailUI) : MainScreenEvents()
     object OnReady : MainScreenEvents()
+    object OnRefreshClicked : MainScreenEvents()
+    object OnSettingClick : MainScreenEvents()
 }
 
 sealed class MainScreenActions {
     data class NavigateToDetail(val cocktail: CocktailUI) : MainScreenActions()
-    object ShowNoInternetMessage : MainScreenActions()
-    object ShowNoCocktailFound : MainScreenActions()
-    object ShowServerError : MainScreenActions()
-    object ShowSlowInternet : MainScreenActions()
+    object NavigateToSettings : MainScreenActions()
+}
+
+sealed class ErrorStates {
+    object ShowNoInternetMessage : ErrorStates()
+    object ShowNoCocktailFound : ErrorStates()
+    object ShowServerError : ErrorStates()
+    object ShowSlowInternet : ErrorStates()
 }
