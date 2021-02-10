@@ -3,6 +3,7 @@ package com.ivanmorgillo.corsoandroid.teamb
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -22,7 +23,11 @@ class MainActivity : AppCompatActivity() {
         // collega i dati alla UI, per far cio serve adapter
         val adapter = CocktailAdapter {
             viewModel.send(MainScreenEvents.OnCocktailClick(it))
-        } // creamo adapter
+        }
+        buttonError.setOnClickListener {
+            viewModel.send(MainScreenEvents.OnSettingClick)
+        }
+        // creamo adapter
         // Mettiamo in comunicazione l'adapter con la recycleview
         cocktails_List.adapter = adapter
         // Chiede la lista dei cocktail tramite il ViewModel
@@ -70,8 +75,8 @@ class MainActivity : AppCompatActivity() {
                 }
                 MainScreenActions.NavigateToSettings -> {
                     Timber.d(action.toString())
-                    startActivity(Intent(Settings.ACTION_WIFI_SETTINGS))
-                    // "android.settings.WIFI_SETTINGS"
+                    Log.d("NavigateToSettings", "Button Clicked!")
+                    startActivity(Intent(Settings.ACTION_WIRELESS_SETTINGS))
                 }
             }.exhaustive
         })
