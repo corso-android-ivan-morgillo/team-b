@@ -5,6 +5,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val appModule = module {
+    ->
     /* creiamo un repository Singleton Pattern */
     single<CocktailRepository> {
         CocktailRepositoryImpl(api = get())
@@ -12,6 +13,9 @@ val appModule = module {
     single<CocktailAPI> {
         CocktailAPI()
     }
+    single<Tracking> {
+        TrackingImpl()
+    }
     // Creiamo un oggetto di tipo MainViewModel
-    viewModel { MainViewModel(repository = get()) }
+    this.viewModel<MainViewModel> { MainViewModel(repository = get(), tracking = get()) }
 }
