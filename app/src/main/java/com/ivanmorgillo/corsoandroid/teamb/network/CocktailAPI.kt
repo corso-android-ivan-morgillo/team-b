@@ -1,7 +1,10 @@
 package com.ivanmorgillo.corsoandroid.teamb.network
 
 import com.ivanmorgillo.corsoandroid.teamb.Cocktail
-import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.*
+import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.NoCocktailFound
+import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.NoInternet
+import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.ServerError
+import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.SlowInternet
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailResult.Failure
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailResult.Success
 import okhttp3.OkHttpClient
