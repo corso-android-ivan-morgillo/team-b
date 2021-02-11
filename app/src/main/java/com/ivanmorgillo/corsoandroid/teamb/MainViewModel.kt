@@ -14,8 +14,11 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 /* spostiamo la generazione statica della lista all'implementazione della interfaccia */
-class MainViewModel(val repository: CocktailRepository) : ViewModel() {
+class MainViewModel(
+    private val repository: CocktailRepository,
+    private val tracking: Tracking
 
+) : ViewModel() {
     // mutable live data: tipo contenitore di T, dove T è il nostro stato
     // states è una variabile che la nostra activity può osservare.
     // Quando si cambia stato questa variabile viene settata
@@ -31,6 +34,7 @@ class MainViewModel(val repository: CocktailRepository) : ViewModel() {
                 loadContent()
             }
             is MainScreenEvents.OnCocktailClick -> {
+                tracking.logEvent("Cocktail_Clicked")
                 actions.postValue(MainScreenActions.NavigateToDetail(event.cocktail))
             }
             MainScreenEvents.OnRefreshClicked -> {

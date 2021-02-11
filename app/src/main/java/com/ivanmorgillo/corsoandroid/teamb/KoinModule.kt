@@ -9,9 +9,15 @@ val appModule = module {
     single<CocktailRepository> {
         CocktailRepositoryImpl(api = get())
     }
+
     single<CocktailAPI> {
         CocktailAPI()
     }
+
+    single<Tracking> {
+        TrackingImpl()
+    }
+
     // Creiamo un oggetto di tipo MainViewModel
-    viewModel { MainViewModel(repository = get()) }
+    viewModel { MainViewModel(repository = get(), tracking = get()) }
 }
