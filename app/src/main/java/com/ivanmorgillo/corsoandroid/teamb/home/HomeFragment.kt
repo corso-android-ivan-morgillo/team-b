@@ -18,8 +18,6 @@ import com.ivanmorgillo.corsoandroid.teamb.MainScreenStates
 import com.ivanmorgillo.corsoandroid.teamb.MainViewModel
 import com.ivanmorgillo.corsoandroid.teamb.R
 import com.ivanmorgillo.corsoandroid.teamb.exhaustive
-import com.ivanmorgillo.corsoandroid.teamb.gone
-import com.ivanmorgillo.corsoandroid.teamb.visible
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.layout_error.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -54,40 +52,12 @@ class HomeFragment : Fragment() {
         // Chiede la lista dei cocktail tramite il ViewModel
         /*val cocktailList = viewModel.getCocktails()
         adapter.setCocktailsList(cocktailList)*/
-        // L'activity quando è pronta (dopo aver creato adapter e associato a questa recycler view
-        // comunica che è pronta
-        // observe prende 2 argomenti:  lifecycle(main activity è una livecycle)
-        // e un observable. Questa è una lambda in quanto contiene una sola funzione
-        viewModel.states.observe(viewLifecycleOwner, { state ->
-            Timber.d(state.toString())
-            when (state) {
-                is MainScreenStates.Content -> {
-                    cocktail_List_ProgressBar.gone()
-                    adapter.setCocktailsList(state.cocktails)
-                }
-                is MainScreenStates.Error -> {
-                    when (state.error) {
-                        ErrorStates.ShowNoInternetMessage -> {
-                            errorCustom("No Internet Connection")
-                            buttonError.visibility = View.VISIBLE
-                        }
-                        ErrorStates.ShowNoCocktailFound -> {
-                            errorCustom("No Cocktail Found")
-                        }
-                        ErrorStates.ShowServerError -> {
-                            errorCustom("Server Error")
-                        }
-                        ErrorStates.ShowSlowInternet -> {
-                            errorCustom("SlowInternet")
-                        }
-                    }
-                }
-                // quando l'aopp è in loading mostriamo progress bar
-                MainScreenStates.Loading -> {
-                    cocktail_List_ProgressBar.visible()
-                }
-            }.exhaustive
-        })
+        observeStates(adapter)
+        observeActions(view)
+        viewModel.send(MainScreenEvents.OnReady)
+    }
+
+    private fun observeActions(view: View) {
         viewModel.actions.observe(viewLifecycleOwner, { action ->
             Timber.d(action.toString())
             when (action) {
@@ -104,13 +74,60 @@ class HomeFragment : Fragment() {
                 }
             }.exhaustive
         })
-        viewModel.send(MainScreenEvents.OnReady)
+    }
+
+    // L'activity quando è pronta (dopo aver creato adapter e associato a questa recycler view
+    // comunica che è pronta
+    // observe prende 2 argomenti:  lifecycle(main activity è una livecycle)
+    // e un observable. Questa è una lambda in quanto contiene una sola funzione
+    private fun observeStates(adapter: CocktailAdapter) {
+        viewModel.states.observe(viewLifecycleOwner, { state ->
+            Timber.d(state.toString())
+            when (state) {
+                is MainScreenStates.Content -> {
+                    swiperefresh.isRefreshing = false
+                    adapter.setCocktailsList(state.cocktails)
+                    errorVisibilityGone()
+                }
+                is MainScreenStates.Error -> {
+                    when (state.error) {
+                        ErrorStates.ShowNoInternetMessage -> {
+                            innerLayoutNoInternet_SlowInternet.visibility = View.VISIBLE
+                            errorCustom("No Internet Connection")
+                            buttonError.visibility = View.VISIBLE
+                        }
+                        ErrorStates.ShowNoCocktailFound -> {
+                            errorCustom("No Cocktail Found")
+                            innerLayoutNoCocktailFound.visibility = View.VISIBLE
+                        }
+                        ErrorStates.ShowServerError -> {
+                            errorCustom("Server Error")
+                            innerLayoutServerError.visibility = View.VISIBLE
+                        }
+                        ErrorStates.ShowSlowInternet -> {
+                            errorCustom("SlowInternet")
+                            innerLayoutNoInternet_SlowInternet.visibility = View.VISIBLE
+                        }
+                    }
+                }
+                // quando l'aopp è in loading mostriamo progress bar
+                MainScreenStates.Loading -> {
+                    swiperefresh.isRefreshing = true
+                }
+            }.exhaustive
+        })
+    }
+
+    private fun errorVisibilityGone() {
+        innerLayoutNoInternet_SlowInternet.visibility = View.GONE
+        innerLayoutNoCocktailFound.visibility = View.GONE
+        innerLayoutServerError.visibility = View.GONE
     }
 
     private fun errorCustom(errore: String) {
-        cocktail_List_ProgressBar.gone()
+
         swiperefresh.isRefreshing = false
-        innerLayout2.visibility = View.VISIBLE
+
         imageViewError.setImageResource(R.drawable.errorimage)
         textViewError.setText(errore)
     }
