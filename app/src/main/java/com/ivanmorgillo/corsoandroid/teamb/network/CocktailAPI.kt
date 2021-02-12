@@ -36,12 +36,8 @@ class CocktailAPI {
         // try-catch per gestire errore chiamata di rete
         try {
             val cocktailList = service.loadCocktails()
-            val cocktails = cocktailList.drinks.map {
-                Cocktail(
-                    name = it.strDrink,
-                    image = it.strDrinkThumb,
-                    idMeal = it.idDrink
-                )
+            val cocktails = cocktailList.drinks.mapNotNull {
+                it.toDomain()
             }
             return if (cocktails.isEmpty()) {
                 Failure(NoCocktailFound)
@@ -54,6 +50,19 @@ class CocktailAPI {
             return Failure(SlowInternet)
         } catch (e: Exception) {
             return Failure(ServerError)
+        }
+    }
+
+    private fun CocktailDTO.Drink.toDomain(): Cocktail? {
+        val id = idDrink.toLongOrNull()
+        return if (id != null) {
+            Cocktail(
+                name = strDrink,
+                image = strDrinkThumb,
+                idDrink = id
+            )
+        } else {
+            null
         }
     }
 }

@@ -69,10 +69,7 @@ class MainViewModel(
 
     private fun onSuccess(result: Success) {
         val cocktails = result.cocktails.map {
-            CocktailUI(
-                cocktailName = it.name,
-                image = it.image
-            )
+            CocktailUI(cocktailName = it.name, image = it.image, id = it.idDrink)
         }
         states.postValue(MainScreenStates.Content(cocktails))
     }

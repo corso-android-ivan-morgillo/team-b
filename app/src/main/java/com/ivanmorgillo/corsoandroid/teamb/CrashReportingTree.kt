@@ -1,6 +1,7 @@
 package com.ivanmorgillo.corsoandroid.teamb
 
 import android.util.Log
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import timber.log.Timber
 
 class CrashReportingTree : Timber.Tree() {
@@ -8,13 +9,9 @@ class CrashReportingTree : Timber.Tree() {
         if (priority == Log.VERBOSE || priority == Log.DEBUG) {
             return
         }
-        /*FakeCrashLibrary.log(priority, tag, message)
-        if (t != null) {
-            if (priority == Log.ERROR) {
-                FakeCrashLibrary.logError(t)
-            } else if (priority == Log.WARN) {
-                FakeCrashLibrary.logWarning(t)
-            }
-        }*/
+        FirebaseCrashlytics.getInstance().log(message)
+        if (t != null && priority == Log.ERROR) {
+            FirebaseCrashlytics.getInstance().recordException(t)
+        }
     }
 }

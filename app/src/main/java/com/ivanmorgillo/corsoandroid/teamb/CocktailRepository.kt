@@ -19,4 +19,4 @@ class CocktailRepositoryImpl(private val api: CocktailAPI) : CocktailRepository 
 }
 
 /* rappresenta una lista di ricette: lista di oggetti con un nome, immagine e id */
-data class Cocktail(val name: String, val image: String, val idMeal: String)
+data class Cocktail(val name: String, val image: String, val idDrink: Long)

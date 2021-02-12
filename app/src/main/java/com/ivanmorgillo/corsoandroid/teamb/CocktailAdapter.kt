@@ -56,4 +56,5 @@ class CocktailViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 data class CocktailUI(
     val cocktailName: String,
     val image: String,
+    val id: Long
 )
