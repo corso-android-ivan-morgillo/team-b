@@ -11,6 +11,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import timber.log.Timber
 import java.io.IOException
 import java.net.SocketTimeoutException
 
@@ -49,6 +50,7 @@ class CocktailAPI {
         } catch (e: SocketTimeoutException) {
             return Failure(SlowInternet)
         } catch (e: Exception) {
+            Timber.e(e, "Generic Exception on LoadCocktail")
             return Failure(ServerError)
         }
     }
