@@ -1,32 +1,36 @@
 buildscript {
     ext {
-        kotlin_version = "1.4.21"
+        kotlin_version = '1.4.30'
         koin_version = '2.2.2'
-        lifecycle_version = "2.2.0"
+        lifecycle_version = '2.3.0'
+        nav_version = '2.3.3'
     }
+
     repositories {
         google()
         jcenter()
     }
+
     dependencies {
         classpath "com.android.tools.build:gradle:4.0.0"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "org.koin:koin-gradle-plugin:$koin_version"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.30"
+        classpath "org.koin:koin-gradle-plugin:2.2.2"
         classpath 'com.google.gms:google-services:4.3.5'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.4.1'
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.3.3"
     }
 }
-
 
 plugins {
     id "io.gitlab.arturbosch.detekt" version "1.9.1"
 }
 
-
 apply plugin: 'koin'
 
 detekt {
     buildUponDefaultConfig = true // preconfigure defaults
-    config = files("$projectDir/config/detekt.yml") // point to your custom config defining rules to run, overwriting default behavior
+    config = files("$projectDir/config/detekt.yml")
+    // point to your custom config defining rules to run, overwriting default behavior
     baseline = file("$projectDir/config/baseline.xml") // a way of suppressing issues before introducing detekt
 
     reports {

@@ -13,13 +13,5 @@ class CrashReportingTree : Timber.Tree() {
         if (t != null && priority == Log.ERROR) {
             FirebaseCrashlytics.getInstance().recordException(t)
         }
-        /*FakeCrashLibrary.log(priority, tag, message)
-        if (t != null) {
-            if (priority == Log.ERROR) {
-                FakeCrashLibrary.logError(t)
-            } else if (priority == Log.WARN) {
-                FakeCrashLibrary.logWarning(t)
-            }
-        }*/
     }
 }
