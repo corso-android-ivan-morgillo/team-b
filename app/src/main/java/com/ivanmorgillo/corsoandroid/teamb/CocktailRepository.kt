@@ -3,6 +3,7 @@ package com.ivanmorgillo.corsoandroid.teamb
 import com.ivanmorgillo.corsoandroid.teamb.network.CocktailAPI
 import com.ivanmorgillo.corsoandroid.teamb.network.Ingredient
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailResult
+import com.ivanmorgillo.corsoandroid.teamb.network.LoadDetailCocktailResult
 
 /* Interfaccia Repository Pattern
  * tipo suspend --> rappresenta un'operazione di input output --> è un'operazione che può fallire
@@ -10,12 +11,17 @@ import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailResult
  * bisogna quindi segnalare agli utilizzatori che questa funzione sta facendo IO e che può crashare o durare tanto */
 interface CocktailRepository {
     suspend fun loadCocktails(): LoadCocktailResult
+    suspend fun loadDetailCocktails(cocktailId: Long): LoadDetailCocktailResult
 }
 
 /* Implementazione dell'interfaccia definita prima */
 class CocktailRepositoryImpl(private val api: CocktailAPI) : CocktailRepository {
     override suspend fun loadCocktails(): LoadCocktailResult {
         return api.loadCocktails()
+    }
+
+    override suspend fun loadDetailCocktails(cocktailId: Long): LoadDetailCocktailResult {
+        return api.loadDetailCocktails(cocktailId)
     }
 }
 
@@ -29,6 +35,6 @@ data class Detail(
     val isAlcoholic: Boolean,
     val glass: String,
     val ingredients: List<Ingredient>,
-    val youtubeLink: String?, //verificare se è nullable
+    val youtubeLink: String?,
     val instructions: String,
 )

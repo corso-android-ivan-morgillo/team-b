@@ -95,7 +95,7 @@ class CocktailAPI {
     private fun DetailCocktailDTO.Drink.toDomain(): Detail? {
         val id = idDrink.toLongOrNull()
         val alcolCat: Boolean = strAlcoholic.equals("Alcoholic")
-        val video: String? = strVideo
+        val video: String? = strVideo?.split("https://www.youtube.com/watch?v=")?.first()
 
         val ingredientsList = ingredientsList()
         val measurementsList = measurementsList()
