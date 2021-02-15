@@ -26,7 +26,6 @@ class DetailCocktailAdapter :
 
     // ritorna il numero di elementi nella lista
     override fun getItemCount(): Int {
-
         return detailIngredientList.size
     }
 
