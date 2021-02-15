@@ -1,6 +1,7 @@
 package com.ivanmorgillo.corsoandroid.teamb
 
 import com.ivanmorgillo.corsoandroid.teamb.network.CocktailAPI
+import com.ivanmorgillo.corsoandroid.teamb.network.Ingredient
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailResult
 
 /* Interfaccia Repository Pattern
@@ -20,3 +21,14 @@ class CocktailRepositoryImpl(private val api: CocktailAPI) : CocktailRepository 
 
 /* rappresenta una lista di ricette: lista di oggetti con un nome, immagine e id */
 data class Cocktail(val name: String, val image: String, val idDrink: Long)
+
+data class Detail(
+    val name: String,
+    val image: String,
+    val idDrink: Long,
+    val isAlcoholic: Boolean,
+    val glass: String,
+    val ingredients: List<Ingredient>,
+    val youtubeLink: String?, //verificare se è nullable
+    val instructions: String,
+)

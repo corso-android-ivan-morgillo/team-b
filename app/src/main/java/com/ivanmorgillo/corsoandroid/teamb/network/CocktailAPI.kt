@@ -1,6 +1,8 @@
 package com.ivanmorgillo.corsoandroid.teamb.network
 
+import DetailCocktailDTO
 import com.ivanmorgillo.corsoandroid.teamb.Cocktail
+import com.ivanmorgillo.corsoandroid.teamb.Detail
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.NoCocktailFound
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.NoInternet
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.ServerError
@@ -67,6 +69,100 @@ class CocktailAPI {
             null
         }
     }
+
+    @Suppress("TooGenericExceptionCaught")
+    suspend fun loadDetailCocktails(idDrink: Long): LoadDetailCocktailResult {
+        try {
+            val detailCocktailList = service.loadDetailCocktails(idDrink.toString())
+            val details = detailCocktailList.details?.mapNotNull {
+                it?.toDomain()
+            }
+            return if (details!!.isEmpty()) {
+                LoadDetailCocktailResult.Failure(LoadCocktailError.NoDescriptionFound)
+            } else {
+                LoadDetailCocktailResult.Success(details)
+            }
+        } catch (e: IOException) { // no internet
+            return LoadDetailCocktailResult.Failure(NoInternet)
+        } catch (e: SocketTimeoutException) {
+            return LoadDetailCocktailResult.Failure(SlowInternet)
+        } catch (e: Exception) {
+            Timber.e(e, "Generic Exception on LoadCocktail")
+            return LoadDetailCocktailResult.Failure(ServerError)
+        }
+    }
+
+    private fun DetailCocktailDTO.Drink.toDomain(): Detail? {
+        val id = idDrink.toLongOrNull()
+        val alcolCat: Boolean = strAlcoholic.equals("Alcoholic")
+        val video: String? = strVideo
+
+        val ingredientsList = ingredientsList()
+        val measurementsList = measurementsList()
+
+        val ingredients = ingredientsList
+            .mapIndexed { index, ingredientName ->
+                Ingredient(ingredientName, measurementsList[index])
+            }
+        return if (id != null) {
+            Detail(
+                name = strDrink,
+                image = strDrinkThumb,
+                idDrink = id,
+                isAlcoholic = alcolCat,
+                glass = strGlass,
+                ingredients = ingredients,
+                youtubeLink = video, // se si porta dietro un valore null, che succede?
+                instructions = strInstructions,
+            )
+        } else {
+            null
+        }
+    }
+
+    private fun DetailCocktailDTO.Drink.measurementsList() = listOfNotNull(
+        resolveMeasures(strIngredient1, strMeasure1),
+        resolveMeasures(strIngredient2, strMeasure2),
+        resolveMeasures(strIngredient3, strMeasure3),
+        resolveMeasures(strIngredient4, strMeasure4),
+        resolveMeasures(strIngredient5, strMeasure5),
+        resolveMeasures(strIngredient6, strMeasure6),
+        resolveMeasures(strIngredient7, strMeasure7),
+        resolveMeasures(strIngredient8, strMeasure8),
+        resolveMeasures(strIngredient9, strMeasure9),
+        resolveMeasures(strIngredient10, strMeasure10),
+        resolveMeasures(strIngredient11, strMeasure11),
+        resolveMeasures(strIngredient12, strMeasure12),
+        resolveMeasures(strIngredient13, strMeasure13),
+        resolveMeasures(strIngredient14, strMeasure14),
+        resolveMeasures(strIngredient15, strMeasure15),
+    )
+
+    private fun resolveMeasures(ingredient: String?, measure: String?): String? {
+        return when {
+            ingredient != null && measure != null -> measure
+            ingredient != null && measure == null -> "q.b"
+            else -> null
+        }
+    }
+
+    private fun DetailCocktailDTO.Drink.ingredientsList() = listOfNotNull(
+        strIngredient1,
+        strIngredient2,
+        strIngredient3,
+        strIngredient4,
+        strIngredient5,
+        strIngredient6,
+        strIngredient7,
+        strIngredient8,
+        strIngredient9,
+        strIngredient10,
+        strIngredient11,
+        strIngredient12,
+        strIngredient13,
+        strIngredient14,
+        strIngredient15,
+    )
 }
 
 sealed class LoadCocktailError {
@@ -74,9 +170,17 @@ sealed class LoadCocktailError {
     object NoInternet : LoadCocktailError()
     object SlowInternet : LoadCocktailError()
     object ServerError : LoadCocktailError()
+    object NoDescriptionFound : LoadCocktailError()
 }
 
 sealed class LoadCocktailResult {
     data class Success(val cocktails: List<Cocktail>) : LoadCocktailResult()
     data class Failure(val error: LoadCocktailError) : LoadCocktailResult()
 }
+
+sealed class LoadDetailCocktailResult {
+    data class Success(val details: List<Detail>) : LoadDetailCocktailResult()
+    data class Failure(val error: LoadCocktailError) : LoadDetailCocktailResult()
+}
+
+data class Ingredient(val name: String, val quantity: String)

@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvents.OnReady
+import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.NoCocktailFound
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.NoInternet
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.ServerError
@@ -64,6 +65,7 @@ class MainViewModel(
             NoInternet -> states.postValue(MainScreenStates.Error(ErrorStates.ShowNoInternetMessage))
             ServerError -> states.postValue(MainScreenStates.Error(ErrorStates.ShowServerError))
             SlowInternet -> states.postValue(MainScreenStates.Error(ErrorStates.ShowSlowInternet))
+            LoadCocktailError.NoDescriptionFound -> TODO()
         }.exhaustive
     }
 
