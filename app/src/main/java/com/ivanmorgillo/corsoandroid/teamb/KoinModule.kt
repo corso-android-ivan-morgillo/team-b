@@ -20,4 +20,5 @@ val appModule = module {
 
     // Creiamo un oggetto di tipo MainViewModel
     viewModel { MainViewModel(repository = get(), tracking = get()) }
+    //viewModel { DetailViewModel(repository = get()) }
 }
