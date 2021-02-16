@@ -6,33 +6,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="#FFFFF0">
 
-    <GridLayout
-        android:id="@+id/ingredient_item"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/ingredient_item_name"
+        style="@style/TextAppearance.MaterialComponents.Headline6"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:columnCount="2"
-        android:rowCount="1"
-        android:orientation="horizontal"
-        android:useDefaultMargins="true">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="nome ingrediente" />
 
-        <TextView
-            android:id="@+id/ingredient_item_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="nome ingrediente"
-            android:layout_gravity="start|top" />
-
-        <TextView
-            android:id="@+id/ingredient_item_quantity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="quantità"
-            android:layout_gravity="start|top"
-            android:layout_marginStart="10dp" />
-
-    </GridLayout>
+    <TextView
+        android:id="@+id/ingredient_item_quantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/ingredient_item_name"
+        app:layout_constraintBottom_toBottomOf="@id/ingredient_item_name"
+        app:layout_constraintStart_toEndOf="@id/ingredient_item_name"
+        tools:text="quantità"
+        android:layout_marginStart="12dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
