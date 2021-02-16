@@ -4,15 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import coil.load
-import com.ivanmorgillo.corsoandroid.teamb.DetailCocktailAdapter
-import com.ivanmorgillo.corsoandroid.teamb.Ingredient
 import com.ivanmorgillo.corsoandroid.teamb.R
 import kotlinx.android.synthetic.main.fragment_detail.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -39,21 +34,17 @@ class DetailFragment : Fragment() {
             Ingredient("Ingr6", "Qty6"),
         )
 
-        val adapter = DetailCocktailAdapter()
+        val adapter = DetailScreenAdapter()
         // Mettiamo in comunicazione l'adapter con la recycleview
-        ingredientsList.adapter = adapter
+        detail_screen_recycleview.adapter = adapter
 
-        adapter.setCocktailsList(ingredientList1)
-        val title = view.findViewById<TextView>(R.id.NomeCocktail)
-        val image = view.findViewById<ImageView>(R.id.immagineCocktail)
-        val alcoholic = view.findViewById<TextView>(R.id.Alcoholic)
-        val glass = view.findViewById<TextView>(R.id.Glass)
-        val instructions = view.findViewById<TextView>(R.id.instructions)
-        title.setText("Margarita Cocktail")
-        image.load("https://www.thecocktaildb.com/images/media/drink/5noda61589575158.jpg")
-        alcoholic.text = "si"
-        glass.text = "Flute"
-        instructions.text = "Queste sono le istruzioni di preparazione del cocktail Margarita"
+        adapter.items = listOf(
+            DetailScreenItems.Title("Margarita Cocktail"),
+            DetailScreenItems.Image("https://www.thecocktaildb.com/images/media/drink/5noda61589575158.jpg"),
+            DetailScreenItems.GlassType("Flute", true),
+            DetailScreenItems.IngredientList(ingredientList1),
+            DetailScreenItems.Instructions("Queste sono le istruzioni di preparazione del cocktail Margarita")
+        )
 
         val cocktailId = args.cocktailId
         if (cocktailId == 0L) {
