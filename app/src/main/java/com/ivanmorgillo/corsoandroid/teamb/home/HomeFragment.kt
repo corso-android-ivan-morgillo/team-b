@@ -129,6 +129,6 @@ class HomeFragment : Fragment() {
         swiperefresh.isRefreshing = false
 
         imageViewError.setImageResource(R.drawable.errorimage)
-        textViewError.setText(errore)
+        textViewError.text = errore
     }
 }

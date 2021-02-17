@@ -3,4 +3,8 @@
     <string name="main_screen_error">Qualcosa è andato storto</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="control_connection">Controlla la tua Connessione Internet</string>
+    <string name="no_cocktail_found">Non ho trovato i Cocktails</string>
+    <string name="retry">Riprova</string>
+
 </resources>
