@@ -74,13 +74,11 @@ class CocktailAPI {
     suspend fun loadDetailCocktails(idDrink: Long): LoadDetailCocktailResult {
         try {
             val detailCocktailList = service.loadDetailCocktails(idDrink.toString())
-            val details = detailCocktailList.details?.mapNotNull {
-                it?.toDomain()
-            }
-            return if (details!!.isEmpty()) {
+            val details = detailCocktailList.details.firstOrNull()
+            return if (details == null) {
                 LoadDetailCocktailResult.Failure(LoadCocktailError.NoDescriptionFound)
             } else {
-                LoadDetailCocktailResult.Success(details)
+                LoadDetailCocktailResult.Success(details.toDomain())
             }
         } catch (e: IOException) { // no internet
             return LoadDetailCocktailResult.Failure(NoInternet)
@@ -179,7 +177,7 @@ sealed class LoadCocktailResult {
 }
 
 sealed class LoadDetailCocktailResult {
-    data class Success(val details: List<Detail>) : LoadDetailCocktailResult()
+    data class Success(val details: Detail?) : LoadDetailCocktailResult()
     data class Failure(val error: LoadCocktailError) : LoadDetailCocktailResult()
 }
 
