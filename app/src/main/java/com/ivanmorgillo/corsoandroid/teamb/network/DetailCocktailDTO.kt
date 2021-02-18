@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 @Keep
 data class DetailCocktailDTO(
     @SerializedName("drinks")
-    val details: List<Drink?>
+    val details: List<Drink>
 ) {
     @Keep
     data class Drink(
