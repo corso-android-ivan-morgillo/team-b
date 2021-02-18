@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ivanmorgillo.corsoandroid.teamb.CocktailRepository
 import com.ivanmorgillo.corsoandroid.teamb.ErrorStates
-import com.ivanmorgillo.corsoandroid.teamb.SingleLiveEvent
 import com.ivanmorgillo.corsoandroid.teamb.Tracking
 import com.ivanmorgillo.corsoandroid.teamb.exhaustive
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError
@@ -17,7 +16,8 @@ class DetailViewModel(
     private val tracking: Tracking
 ) : ViewModel() {
     val states = MutableLiveData<DetailScreenStates>()
-    val actions = SingleLiveEvent<DetailScreenActions>()
+
+    // val actions = SingleLiveEvent<DetailScreenActions>()
     fun send(event: DetailScreenEvents) {
         when (event) {
             is DetailScreenEvents.OnReady -> loadDetails(event.id)
@@ -71,5 +71,8 @@ sealed class DetailScreenEvents {
     data class OnReady(val id: Long) : DetailScreenEvents()
 }
 
+/*
 sealed class DetailScreenActions {
 }
+
+ */
