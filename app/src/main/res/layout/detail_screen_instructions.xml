@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:padding="16dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
@@ -11,8 +12,9 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         style="@style/TextAppearance.MaterialComponents.Headline6"
-        android:layout_margin="16dp"
-        android:text="Istruzioni" />
+        android:layout_margin="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/istruzioni" />
 
     <TextView
         android:id="@+id/detail_screen_instructions"

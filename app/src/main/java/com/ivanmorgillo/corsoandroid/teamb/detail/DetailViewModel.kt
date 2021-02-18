@@ -44,8 +44,8 @@ class DetailViewModel(
             DetailScreenItems.Title(details.name),
             DetailScreenItems.Image(details.image),
             DetailScreenItems.GlassType(details.glass, details.isAlcoholic),
+            DetailScreenItems.IngredientList(ingredientsUI),
             DetailScreenItems.Instructions(details.instructions),
-            DetailScreenItems.IngredientList(ingredientsUI)
         )
         states.postValue(DetailScreenStates.Content(content))
     }
