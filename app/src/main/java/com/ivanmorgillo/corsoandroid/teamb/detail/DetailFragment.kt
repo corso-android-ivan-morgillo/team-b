@@ -5,13 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.ivanmorgillo.corsoandroid.teamb.ErrorStates
 import com.ivanmorgillo.corsoandroid.teamb.R
+import com.ivanmorgillo.corsoandroid.teamb.exhaustive
 import kotlinx.android.synthetic.main.fragment_detail.*
+import kotlinx.android.synthetic.main.layout_error.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
+
+private const val COCKTAILIDDEFAULT = -666L
 
 class DetailFragment : Fragment() {
     private val viewModel: DetailViewModel by viewModel()
@@ -25,35 +29,56 @@ class DetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val ingredientList1 = listOf<Ingredient>(
-            Ingredient("Ingr1", "Qty1"),
-            Ingredient("Ingr2", "Qty2"),
-            Ingredient("Ingr3", "Qty3"),
-            Ingredient("Ingr4", "Qty4"),
-            Ingredient("Ingr5", "Qty5"),
-            Ingredient("Ingr6", "Qty6"),
-        )
-
         val adapter = DetailScreenAdapter()
         // Mettiamo in comunicazione l'adapter con la recycleview
         detail_screen_recycleview.adapter = adapter
-
-        adapter.items = listOf(
-            DetailScreenItems.Title("Margarita Cocktail"),
-            DetailScreenItems.Image("https://www.thecocktaildb.com/images/media/drink/5noda61589575158.jpg"),
-            DetailScreenItems.GlassType("Flute", true),
-            DetailScreenItems.IngredientList(ingredientList1),
-            DetailScreenItems.Instructions("Queste sono le istruzioni di preparazione del cocktail Margarita")
-        )
-
+        
         val cocktailId = args.cocktailId
-        if (cocktailId == 0L) {
+        if (cocktailId == COCKTAILIDDEFAULT) {
             // Torna indietro nella schermata da cui provieni.
             findNavController().popBackStack()
         } else {
             Timber.d("CocktailId= $cocktailId")
+            viewModel.send(DetailScreenEvents.OnReady(cocktailId))
         }
+        observeStates(adapter)
+        viewModel.send(DetailScreenEvents.OnReady(cocktailId))
     }
-}
 
-class DetailViewModel : ViewModel()
+    private fun observeStates(adapter: DetailScreenAdapter) {
+        viewModel.states.observe(viewLifecycleOwner, { state ->
+            Timber.d(state.toString())
+            when (state) {
+                is DetailScreenStates.Content -> {
+                    adapter.items = state.details
+                }
+                is DetailScreenStates.Error -> {
+                    when (state.error) {
+                        ErrorStates.ShowNoInternetMessage -> {
+                            errorCustom("No Internet Connection")
+                        }
+                        ErrorStates.ShowNoCocktailFound -> {
+                            errorCustom("No Cocktail Found")
+                        }
+                        ErrorStates.ShowServerError -> {
+                            errorCustom("Server Error")
+                        }
+                        ErrorStates.ShowSlowInternet -> {
+                            errorCustom("SlowInternet")
+                        }
+                    }
+                }
+                // quando l'aopp è in loading mostriamo progress bar
+                DetailScreenStates.Loading -> {
+                }
+            }.exhaustive
+        })
+    }
+
+    private fun errorCustom(errore: String) {
+        imageViewError.setImageResource(R.drawable.errorimage)
+        textViewError.text = errore
+    }
+
+
+}

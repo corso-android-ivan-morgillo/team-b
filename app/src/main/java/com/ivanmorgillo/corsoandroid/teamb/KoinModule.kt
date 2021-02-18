@@ -1,5 +1,6 @@
 package com.ivanmorgillo.corsoandroid.teamb
 
+import com.ivanmorgillo.corsoandroid.teamb.detail.DetailViewModel
 import com.ivanmorgillo.corsoandroid.teamb.network.CocktailAPI
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -20,5 +21,5 @@ val appModule = module {
 
     // Creiamo un oggetto di tipo MainViewModel
     viewModel { MainViewModel(repository = get(), tracking = get()) }
-    //viewModel { DetailViewModel(repository = get()) }
+    viewModel { DetailViewModel(repository = get(), tracking = get()) }
 }
