@@ -25,7 +25,7 @@ sealed class DetailScreenItems {
     data class Title(val title: String) : DetailScreenItems()
     data class Image(val image: String) : DetailScreenItems()
     data class GlassType(val glass: String, val isAlcoholic: Boolean) : DetailScreenItems()
-    data class IngredientList(val ingredients: List<Ingredient>) : DetailScreenItems()
+    data class IngredientList(val ingredients: List<IngredientUI>) : DetailScreenItems()
     data class Instructions(val instructions: String) : DetailScreenItems()
 }
 
@@ -141,7 +141,7 @@ sealed class DetailScreenViewHolder(itemView: View) : RecyclerView.ViewHolder(it
 class IngredientsListAdapter :
     RecyclerView.Adapter<IngredientsViewHolder>() {
     // lista di ingredienti, inizializzata a empty
-    private var detailIngredientList: List<Ingredient> = emptyList()
+    private var detailIngredientList: List<IngredientUI> = emptyList()
 
     // da xml a kotlin per ogni elemento della lista
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IngredientsViewHolder {
@@ -161,7 +161,7 @@ class IngredientsListAdapter :
     }
 
     // inizializza la lista di ingredienti con quella passata come argomento
-    fun setIngredientList(items: List<Ingredient>) {
+    fun setIngredientList(items: List<IngredientUI>) {
         detailIngredientList = items
         Log.d("SIZE LIST", detailIngredientList.size.toString())
         notifyDataSetChanged()
@@ -174,19 +174,10 @@ class IngredientsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
     // recupera la textView dell'elemento della lista di ingredienti
     private val ingredientName = itemView.findViewById<TextView>(R.id.ingredient_item_name)
     private val ingredientQty = itemView.findViewById<TextView>(R.id.ingredient_item_quantity)
-    fun bind(item: Ingredient) {
+    fun bind(item: IngredientUI) {
         ingredientName.text = item.nomeIngr // imposta lil text dell'elemento al nome dell'ingrediente
         ingredientQty.text = item.ingrQty // imposta la quantità dell'ingrediente
     }
 }
 
-data class DetailCocktailUI(
-    val title: String,
-    val image: String,
-    val alcoholic: Boolean,
-    val glass: String,
-    val ingredient: Ingredient,
-    val id: Long
-)
-
-data class Ingredient(val nomeIngr: String, val ingrQty: String)
+data class IngredientUI(val nomeIngr: String, val ingrQty: String)

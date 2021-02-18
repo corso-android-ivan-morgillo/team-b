@@ -78,7 +78,13 @@ class CocktailAPI {
             return if (details.isEmpty()) {
                 LoadDetailCocktailResult.Failure(LoadCocktailError.NoDescriptionFound)
             } else {
-                LoadDetailCocktailResult.Success(details.toDomain())
+                val domainDetails = details.toDomain()
+                if (domainDetails == null) {
+                    Timber.e(Throwable("Invalid cocktail ID"))
+                    LoadDetailCocktailResult.Failure(LoadCocktailError.NoDescriptionFound)
+                } else {
+                    LoadDetailCocktailResult.Success(domainDetails)
+                }
             }
         } catch (e: IOException) { // no internet
             return LoadDetailCocktailResult.Failure(NoInternet)
@@ -137,7 +143,6 @@ private fun DetailCocktailDTO.Drink.ingredientsList() = listOfNotNull(
 
 private fun List<DetailCocktailDTO.Drink>.toDomain(): Detail? {
     val first = this.firstOrNull() ?: return null
-    
     val id = first.idDrink.toLongOrNull()
     val alcolCat: Boolean = first.strAlcoholic.equals("Alcoholic")
     val video: String? = first.strVideo?.split("https://www.youtube.com/watch?v=")?.first()
@@ -177,7 +182,7 @@ sealed class LoadCocktailResult {
 }
 
 sealed class LoadDetailCocktailResult {
-    data class Success(val details: Detail?) : LoadDetailCocktailResult()
+    data class Success(val details: Detail) : LoadDetailCocktailResult()
     data class Failure(val error: LoadCocktailError) : LoadDetailCocktailResult()
 }
 
