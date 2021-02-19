@@ -65,7 +65,7 @@ class MainViewModel(
             NoInternet -> states.postValue(MainScreenStates.Error(ErrorStates.ShowNoInternetMessage))
             ServerError -> states.postValue(MainScreenStates.Error(ErrorStates.ShowServerError))
             SlowInternet -> states.postValue(MainScreenStates.Error(ErrorStates.ShowSlowInternet))
-            LoadCocktailError.NoDescriptionFound -> TODO()
+            LoadCocktailError.NoDetailFound -> states.postValue(MainScreenStates.Error(ErrorStates.ShowNoDetailFound))
         }.exhaustive
     }
 
@@ -105,4 +105,5 @@ sealed class ErrorStates {
     object ShowNoCocktailFound : ErrorStates()
     object ShowServerError : ErrorStates()
     object ShowSlowInternet : ErrorStates()
+    object ShowNoDetailFound : ErrorStates()
 }

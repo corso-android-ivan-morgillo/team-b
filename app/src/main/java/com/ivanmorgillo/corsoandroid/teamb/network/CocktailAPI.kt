@@ -76,12 +76,12 @@ class CocktailAPI {
             val detailCocktailList = service.loadDetailCocktails(idDrink.toString())
             val details = detailCocktailList.details
             return if (details.isEmpty()) {
-                LoadDetailCocktailResult.Failure(LoadCocktailError.NoDescriptionFound)
+                LoadDetailCocktailResult.Failure(LoadCocktailError.NoDetailFound)
             } else {
                 val domainDetails = details.toDomain()
                 if (domainDetails == null) {
                     Timber.e(Throwable("Invalid cocktail ID"))
-                    LoadDetailCocktailResult.Failure(LoadCocktailError.NoDescriptionFound)
+                    LoadDetailCocktailResult.Failure(LoadCocktailError.NoDetailFound)
                 } else {
                     LoadDetailCocktailResult.Success(domainDetails)
                 }
@@ -173,7 +173,7 @@ sealed class LoadCocktailError {
     object NoInternet : LoadCocktailError()
     object SlowInternet : LoadCocktailError()
     object ServerError : LoadCocktailError()
-    object NoDescriptionFound : LoadCocktailError()
+    object NoDetailFound : LoadCocktailError()
 }
 
 sealed class LoadCocktailResult {

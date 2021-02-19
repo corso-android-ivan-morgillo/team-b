@@ -32,7 +32,7 @@ class DetailFragment : Fragment() {
         val adapter = DetailScreenAdapter()
         // Mettiamo in comunicazione l'adapter con la recycleview
         detail_screen_recycleview.adapter = adapter
-        
+
         val cocktailId = args.cocktailId
         if (cocktailId == COCKTAILIDDEFAULT) {
             // Torna indietro nella schermata da cui provieni.
@@ -66,10 +66,14 @@ class DetailFragment : Fragment() {
                         ErrorStates.ShowSlowInternet -> {
                             errorCustom("SlowInternet")
                         }
+                        ErrorStates.ShowNoDetailFound -> {
+                            errorCustom("No Detail Found")
+                        }
                     }
                 }
                 // quando l'aopp è in loading mostriamo progress bar
                 DetailScreenStates.Loading -> {
+                    TODO()
                 }
             }.exhaustive
         })
@@ -79,6 +83,4 @@ class DetailFragment : Fragment() {
         imageViewError.setImageResource(R.drawable.errorimage)
         textViewError.text = errore
     }
-
-
 }
