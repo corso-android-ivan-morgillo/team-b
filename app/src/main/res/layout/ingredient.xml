@@ -4,26 +4,32 @@
     android:layout_height="48dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="#FFFFF0">
+    android:backgroundTint="#07000000"
+    android:layout_margin="8dp">
 
     <TextView
         android:id="@+id/ingredient_item_name"
-        style="@style/TextAppearance.MaterialComponents.Headline6"
+        style="@style/champagne_limousines_bold_italic_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
+        android:fontFamily="@font/champagne_limousines_bold_italic"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="nome ingrediente" />
+        tools:text="nome ingrediente"
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/ingredient_item_quantity"
+        style="@style/champagne_limousines_italic_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@id/ingredient_item_name"
+        android:layout_marginStart="12dp"
+        android:fontFamily="@font/champagne_limousines_italic"
         app:layout_constraintBottom_toBottomOf="@id/ingredient_item_name"
         app:layout_constraintStart_toEndOf="@id/ingredient_item_name"
+        app:layout_constraintTop_toTopOf="@id/ingredient_item_name"
         tools:text="quantità"
-        android:layout_marginStart="12dp" />
+        android:textSize="12sp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
