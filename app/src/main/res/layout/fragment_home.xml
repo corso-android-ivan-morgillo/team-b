@@ -16,14 +16,16 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/innerLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="#E5E5E5">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/cocktails_List"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:spanCount="2"
+                app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
