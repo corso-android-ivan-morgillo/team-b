@@ -5,6 +5,24 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
     </style>
+
+    <style name="champagne_limousines_bold_italic_style" parent="@android:style/TextAppearance.Small">
+        <item name="android:fontFamily">@font/champagne_limousines_bold_italic</item>
+    </style>
+
+    <style name="champagne_limousines_bold_style" parent="@android:style/TextAppearance.Small">
+        <item name="android:fontFamily">@font/champagne_limousines_bold</item>
+    </style>
+
+    <style name="champagne_limousines_italic_style" parent="@android:style/TextAppearance.Small">
+        <item name="android:fontFamily">@font/champagne_limousines_italic</item>
+    </style>
+
+    <style name="champagne_limousines_style" parent="@android:style/TextAppearance.Small">
+        <item name="android:fontFamily">@font/champagne_limousines</item>
+    </style>
+
 
 </resources>
