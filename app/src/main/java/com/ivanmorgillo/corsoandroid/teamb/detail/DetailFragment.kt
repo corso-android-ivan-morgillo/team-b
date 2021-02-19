@@ -73,7 +73,9 @@ class DetailFragment : Fragment() {
                 }
                 // quando l'aopp è in loading mostriamo progress bar
                 DetailScreenStates.Loading -> {
-                    Timber.d(state.toString())
+
+                    Timber.d("STATE LOADING")
+
                 }
             }.exhaustive
         })
