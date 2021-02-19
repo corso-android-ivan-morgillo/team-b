@@ -6,6 +6,8 @@
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     android:backgroundTint="#E0FFFF"
+    app:cardElevation="12dp"
+    app:cardUseCompatPadding="true"
     android:id="@+id/cocktail_root"
     app:cardCornerRadius="12dp"
     android:elevation="50dp">
