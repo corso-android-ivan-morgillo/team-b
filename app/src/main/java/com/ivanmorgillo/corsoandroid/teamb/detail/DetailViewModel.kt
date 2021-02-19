@@ -7,7 +7,11 @@ import com.ivanmorgillo.corsoandroid.teamb.CocktailRepository
 import com.ivanmorgillo.corsoandroid.teamb.ErrorStates
 import com.ivanmorgillo.corsoandroid.teamb.Tracking
 import com.ivanmorgillo.corsoandroid.teamb.exhaustive
-import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError
+import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.NoCocktailFound
+import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.NoDetailFound
+import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.NoInternet
+import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.ServerError
+import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.SlowInternet
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadDetailCocktailResult
 import kotlinx.coroutines.launch
 
@@ -52,11 +56,11 @@ class DetailViewModel(
 
     private fun onFailure(result: LoadDetailCocktailResult.Failure) {
         when (result.error) {
-            LoadCocktailError.NoCocktailFound -> TODO()
-            LoadCocktailError.NoDescriptionFound -> TODO()
-            LoadCocktailError.NoInternet -> TODO()
-            LoadCocktailError.ServerError -> TODO()
-            LoadCocktailError.SlowInternet -> TODO()
+            NoCocktailFound -> states.postValue(DetailScreenStates.Error(ErrorStates.ShowNoCocktailFound))
+            NoInternet -> states.postValue(DetailScreenStates.Error(ErrorStates.ShowNoInternetMessage))
+            ServerError -> states.postValue(DetailScreenStates.Error(ErrorStates.ShowServerError))
+            SlowInternet -> states.postValue(DetailScreenStates.Error(ErrorStates.ShowSlowInternet))
+            NoDetailFound -> states.postValue(DetailScreenStates.Error(ErrorStates.ShowNoDetailFound))
         }.exhaustive
     }
 }
@@ -74,5 +78,4 @@ sealed class DetailScreenEvents {
 /*
 sealed class DetailScreenActions {
 }
-
  */

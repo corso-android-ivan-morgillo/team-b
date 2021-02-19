@@ -46,5 +46,11 @@
             layout="@layout/layout_error2"
             android:visibility="gone" />
 
+
+        <include
+            android:id="@+id/innerLayoutNoDetailFound"
+            layout="@layout/layout_error_detail"
+            android:visibility="gone" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
