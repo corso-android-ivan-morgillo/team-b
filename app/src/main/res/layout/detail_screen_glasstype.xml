@@ -25,7 +25,10 @@
             android:layout_height="wrap_content"
             android:text="Bicchiere: "
             android:layout_gravity="start|top"
-            android:padding="10dp" />
+            android:padding="10dp"
+            style="@style/champagne_limousines_bold_italic_style"
+            android:fontFamily="@font/champagne_limousines_bold_italic"
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/glass_type"
@@ -33,7 +36,10 @@
             android:layout_height="wrap_content"
             tools:text="Nome Bicchiere "
             android:layout_gravity="start|top"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:fontFamily="@font/champagne_limousines_italic"
+            style="@style/champagne_limousines_italic_style"
+            android:textSize="12sp" />
 
         <Space
             android:layout_width="wrap_content"
@@ -44,9 +50,12 @@
             android:id="@+id/alcoholic_type_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Alcolico: "
+            android:text="@string/alcolico"
             android:layout_gravity="end|top"
-            android:padding="10dp" />
+            android:padding="10dp"
+            style="@style/champagne_limousines_bold_italic_style"
+            android:fontFamily="@font/champagne_limousines_bold_italic"
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/alcoholic_type"
@@ -54,7 +63,10 @@
             android:layout_height="wrap_content"
             tools:text="si/no"
             android:layout_gravity="start|top"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:fontFamily="@font/champagne_limousines_italic"
+            style="@style/champagne_limousines_italic_style"
+            android:textSize="12sp" />
 
         <Space
             android:layout_width="wrap_content"

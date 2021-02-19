@@ -6,4 +6,6 @@
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
     android:layout_width="match_parent"
     android:clipToPadding="true"
-    android:layout_height="wrap_content" />
+    android:layout_height="match_parent"
+    android:background="#E5E5E5"
+    android:padding="8dp" />
