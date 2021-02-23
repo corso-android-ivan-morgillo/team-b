@@ -7,9 +7,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.transition.MaterialElevationScale
 import com.ivanmorgillo.corsoandroid.teamb.CocktailAdapter
 import com.ivanmorgillo.corsoandroid.teamb.ErrorStates
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenActions
@@ -25,6 +27,7 @@ import timber.log.Timber
 
 class HomeFragment : Fragment() {
     private val viewModel: MainViewModel by viewModel()
+    private var lastClickedItem: View? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -36,12 +39,23 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        postponeEnterTransition()
+        view.doOnPreDraw { startPostponedEnterTransition() }
+
         swiperefresh.setOnRefreshListener {
             viewModel.send(MainScreenEvents.OnRefreshClicked)
         }
         // collega i dati alla UI, per far cio serve adapter
-        val adapter = CocktailAdapter {
-            viewModel.send(MainScreenEvents.OnCocktailClick(it))
+        val adapter = CocktailAdapter { item, view ->
+            lastClickedItem = view
+            exitTransition = MaterialElevationScale(false).apply {
+                duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+            }
+            reenterTransition = MaterialElevationScale(true).apply {
+                duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+            }
+            viewModel.send(MainScreenEvents.OnCocktailClick(item))
         }
         buttonError.setOnClickListener {
             viewModel.send(MainScreenEvents.OnSettingClick)
@@ -62,9 +76,13 @@ class HomeFragment : Fragment() {
             Timber.d(action.toString())
             when (action) {
                 is MainScreenActions.NavigateToDetail -> {
-                    Toast.makeText(view.context, "working progress navigate to detail", Toast.LENGTH_SHORT).show()
-                    val directions = HomeFragmentDirections.actionHomeFragmentToDetailFragment(action.cocktail.id)
-                    findNavController().navigate(directions)
+                    lastClickedItem?.run {
+                        val extras = FragmentNavigatorExtras(this to "cocktail_transition_item")
+                        val directions =
+                            HomeFragmentDirections.actionHomeFragmentToDetailFragment(action.cocktail.id)
+                        Log.d("HomeID", " = ${action.cocktail.id}")
+                        findNavController().navigate(directions, extras)
+                    }
                 }
                 MainScreenActions.NavigateToSettings
                 -> {

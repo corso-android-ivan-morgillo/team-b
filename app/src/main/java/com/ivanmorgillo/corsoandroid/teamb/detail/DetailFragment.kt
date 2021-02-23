@@ -1,12 +1,17 @@
 package com.ivanmorgillo.corsoandroid.teamb.detail
 
+import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.AttrRes
+import androidx.core.content.res.use
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.transition.MaterialContainerTransform
 import com.ivanmorgillo.corsoandroid.teamb.R
 import com.ivanmorgillo.corsoandroid.teamb.exhaustive
 import kotlinx.android.synthetic.main.fragment_detail.*
@@ -19,6 +24,18 @@ private const val COCKTAILIDDEFAULT = -666L
 class DetailFragment : Fragment() {
     private val viewModel: DetailViewModel by viewModel()
     private val args: DetailFragmentArgs by navArgs()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        sharedElementEnterTransition = MaterialContainerTransform().apply {
+            drawingViewId = R.id.nav_host_fragment
+            duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+            scrimColor = Color.TRANSPARENT
+            setAllContainerColors(requireContext().themeColor(R.attr.colorSurface))
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_detail, container, false)
@@ -74,7 +91,6 @@ class DetailFragment : Fragment() {
                 DetailScreenStates.Loading -> {
 
                     Timber.d("STATE LOADING")
-
                 }
             }.exhaustive
         })
@@ -83,5 +99,15 @@ class DetailFragment : Fragment() {
     private fun errorCustom(errore: String) {
         imageViewError.setImageResource(R.drawable.errorimage)
         textViewError.text = errore
+    }
+
+    fun Context.themeColor(
+        @AttrRes themeAttrId: Int
+    ): Int {
+        return obtainStyledAttributes(
+            intArrayOf(themeAttrId)
+        ).use {
+            it.getColor(0, Color.MAGENTA)
+        }
     }
 }

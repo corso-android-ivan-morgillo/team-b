@@ -10,7 +10,7 @@ import coil.load
 import com.google.android.material.card.MaterialCardView
 
 // l'adapter ha bisogno di un viewHolder che creeremo (cocktailViewHolder)
-class CocktailAdapter(val onClick: (CocktailUI) -> Unit) : RecyclerView.Adapter<CocktailViewHolder>() {
+class CocktailAdapter(private val onClick: (CocktailUI, View) -> Unit) : RecyclerView.Adapter<CocktailViewHolder>() {
     // lista di cocktail, inizializzata a empty
     private var cocktailsList: List<CocktailUI> = emptyList()
 
@@ -45,11 +45,12 @@ class CocktailViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val name = itemView.findViewById<TextView>(R.id.cocktail_name)
     val image = itemView.findViewById<ImageView>(R.id.cocktail_image)
     val cocktailCardView = itemView.findViewById<MaterialCardView>(R.id.cocktail_root)
-    fun bind(item: CocktailUI, onClick: (CocktailUI) -> Unit) {
+    fun bind(item: CocktailUI, onClick: (CocktailUI, View) -> Unit) {
         name.text = item.cocktailName // imposta lil text dell'elemento al nome del cocktail
         image.load(item.image) // imposta l'immagine all'elemento
         image.contentDescription = item.cocktailName
-        cocktailCardView.setOnClickListener { onClick(item) }
+        cocktailCardView.setOnClickListener { onClick(item, it) }
+        cocktailCardView.transitionName = "cocktail_transition_item${item.id}"
     }
 }
 
