@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.ivanmorgillo.corsoandroid.teamb.ErrorStates
 import com.ivanmorgillo.corsoandroid.teamb.R
 import com.ivanmorgillo.corsoandroid.teamb.exhaustive
 import kotlinx.android.synthetic.main.fragment_detail.*
@@ -54,19 +53,19 @@ class DetailFragment : Fragment() {
                 }
                 is DetailScreenStates.Error -> {
                     when (state.error) {
-                        ErrorStates.ShowNoInternetMessage -> {
+                        DetailErrorStates.ShowNoInternetMessage -> {
                             errorCustom("No Internet Connection")
                         }
-                        ErrorStates.ShowNoCocktailFound -> {
+                        DetailErrorStates.ShowNoCocktailFound -> {
                             errorCustom("No Cocktail Found")
                         }
-                        ErrorStates.ShowServerError -> {
+                        DetailErrorStates.ShowServerError -> {
                             errorCustom("Server Error")
                         }
-                        ErrorStates.ShowSlowInternet -> {
+                        DetailErrorStates.ShowSlowInternet -> {
                             errorCustom("SlowInternet")
                         }
-                        ErrorStates.ShowNoDetailFound -> {
+                        DetailErrorStates.ShowNoDetailFound -> {
                             errorCustom("No Detail Found")
                         }
                     }

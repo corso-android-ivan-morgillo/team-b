@@ -108,10 +108,6 @@ class HomeFragment : Fragment() {
                             errorCustom("SlowInternet")
                             innerLayoutNoInternet_SlowInternet.visibility = View.VISIBLE
                         }
-                        ErrorStates.ShowNoDetailFound -> {
-                            errorCustom("No Detail Found")
-                            innerLayoutNoDetailFound.visibility = View.VISIBLE
-                        }
                     }
                 }
                 // quando l'aopp è in loading mostriamo progress bar
