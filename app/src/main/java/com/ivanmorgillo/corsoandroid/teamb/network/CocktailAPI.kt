@@ -71,6 +71,32 @@ class CocktailAPI {
     }
 
     @Suppress("TooGenericExceptionCaught")
+    suspend fun loadRandomDetailCocktails(): LoadDetailCocktailResult {
+        try {
+            val detailCocktailList = service.loadRandomDetailCocktails()
+            val details = detailCocktailList.details
+            return if (details.isEmpty()) {
+                LoadDetailCocktailResult.Failure(DetailLoadCocktailError.NoDetailFound)
+            } else {
+                val domainDetails = details.toDomain()
+                if (domainDetails == null) {
+                    Timber.e(Throwable("Invalid cocktail ID"))
+                    LoadDetailCocktailResult.Failure(DetailLoadCocktailError.NoDetailFound)
+                } else {
+                    LoadDetailCocktailResult.Success(domainDetails)
+                }
+            }
+        } catch (e: IOException) { // no internet
+            return LoadDetailCocktailResult.Failure(DetailLoadCocktailError.NoInternet)
+        } catch (e: SocketTimeoutException) {
+            return LoadDetailCocktailResult.Failure(DetailLoadCocktailError.SlowInternet)
+        } catch (e: Exception) {
+            Timber.e(e, "Generic Exception on LoadCocktail")
+            return LoadDetailCocktailResult.Failure(DetailLoadCocktailError.ServerError)
+        }
+    }
+
+    @Suppress("TooGenericExceptionCaught")
     suspend fun loadDetailCocktails(idDrink: Long): LoadDetailCocktailResult {
         try {
             val detailCocktailList = service.loadDetailCocktails(idDrink.toString())

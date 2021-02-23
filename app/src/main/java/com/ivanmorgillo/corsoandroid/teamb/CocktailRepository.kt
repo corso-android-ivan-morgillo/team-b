@@ -12,6 +12,7 @@ import com.ivanmorgillo.corsoandroid.teamb.network.LoadDetailCocktailResult
 interface CocktailRepository {
     suspend fun loadCocktails(): LoadCocktailResult
     suspend fun loadDetailCocktails(cocktailId: Long): LoadDetailCocktailResult
+    suspend fun loadRandomDetailCocktails(): LoadDetailCocktailResult
 }
 
 /* Implementazione dell'interfaccia definita prima */
@@ -22,6 +23,10 @@ class CocktailRepositoryImpl(private val api: CocktailAPI) : CocktailRepository 
 
     override suspend fun loadDetailCocktails(cocktailId: Long): LoadDetailCocktailResult {
         return api.loadDetailCocktails(cocktailId)
+    }
+
+    override suspend fun loadRandomDetailCocktails(): LoadDetailCocktailResult {
+        return api.loadRandomDetailCocktails()
     }
 }
 
