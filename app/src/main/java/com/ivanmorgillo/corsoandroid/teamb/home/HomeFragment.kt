@@ -131,4 +131,6 @@ class HomeFragment : Fragment() {
         imageViewError.setImageResource(R.drawable.errorimage)
         textViewError.text = errore
     }
+
+
 }
