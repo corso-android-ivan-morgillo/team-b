@@ -4,14 +4,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ivanmorgillo.corsoandroid.teamb.CocktailRepository
-import com.ivanmorgillo.corsoandroid.teamb.ErrorStates
 import com.ivanmorgillo.corsoandroid.teamb.Tracking
 import com.ivanmorgillo.corsoandroid.teamb.exhaustive
-import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.NoCocktailFound
-import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.NoDetailFound
-import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.NoInternet
-import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.ServerError
-import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.SlowInternet
+import com.ivanmorgillo.corsoandroid.teamb.network.DetailLoadCocktailError.NoCocktailFound
+import com.ivanmorgillo.corsoandroid.teamb.network.DetailLoadCocktailError.NoDetailFound
+import com.ivanmorgillo.corsoandroid.teamb.network.DetailLoadCocktailError.NoInternet
+import com.ivanmorgillo.corsoandroid.teamb.network.DetailLoadCocktailError.ServerError
+import com.ivanmorgillo.corsoandroid.teamb.network.DetailLoadCocktailError.SlowInternet
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadDetailCocktailResult
 import kotlinx.coroutines.launch
 
@@ -56,18 +55,18 @@ class DetailViewModel(
 
     private fun onFailure(result: LoadDetailCocktailResult.Failure) {
         when (result.error) {
-            NoCocktailFound -> states.postValue(DetailScreenStates.Error(ErrorStates.ShowNoCocktailFound))
-            NoInternet -> states.postValue(DetailScreenStates.Error(ErrorStates.ShowNoInternetMessage))
-            ServerError -> states.postValue(DetailScreenStates.Error(ErrorStates.ShowServerError))
-            SlowInternet -> states.postValue(DetailScreenStates.Error(ErrorStates.ShowSlowInternet))
-            NoDetailFound -> states.postValue(DetailScreenStates.Error(ErrorStates.ShowNoDetailFound))
+            NoCocktailFound -> states.postValue(DetailScreenStates.Error(DetailErrorStates.ShowNoCocktailFound))
+            NoInternet -> states.postValue(DetailScreenStates.Error(DetailErrorStates.ShowNoInternetMessage))
+            ServerError -> states.postValue(DetailScreenStates.Error(DetailErrorStates.ShowServerError))
+            SlowInternet -> states.postValue(DetailScreenStates.Error(DetailErrorStates.ShowSlowInternet))
+            NoDetailFound -> states.postValue(DetailScreenStates.Error(DetailErrorStates.ShowNoDetailFound))
         }.exhaustive
     }
 }
 
 sealed class DetailScreenStates {
     object Loading : DetailScreenStates()
-    data class Error(val error: ErrorStates) : DetailScreenStates()
+    data class Error(val error: DetailErrorStates) : DetailScreenStates()
     data class Content(val details: List<DetailScreenItems>) : DetailScreenStates()
 }
 
@@ -75,6 +74,14 @@ sealed class DetailScreenEvents {
     data class OnReady(val id: Long) : DetailScreenEvents()
 }
 
+
+sealed class DetailErrorStates {
+    object ShowNoInternetMessage : DetailErrorStates()
+    object ShowNoCocktailFound : DetailErrorStates()
+    object ShowServerError : DetailErrorStates()
+    object ShowSlowInternet : DetailErrorStates()
+    object ShowNoDetailFound : DetailErrorStates()
+}
 /*
 sealed class DetailScreenActions {
 }

@@ -76,23 +76,23 @@ class CocktailAPI {
             val detailCocktailList = service.loadDetailCocktails(idDrink.toString())
             val details = detailCocktailList.details
             return if (details.isEmpty()) {
-                LoadDetailCocktailResult.Failure(LoadCocktailError.NoDetailFound)
+                LoadDetailCocktailResult.Failure(DetailLoadCocktailError.NoDetailFound)
             } else {
                 val domainDetails = details.toDomain()
                 if (domainDetails == null) {
                     Timber.e(Throwable("Invalid cocktail ID"))
-                    LoadDetailCocktailResult.Failure(LoadCocktailError.NoDetailFound)
+                    LoadDetailCocktailResult.Failure(DetailLoadCocktailError.NoDetailFound)
                 } else {
                     LoadDetailCocktailResult.Success(domainDetails)
                 }
             }
         } catch (e: IOException) { // no internet
-            return LoadDetailCocktailResult.Failure(NoInternet)
+            return LoadDetailCocktailResult.Failure(DetailLoadCocktailError.NoInternet)
         } catch (e: SocketTimeoutException) {
-            return LoadDetailCocktailResult.Failure(SlowInternet)
+            return LoadDetailCocktailResult.Failure(DetailLoadCocktailError.SlowInternet)
         } catch (e: Exception) {
             Timber.e(e, "Generic Exception on LoadCocktail")
-            return LoadDetailCocktailResult.Failure(ServerError)
+            return LoadDetailCocktailResult.Failure(DetailLoadCocktailError.ServerError)
         }
     }
 }
@@ -173,7 +173,14 @@ sealed class LoadCocktailError {
     object NoInternet : LoadCocktailError()
     object SlowInternet : LoadCocktailError()
     object ServerError : LoadCocktailError()
-    object NoDetailFound : LoadCocktailError()
+}
+
+sealed class DetailLoadCocktailError {
+    object NoCocktailFound : DetailLoadCocktailError()
+    object NoInternet : DetailLoadCocktailError()
+    object SlowInternet : DetailLoadCocktailError()
+    object ServerError : DetailLoadCocktailError()
+    object NoDetailFound : DetailLoadCocktailError()
 }
 
 sealed class LoadCocktailResult {
@@ -183,7 +190,7 @@ sealed class LoadCocktailResult {
 
 sealed class LoadDetailCocktailResult {
     data class Success(val details: Detail) : LoadDetailCocktailResult()
-    data class Failure(val error: LoadCocktailError) : LoadDetailCocktailResult()
+    data class Failure(val error: DetailLoadCocktailError) : LoadDetailCocktailResult()
 }
 
 data class Ingredient(val name: String, val quantity: String)
