@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
@@ -127,13 +126,12 @@ sealed class DetailScreenViewHolder(itemView: View) : RecyclerView.ViewHolder(it
             cocktailImage.load(image.image)
             backgroundImage.load(R.drawable.bar_blurred) {
                 transformations(RoundedCornersTransformation(CORNER_RADIUS))
-                
+
             }
         }
     }
 
     class GlassTypeViewHolder(itemView: View) : DetailScreenViewHolder(itemView) {
-        private val glassTypeContainer = itemView.findViewById<LinearLayout>(R.id.glassType_container)
         private val cocktailGlassType = itemView.findViewById<TextView>(R.id.glass_type)
         private val cocktailAlcoholicType = itemView.findViewById<TextView>(R.id.alcoholic_type)
         fun bind(glassType: GlassType) {
