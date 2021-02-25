@@ -20,7 +20,6 @@ class DetailViewModel(
 ) : ViewModel() {
     val states = MutableLiveData<DetailScreenStates>()
 
-    // val actions = SingleLiveEvent<DetailScreenActions>()
     fun send(event: DetailScreenEvents) {
         when (event) {
             is DetailScreenEvents.OnReady -> loadDetails(event.id)
@@ -44,13 +43,14 @@ class DetailViewModel(
             IngredientUI(nomeIngr = it.name, ingrQty = it.quantity)
         }
         val content: List<DetailScreenItems> = listOf(
-            DetailScreenItems.Title(details.name),
-            DetailScreenItems.Image(details.image),
+            //DetailScreenItems.Title(details.name),
+            DetailScreenItems.Image(details.image, details.name),
+            DetailScreenItems.Video(details.youtubeLink),
             DetailScreenItems.GlassType(details.glass, details.isAlcoholic),
             DetailScreenItems.IngredientList(ingredientsUI),
             DetailScreenItems.Instructions(details.instructions),
-            DetailScreenItems.Video(details.youtubeLink)
-        )
+
+            )
         states.postValue(DetailScreenStates.Content(content))
     }
 
@@ -83,7 +83,3 @@ sealed class DetailErrorStates {
     object ShowSlowInternet : DetailErrorStates()
     object ShowNoDetailFound : DetailErrorStates()
 }
-/*
-sealed class DetailScreenActions {
-}
- */

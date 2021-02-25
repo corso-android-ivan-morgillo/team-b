@@ -16,4 +16,5 @@
     <string name="submenu">SottoMenu</string>
     <string name="menu">Menu</string>
     <string name="folder">Cartella</string>
+    <string name="bicchiere">"Bicchiere: "</string>
 </resources>
