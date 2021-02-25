@@ -46,6 +46,7 @@ private const val INGREDIENT_LIST_VIEWTYPE = 3
 private const val INSTRUCTIONS_VIEWTYPE = 4
 private const val TITLE_VIEWTYPE = 5
 private const val VIDEO_VIEWTYPE = 6
+private const val CORNER_RADIUS = 36f
 
 class DetailScreenAdapter : RecyclerView.Adapter<DetailScreenViewHolder>() {
     var items: List<DetailScreenItems> = emptyList()
@@ -125,7 +126,7 @@ sealed class DetailScreenViewHolder(itemView: View) : RecyclerView.ViewHolder(it
         fun bind(image: Image) {
             cocktailImage.load(image.image)
             backgroundImage.load(R.drawable.bar_blurred) {
-                transformations(RoundedCornersTransformation(36f))
+                transformations(RoundedCornersTransformation(CORNER_RADIUS))
             }
         }
     }
