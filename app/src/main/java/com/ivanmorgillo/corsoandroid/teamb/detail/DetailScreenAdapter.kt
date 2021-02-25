@@ -14,12 +14,20 @@ import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenItems.Image
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenItems.IngredientList
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenItems.Instructions
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenItems.Title
+import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenItems.Video
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenViewHolder.GlassTypeViewHolder
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenViewHolder.ImageViewHolder
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenViewHolder.IngredientListViewHolder
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenViewHolder.InstructionsViewHolder
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenViewHolder.TitleViewHolder
+import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenViewHolder.VideoViewHolder
 import com.ivanmorgillo.corsoandroid.teamb.exhaustive
+import com.ivanmorgillo.corsoandroid.teamb.gone
+import com.ivanmorgillo.corsoandroid.teamb.visible
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+
 
 sealed class DetailScreenItems {
     data class Title(val title: String) : DetailScreenItems()
@@ -27,6 +35,7 @@ sealed class DetailScreenItems {
     data class GlassType(val glass: String, val isAlcoholic: Boolean) : DetailScreenItems()
     data class IngredientList(val ingredients: List<IngredientUI>) : DetailScreenItems()
     data class Instructions(val instructions: String) : DetailScreenItems()
+    data class Video(val video: String?) : DetailScreenItems()
 }
 
 private const val GLASS_TYPE_VIEWTYPE = 1
@@ -34,6 +43,7 @@ private const val IMAGE_VIEWTYPE = 2
 private const val INGREDIENT_LIST_VIEWTYPE = 3
 private const val INSTRUCTIONS_VIEWTYPE = 4
 private const val TITLE_VIEWTYPE = 5
+private const val VIDEO_VIEWTYPE = 6
 
 class DetailScreenAdapter : RecyclerView.Adapter<DetailScreenViewHolder>() {
     var items: List<DetailScreenItems> = emptyList()
@@ -50,6 +60,7 @@ class DetailScreenAdapter : RecyclerView.Adapter<DetailScreenViewHolder>() {
             is IngredientList -> INGREDIENT_LIST_VIEWTYPE
             is Instructions -> INSTRUCTIONS_VIEWTYPE
             is Title -> TITLE_VIEWTYPE
+            is Video -> VIDEO_VIEWTYPE
         }.exhaustive
     }
 
@@ -76,6 +87,10 @@ class DetailScreenAdapter : RecyclerView.Adapter<DetailScreenViewHolder>() {
                 val view = layoutInflater.inflate(R.layout.detail_screen_title, parent, false)
                 TitleViewHolder(view)
             }
+            VIDEO_VIEWTYPE -> {
+                val view = layoutInflater.inflate(R.layout.detail_screen_video, parent, false)
+                VideoViewHolder(view)
+            }
             else -> error("ViewType not valid")
         }.exhaustive
     }
@@ -87,6 +102,7 @@ class DetailScreenAdapter : RecyclerView.Adapter<DetailScreenViewHolder>() {
             is IngredientListViewHolder -> holder.bind(items[position] as IngredientList)
             is InstructionsViewHolder -> holder.bind(items[position] as Instructions)
             is TitleViewHolder -> holder.bind(items[position] as Title)
+            is VideoViewHolder -> holder.bind(items[position] as Video)
         }.exhaustive
     }
 
@@ -134,6 +150,27 @@ sealed class DetailScreenViewHolder(itemView: View) : RecyclerView.ViewHolder(it
         private val cocktailInstructions = itemView.findViewById<TextView>(R.id.detail_screen_instructions)
         fun bind(instructions: Instructions) {
             cocktailInstructions.text = instructions.instructions
+        }
+    }
+
+    class VideoViewHolder(itemView: View) : DetailScreenViewHolder(itemView) {
+        val youTubePlayerView: YouTubePlayerView = itemView.findViewById<YouTubePlayerView>(R.id.youtube_player_view)
+
+        fun bind(video: Video) {
+            if (video.video.isNullOrEmpty()) {    // se il video non è presente dalla chiamata di rete
+                youTubePlayerView.gone()
+            } else {
+                youTubePlayerView.visible()
+                youTubePlayerView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
+                    override fun onReady(youTubePlayer: YouTubePlayer) {
+                        // https://www.youtube.com/watch?v=oOHH0GGglyM
+                        video.video
+                            .split("v=")
+                            .lastOrNull()
+                            ?.run { youTubePlayer.loadVideo(this, 0f) }
+                    }
+                })
+            }
         }
     }
 }

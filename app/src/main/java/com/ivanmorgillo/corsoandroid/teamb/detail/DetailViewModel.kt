@@ -49,6 +49,7 @@ class DetailViewModel(
             DetailScreenItems.GlassType(details.glass, details.isAlcoholic),
             DetailScreenItems.IngredientList(ingredientsUI),
             DetailScreenItems.Instructions(details.instructions),
+            DetailScreenItems.Video(details.youtubeLink)
         )
         states.postValue(DetailScreenStates.Content(content))
     }
