@@ -3,13 +3,23 @@
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="#FFFFFF"
-    android:padding="8dp">
+    android:paddingTop="4dp"
+    android:paddingStart="8dp"
+    android:paddingBottom="8dp"
+    android:paddingEnd="8dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
         android:layout_height="wrap_content"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#7f7f7f"
+            android:layout_marginTop="4dp"
+            android:alpha="0.3"
+            app:layout_constraintTop_toBottomOf="@id/detail_screen_ingredient_list" />
 
         <androidx.recyclerview.widget.RecyclerView
             app:layout_constraintTop_toBottomOf="@+id/ingredient_title"
@@ -34,7 +44,8 @@
             app:layout_constraintTop_toTopOf="parent"
             android:text="@string/ingredients"
             android:textSize="24sp"
-            android:layout_margin="8dp" />
+            android:layout_marginBottom="12dp"
+            android:layout_marginStart="8dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
