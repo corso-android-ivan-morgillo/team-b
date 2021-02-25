@@ -127,6 +127,7 @@ sealed class DetailScreenViewHolder(itemView: View) : RecyclerView.ViewHolder(it
             cocktailImage.load(image.image)
             backgroundImage.load(R.drawable.bar_blurred) {
                 transformations(RoundedCornersTransformation(CORNER_RADIUS))
+                
             }
         }
     }
