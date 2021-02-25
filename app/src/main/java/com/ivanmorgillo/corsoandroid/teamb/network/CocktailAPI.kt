@@ -171,7 +171,7 @@ private fun List<DetailCocktailDTO.Drink>.toDomain(): Detail? {
     val first = this.firstOrNull() ?: return null
     val id = first.idDrink.toLongOrNull()
     val alcolCat: Boolean = first.strAlcoholic.equals("Alcoholic")
-    val video: String? = first.strVideo?.split("https://www.youtube.com/watch?v=")?.first()
+    val video: String? = first.strVideo
     val ingredientsList = first.ingredientsList()
     val measurementsList = first.measurementsList()
     val ingredients = ingredientsList
