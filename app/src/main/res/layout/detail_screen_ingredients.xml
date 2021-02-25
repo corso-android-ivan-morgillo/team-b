@@ -35,15 +35,15 @@
 
         <TextView
             android:id="@+id/ingredient_title"
-            style="@style/champagne_limousines_bold_italic_style"
+            style="@style/firasans_bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/champagne_limousines_bold_italic"
+            android:fontFamily="@font/firasans_bold"
             app:layout_constraintBottom_toTopOf="@+id/detail_screen_ingredient_list"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:text="@string/ingredients"
-            android:textSize="24sp"
+            android:textSize="22sp"
             android:layout_marginBottom="12dp"
             android:layout_marginStart="8dp" />
 

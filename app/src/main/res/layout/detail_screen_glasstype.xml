@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:id="@+id/glassType_container"
     android:background="@drawable/top_round_border"
     android:padding="8dp"
     android:orientation="vertical">
@@ -34,8 +35,8 @@
                 android:text="Bicchiere: "
                 android:layout_gravity="start|top"
                 android:padding="10dp"
-                style="@style/champagne_limousines_bold_italic_style"
-                android:fontFamily="@font/champagne_limousines_bold_italic"
+                style="@style/firasans_bold"
+                android:fontFamily="@font/firasans_bold"
                 android:textSize="14sp" />
 
             <TextView
@@ -45,8 +46,9 @@
                 tools:text="Nome Bicchiere "
                 android:layout_gravity="start|top"
                 android:padding="10dp"
-                android:fontFamily="@font/champagne_limousines_italic"
-                style="@style/champagne_limousines_italic_style"
+                style="@style/firasans_light"
+                android:fontFamily="@font/firasans_light"
+
                 android:textSize="12sp" />
 
             <Space
@@ -61,8 +63,8 @@
                 android:text="@string/alcolico"
                 android:layout_gravity="end|top"
                 android:padding="10dp"
-                style="@style/champagne_limousines_bold_italic_style"
-                android:fontFamily="@font/champagne_limousines_bold_italic"
+                style="@style/firasans_bold"
+                android:fontFamily="@font/firasans_bold"
                 android:textSize="14sp" />
 
             <TextView
@@ -72,8 +74,8 @@
                 tools:text="si/no"
                 android:layout_gravity="start|top"
                 android:padding="10dp"
-                android:fontFamily="@font/champagne_limousines_italic"
-                style="@style/champagne_limousines_italic_style"
+                android:fontFamily="@font/firasans_light"
+                style="@style/firasans_light"
                 android:textSize="12sp" />
 
             <Space
