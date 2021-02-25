@@ -8,19 +8,18 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import coil.transform.RoundedCornersTransformation
 import com.ivanmorgillo.corsoandroid.teamb.R
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenItems.GlassType
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenItems.Image
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenItems.IngredientList
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenItems.Instructions
-import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenItems.Title
+//import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenItems.Title
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenItems.Video
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenViewHolder.GlassTypeViewHolder
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenViewHolder.ImageViewHolder
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenViewHolder.IngredientListViewHolder
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenViewHolder.InstructionsViewHolder
-import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenViewHolder.TitleViewHolder
+//import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenViewHolder.TitleViewHolder
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenViewHolder.VideoViewHolder
 import com.ivanmorgillo.corsoandroid.teamb.exhaustive
 import com.ivanmorgillo.corsoandroid.teamb.gone
@@ -31,8 +30,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 
 
 sealed class DetailScreenItems {
-    data class Title(val title: String) : DetailScreenItems()
-    data class Image(val image: String) : DetailScreenItems()
+    data class Image(val image: String, val title: String) : DetailScreenItems()
     data class GlassType(val glass: String, val isAlcoholic: Boolean) : DetailScreenItems()
     data class IngredientList(val ingredients: List<IngredientUI>) : DetailScreenItems()
     data class Instructions(val instructions: String) : DetailScreenItems()
@@ -43,7 +41,6 @@ private const val GLASS_TYPE_VIEWTYPE = 1
 private const val IMAGE_VIEWTYPE = 2
 private const val INGREDIENT_LIST_VIEWTYPE = 3
 private const val INSTRUCTIONS_VIEWTYPE = 4
-private const val TITLE_VIEWTYPE = 5
 private const val VIDEO_VIEWTYPE = 6
 private const val CORNER_RADIUS = 36f
 
@@ -61,7 +58,6 @@ class DetailScreenAdapter : RecyclerView.Adapter<DetailScreenViewHolder>() {
             is Image -> IMAGE_VIEWTYPE
             is IngredientList -> INGREDIENT_LIST_VIEWTYPE
             is Instructions -> INSTRUCTIONS_VIEWTYPE
-            is Title -> TITLE_VIEWTYPE
             is Video -> VIDEO_VIEWTYPE
         }.exhaustive
     }
@@ -85,10 +81,6 @@ class DetailScreenAdapter : RecyclerView.Adapter<DetailScreenViewHolder>() {
                 val view = layoutInflater.inflate(R.layout.detail_screen_instructions, parent, false)
                 InstructionsViewHolder(view)
             }
-            TITLE_VIEWTYPE -> {
-                val view = layoutInflater.inflate(R.layout.detail_screen_title, parent, false)
-                TitleViewHolder(view)
-            }
             VIDEO_VIEWTYPE -> {
                 val view = layoutInflater.inflate(R.layout.detail_screen_video, parent, false)
                 VideoViewHolder(view)
@@ -103,7 +95,6 @@ class DetailScreenAdapter : RecyclerView.Adapter<DetailScreenViewHolder>() {
             is ImageViewHolder -> holder.bind(items[position] as Image)
             is IngredientListViewHolder -> holder.bind(items[position] as IngredientList)
             is InstructionsViewHolder -> holder.bind(items[position] as Instructions)
-            is TitleViewHolder -> holder.bind(items[position] as Title)
             is VideoViewHolder -> holder.bind(items[position] as Video)
         }.exhaustive
     }
@@ -112,22 +103,14 @@ class DetailScreenAdapter : RecyclerView.Adapter<DetailScreenViewHolder>() {
 }
 
 sealed class DetailScreenViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    class TitleViewHolder(itemView: View) : DetailScreenViewHolder(itemView) {
-        private val cocktailTitle = itemView.findViewById<TextView>(R.id.detail_screen_title)
-        fun bind(title: Title) {
-            cocktailTitle.text = title.title
-        }
-    }
+
 
     class ImageViewHolder(itemView: View) : DetailScreenViewHolder(itemView) {
         private val cocktailImage: ImageView = itemView.findViewById(R.id.detail_screen_image)
-        private val backgroundImage = itemView.findViewById<ImageView>(R.id.background_image)
+        private val cocktailTitle = itemView.findViewById<TextView>(R.id.detail_screen_title)
         fun bind(image: Image) {
             cocktailImage.load(image.image)
-            backgroundImage.load(R.drawable.bar_blurred) {
-                transformations(RoundedCornersTransformation(CORNER_RADIUS))
-
-            }
+            cocktailTitle.text = image.title
         }
     }
 
@@ -170,7 +153,6 @@ sealed class DetailScreenViewHolder(itemView: View) : RecyclerView.ViewHolder(it
                 youTubePlayerView.visible()
                 youTubePlayerView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
                     override fun onReady(youTubePlayer: YouTubePlayer) {
-                        // https://www.youtube.com/watch?v=oOHH0GGglyM
                         video.video
                             .split("v=")
                             .lastOrNull()

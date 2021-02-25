@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="12dp">
+    android:layout_marginTop="4dp">
 
     <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
@@ -17,6 +17,7 @@
             android:layout_height="wrap_content"
             app:autoPlay="true"
             app:showFullScreenButton="false"
-            app:videoId="S0Q4gqBUs7c" />
+            app:videoId="S0Q4gqBUs7c"
+            android:background="@color/colorAccent" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

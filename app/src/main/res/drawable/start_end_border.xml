@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:bottom="1dp"
+        android:bottom="-2dp"
         android:left="1dp"
         android:right="1dp"
         android:top="-2dp">
@@ -18,8 +18,8 @@
                 android:top="10dp"
                 android:bottom="10dp" />
             <corners
-                android:bottomRightRadius="12dp"
-                android:bottomLeftRadius="12dp"
+                android:bottomRightRadius="0dp"
+                android:bottomLeftRadius="0dp"
                 android:topLeftRadius="0dp"
                 android:topRightRadius="0dp" />
         </shape>

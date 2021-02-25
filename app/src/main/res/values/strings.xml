@@ -8,7 +8,7 @@
     <string name="no">No</string>
     <string name="istruzioni">Istructions</string>
     <string name="lorem_ipsum">"Lorem ipsum dolor sit amet, consectetur adipisci elit, sed do eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullamco laboriosam, nisi ut aliquid ex ea commodi consequatur. Duis aute irure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. "</string>
-    <string name="alcolico">Alcoholic:</string>
+    <string name="alcolico">Alcoholic: </string>
     <string name="ingredients">Ingredients</string>
     <string name="random_cocktail">Random Cocktail</string>
     <string name="search">Search</string>
@@ -16,4 +16,5 @@
     <string name="submenu">SubMenu</string>
     <string name="menu">Menu</string>
     <string name="folder">Folder</string>
+    <string name="bicchiere">"Bicchiere: "</string>
 </resources>

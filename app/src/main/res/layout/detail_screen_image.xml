@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="200dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -11,18 +11,40 @@
         android:id="@+id/background_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:alpha="0.8" />
+        android:background="@drawable/bancone"
+        android:alpha="0.9" />
 
-    <de.hdodenhof.circleimageview.CircleImageView xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/detail_screen_image"
-        android:layout_height="150dp"
+    <TextView
+        android:id="@+id/detail_screen_title"
+        style="@style/firasans_bold"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/firasans_medium"
+        android:textSize="26sp"
+        android:layout_margin="12dp"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/detail_screen_image"
+        tools:text="Margarita SuperDuper" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/detail_screen_image"
+        android:layout_width="wrap_content"
+        android:layout_height="150dp"
         android:layout_gravity="center"
         android:contentDescription="Cocktail Image"
-        tools:ignore="HardcodedText"
+        app:civ_border_color="@color/colorAccent"
+        app:civ_border_width="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintCircleRadius="25dp"
-        app:civ_border_width="2dp"
-        app:civ_border_color="#8f8c8c"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.68"
+        tools:ignore="HardcodedText"
         tools:src="@mipmap/ic_launcher" />
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 
