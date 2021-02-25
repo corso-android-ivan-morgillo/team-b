@@ -18,9 +18,9 @@
         android:text="@string/istruzioni"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:fontFamily="@font/champagne_limousines_bold_italic"
-        style="@style/champagne_limousines_bold_italic_style"
-        android:textSize="24sp" />
+        android:fontFamily="@font/firasans_bold"
+        style="@style/firasans_bold"
+        android:textSize="22sp" />
 
     <TextView
         android:id="@+id/detail_screen_instructions"
@@ -30,8 +30,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:text="@string/lorem_ipsum"
-        android:fontFamily="@font/champagne_limousines_italic"
-        style="@style/champagne_limousines_italic_style"
+        android:fontFamily="@font/firasans_light"
+        style="@style/firasans_light"
         android:textSize="12sp"
         android:layout_marginBottom="16dp"
         android:layout_marginStart="8dp"

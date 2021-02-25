@@ -18,10 +18,10 @@
 
     <TextView
         android:id="@+id/ingredient_item_name"
-        style="@style/champagne_limousines_bold_italic_style"
+        style="@style/firasans_bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/champagne_limousines_bold_italic"
+        android:fontFamily="@font/firasans_bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -30,11 +30,11 @@
 
     <TextView
         android:id="@+id/ingredient_item_quantity"
-        style="@style/champagne_limousines_italic_style"
+        style="@style/firasans_light"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:fontFamily="@font/champagne_limousines_italic"
+        android:fontFamily="@font/firasans_light"
         app:layout_constraintBottom_toBottomOf="@id/ingredient_item_name"
         app:layout_constraintStart_toEndOf="@id/ingredient_item_name"
         app:layout_constraintTop_toTopOf="@id/ingredient_item_name"

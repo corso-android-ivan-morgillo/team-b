@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import coil.transform.RoundedCornersTransformation
 import com.ivanmorgillo.corsoandroid.teamb.R
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenItems.GlassType
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenItems.Image
@@ -44,6 +45,7 @@ private const val INGREDIENT_LIST_VIEWTYPE = 3
 private const val INSTRUCTIONS_VIEWTYPE = 4
 private const val TITLE_VIEWTYPE = 5
 private const val VIDEO_VIEWTYPE = 6
+private const val CORNER_RADIUS = 36f
 
 class DetailScreenAdapter : RecyclerView.Adapter<DetailScreenViewHolder>() {
     var items: List<DetailScreenItems> = emptyList()
@@ -119,8 +121,13 @@ sealed class DetailScreenViewHolder(itemView: View) : RecyclerView.ViewHolder(it
 
     class ImageViewHolder(itemView: View) : DetailScreenViewHolder(itemView) {
         private val cocktailImage: ImageView = itemView.findViewById(R.id.detail_screen_image)
+        private val backgroundImage = itemView.findViewById<ImageView>(R.id.background_image)
         fun bind(image: Image) {
             cocktailImage.load(image.image)
+            backgroundImage.load(R.drawable.bar_blurred) {
+                transformations(RoundedCornersTransformation(CORNER_RADIUS))
+
+            }
         }
     }
 

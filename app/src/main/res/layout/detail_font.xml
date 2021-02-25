@@ -1,25 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <font-family xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="wrap_content"
     android:layout_width="wrap_content">
 
     <font
+        android:font="@font/firasans_light"
         android:fontStyle="normal"
-        android:fontWeight="400"
-        android:font="@font/champagne_limousines" />
+        android:fontWeight="300"
+        tools:targetApi="o" />
+
 
     <font
-        android:fontStyle="italic"
-        android:fontWeight="400"
-        android:font="@font/champagne_limousines_bold" />
-
-    <font
-        android:fontStyle="italic"
-        android:fontWeight="400"
-        android:font="@font/champagne_limousines_bold_italic" />
-
-    <font
-        android:fontStyle="italic"
-        android:fontWeight="400"
-        android:font="@font/champagne_limousines_italic" />
+        android:fontStyle="normal"
+        android:fontWeight="300"
+        android:font="@font/firasans_bold" />
 </font-family>
