@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <androidx.recyclerview.widget.RecyclerView
+            <in.myinnos.alphabetsindexfastscrollrecycler.IndexFastScrollRecyclerView
                 android:id="@+id/cocktails_List"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -29,7 +29,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:transitionGroup="true"
-                tools:listitem="@layout/cocktails_item" />
+                tools:listitem="@layout/cocktails_item"
+                android:scrollbars="vertical" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

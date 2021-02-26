@@ -11,6 +11,5 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:layout_width="match_parent"
         android:clipToPadding="true"
-        android:layout_height="match_parent"
-        android:padding="8dp" />
+        android:layout_height="match_parent" />
 </com.google.android.material.card.MaterialCardView>
