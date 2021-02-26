@@ -42,7 +42,7 @@ private const val IMAGE_VIEWTYPE = 2
 private const val INGREDIENT_LIST_VIEWTYPE = 3
 private const val INSTRUCTIONS_VIEWTYPE = 4
 private const val VIDEO_VIEWTYPE = 6
-private const val CORNER_RADIUS = 36f
+private const val START_SECONDS = 0f
 
 class DetailScreenAdapter : RecyclerView.Adapter<DetailScreenViewHolder>() {
     var items: List<DetailScreenItems> = emptyList()
@@ -147,7 +147,7 @@ sealed class DetailScreenViewHolder(itemView: View) : RecyclerView.ViewHolder(it
         val youTubePlayerView: YouTubePlayerView = itemView.findViewById<YouTubePlayerView>(R.id.youtube_player_view)
 
         fun bind(video: Video) {
-            if (video.video.isNullOrEmpty()) {    // se il video non è presente dalla chiamata di rete
+            if (video.video.isNullOrEmpty()) { // se il video non è presente
                 youTubePlayerView.gone()
             } else {
                 youTubePlayerView.visible()
@@ -156,7 +156,7 @@ sealed class DetailScreenViewHolder(itemView: View) : RecyclerView.ViewHolder(it
                         video.video
                             .split("v=")
                             .lastOrNull()
-                            ?.run { youTubePlayer.loadVideo(this, 0f) }
+                            ?.run { youTubePlayer.loadVideo(this, START_SECONDS) }
                     }
                 })
             }
