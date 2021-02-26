@@ -63,6 +63,8 @@ class HomeFragment : Fragment() {
         // creamo adapter
         // Mettiamo in comunicazione l'adapter con la recycleview
         cocktails_List.adapter = adapter
+        indexBarCustom()
+
         // Chiede la lista dei cocktail tramite il ViewModel
         /*val cocktailList = viewModel.getCocktails()
         adapter.setCocktailsList(cocktailList)*/
@@ -71,7 +73,16 @@ class HomeFragment : Fragment() {
         viewModel.send(MainScreenEvents.OnReady)
     }
 
-    private fun observeActions(view: View) {
+    private fun indexBarCustom() {
+        cocktails_List.setIndexBarTransparentValue(0.0f)
+        cocktails_List.setIndexBarTextColor("#7f7f7f")
+        cocktails_List.setIndexbarMargin(0.0f)
+        cocktails_List.setIndexBarCornerRadius(3)
+        cocktails_List.setIndexBarStrokeVisibility(false)
+        cocktails_List.setIndexbarMargin(3f)
+    }
+
+    private fun observeActions() {
         viewModel.actions.observe(viewLifecycleOwner, { action ->
             Timber.d(action.toString())
             when (action) {
@@ -149,6 +160,4 @@ class HomeFragment : Fragment() {
         imageViewError.setImageResource(R.drawable.errorimage)
         textViewError.text = errore
     }
-
-
 }

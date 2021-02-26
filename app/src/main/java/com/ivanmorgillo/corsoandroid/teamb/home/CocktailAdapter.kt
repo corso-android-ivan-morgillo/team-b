@@ -4,15 +4,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.SectionIndexer
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.google.android.material.card.MaterialCardView
 
 // l'adapter ha bisogno di un viewHolder che creeremo (cocktailViewHolder)
-class CocktailAdapter(private val onClick: (CocktailUI, View) -> Unit) : RecyclerView.Adapter<CocktailViewHolder>() {
+class CocktailAdapter(private val onClick: (CocktailUI, View) -> Unit) : RecyclerView.Adapter<CocktailViewHolder>(), SectionIndexer {
     // lista di cocktail, inizializzata a empty
     private var cocktailsList: List<CocktailUI> = emptyList()
+    private var mSectionPositions = mutableListOf<Int>()
 
     // da xml a kotlin per ogni elemento della lista
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CocktailViewHolder {
@@ -36,6 +38,39 @@ class CocktailAdapter(private val onClick: (CocktailUI, View) -> Unit) : Recycle
         cocktailsList = items
         notifyDataSetChanged()
     }
+
+    override fun getSections(): Array<String> {
+        val sections: MutableList<String> = ArrayList(36)
+
+        var i = 0
+        val size: Int = cocktailsList.size
+        while (i < size) {
+            val section: String = (cocktailsList.get(i).cocktailName.take(1)).toUpperCase()
+            if (!sections.contains(section)) {
+                if (section.first() >= '0' && section.first() <= '9') {
+                    if (!sections.contains("#")) {
+                        println(section)
+                        sections.add("#")
+                        mSectionPositions.add(i)
+                    }
+                } else {
+                    sections.add(section)
+                    mSectionPositions.add(i)
+                }
+            }
+            i++
+        }
+
+        return sections.toTypedArray<String>()
+    }
+
+    override fun getPositionForSection(sectionIndex: Int): Int {
+        return mSectionPositions.get(sectionIndex)
+    }
+
+    override fun getSectionForPosition(position: Int): Int {
+        return 0
+    }
 }
 
 // View Holder è un elemento della lista. Per ogni elemento della lista visibile viene creato un viewHolder
@@ -45,12 +80,14 @@ class CocktailViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val name = itemView.findViewById<TextView>(R.id.cocktail_name)
     val image = itemView.findViewById<ImageView>(R.id.cocktail_image)
     val cocktailCardView = itemView.findViewById<MaterialCardView>(R.id.cocktail_root)
+
     fun bind(item: CocktailUI, onClick: (CocktailUI, View) -> Unit) {
         name.text = item.cocktailName // imposta lil text dell'elemento al nome del cocktail
         image.load(item.image) // imposta l'immagine all'elemento
         image.contentDescription = item.cocktailName
         cocktailCardView.setOnClickListener { onClick(item, it) }
         cocktailCardView.transitionName = "cocktail_transition_item${item.id}"
+
     }
 }
 
