@@ -21,29 +21,27 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/firasans_medium"
         android:textSize="26sp"
-        android:layout_margin="12dp"
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/detail_screen_image"
-        tools:text="Margarita SuperDuper" />
+        tools:text="Margarita SuperDuper"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="6dp" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/detail_screen_image"
         android:layout_width="wrap_content"
-        android:layout_height="150dp"
+        android:layout_height="130dp"
         android:layout_gravity="center"
         android:contentDescription="Cocktail Image"
         app:civ_border_color="@color/colorAccent"
         app:civ_border_width="1dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintCircleRadius="25dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.68"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="12dp"
         tools:ignore="HardcodedText"
         tools:src="@mipmap/ic_launcher" />
 </androidx.constraintlayout.widget.ConstraintLayout>

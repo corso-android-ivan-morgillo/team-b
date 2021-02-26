@@ -108,9 +108,12 @@ dependencies {
 
     // Round image
     implementation 'de.hdodenhof:circleimageview:3.1.0'
-    
+
     // Youtube Player Soffritti
     implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5'
+
+    // alphabet index
+    implementation 'com.github.myinnos:AlphabetIndex-Fast-Scroll-RecyclerView:1.0.95'
 
 
     // Testing dependencies
