@@ -35,7 +35,7 @@ class SearchViewModel(
         viewModelScope.launch {
             val result = repository.loadSearchCocktails(query)
             when (result) {
-                is LoadSearchCocktailResult.Failure -> onFailure(result)
+                is LoadSearchCocktailResult.Failure -> onFailure()
                 is LoadSearchCocktailResult.Success -> onSuccess(result)
             }.exhaustive
         }
@@ -43,12 +43,18 @@ class SearchViewModel(
 
     private fun onSuccess(result: LoadSearchCocktailResult.Success) {
         val cocktails = result.details.map {
-            SearchCocktailUI(cocktailName = it.name, image = it.image, id = it.idDrink, category = it.category, alcoholic = false)
+            SearchCocktailUI(
+                cocktailName = it.name,
+                image = it.image,
+                id = it.idDrink,
+                category = it.category,
+                alcoholic = false
+            )
         }
         states.postValue(SearchScreenStates.Content(cocktails))
     }
 
-    private fun onFailure(result: LoadSearchCocktailResult.Failure) {
+    private fun onFailure() {
         Timber.d("Failure")
     }
 }
