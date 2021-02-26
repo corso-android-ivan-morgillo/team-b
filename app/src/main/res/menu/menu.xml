@@ -2,10 +2,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
+    <menu>
+        <item
+            android:id="@+id/create_new"
+            android:title="voceUno" />
+        <item
+            android:id="@+id/open"
+            android:title="voceDue" />
+    </menu>
+
     <item
         android:id="@+id/action_name"
         android:icon="@drawable/dice"
-        android:title="Random Cocktail"
+        android:title="@string/random_cocktail"
         app:showAsAction="always"
         android:orderInCategory="0" />
 
@@ -15,6 +25,34 @@
         android:title="Search"
         app:showAsAction="ifRoom"
         app:actionViewClass="android.widget.SearchView"
+        android:orderInCategory="1" />
+
+    <item
+        android:id="@+id/theme_name"
+        android:icon="@drawable/theme"
+        android:title="@string/theme"
+        app:showAsAction="always"
+        android:orderInCategory="0" />
+
+    <item
+        android:id="@+id/dots_name"
+        android:icon="@drawable/dots"
+        android:title="@string/submenu"
+        app:showAsAction="always"
+        android:orderInCategory="0" />
+
+    <item
+        android:id="@+id/menu_name"
+        android:icon="@drawable/menu"
+        android:title="@string/menu"
+        app:showAsAction="always"
+        android:orderInCategory="0" />
+
+    <item
+        android:id="@+id/folder_name"
+        android:icon="@drawable/folder"
+        android:title="@string/folder"
+        app:showAsAction="always"
         android:orderInCategory="0" />
 
 

@@ -25,6 +25,9 @@ import kotlinx.android.synthetic.main.layout_error.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
+const val CORNER_RADIUS = 3
+const val BAR_MARGIN = 3f
+
 class HomeFragment : Fragment() {
     private val viewModel: MainViewModel by viewModel()
     private var lastClickedItem: View? = null
@@ -63,15 +66,26 @@ class HomeFragment : Fragment() {
         // creamo adapter
         // Mettiamo in comunicazione l'adapter con la recycleview
         cocktails_List.adapter = adapter
+        indexBarCustom()
+
         // Chiede la lista dei cocktail tramite il ViewModel
         /*val cocktailList = viewModel.getCocktails()
         adapter.setCocktailsList(cocktailList)*/
         observeStates(adapter)
-        observeActions(view)
+        observeActions()
         viewModel.send(MainScreenEvents.OnReady)
     }
 
-    private fun observeActions(view: View) {
+    private fun indexBarCustom() {
+        cocktails_List.setIndexBarTransparentValue(0.0f)
+        cocktails_List.setIndexBarTextColor("#7f7f7f")
+        cocktails_List.setIndexbarMargin(0.0f)
+        cocktails_List.setIndexBarCornerRadius(CORNER_RADIUS)
+        cocktails_List.setIndexBarStrokeVisibility(false)
+        cocktails_List.setIndexbarMargin(BAR_MARGIN)
+    }
+
+    private fun observeActions() {
         viewModel.actions.observe(viewLifecycleOwner, { action ->
             Timber.d(action.toString())
             when (action) {
@@ -149,6 +163,4 @@ class HomeFragment : Fragment() {
         imageViewError.setImageResource(R.drawable.errorimage)
         textViewError.text = errore
     }
-
-
 }

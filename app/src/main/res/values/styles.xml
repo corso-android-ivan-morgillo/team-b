@@ -10,20 +10,12 @@
 
     </style>
 
-    <style name="champagne_limousines_bold_italic_style" parent="@android:style/TextAppearance.Small">
-        <item name="android:fontFamily">@font/champagne_limousines_bold_italic</item>
+    <style name="firasans_light" parent="@android:style/TextAppearance.Small">
+        <item name="android:fontFamily">@font/firasans_light</item>
     </style>
 
-    <style name="champagne_limousines_bold_style" parent="@android:style/TextAppearance.Small">
-        <item name="android:fontFamily">@font/champagne_limousines_bold</item>
-    </style>
-
-    <style name="champagne_limousines_italic_style" parent="@android:style/TextAppearance.Small">
-        <item name="android:fontFamily">@font/champagne_limousines_italic</item>
-    </style>
-
-    <style name="champagne_limousines_style" parent="@android:style/TextAppearance.Small">
-        <item name="android:fontFamily">@font/champagne_limousines</item>
+    <style name="firasans_bold" parent="@android:style/TextAppearance.Small">
+        <item name="android:fontFamily">@font/firasans_bold</item>
     </style>
 
 
