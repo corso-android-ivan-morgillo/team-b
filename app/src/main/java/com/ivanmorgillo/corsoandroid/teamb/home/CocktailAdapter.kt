@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import coil.load
 import com.google.android.material.card.MaterialCardView
 
+const val INITIAL_CAPACITY = 26
+
 // l'adapter ha bisogno di un viewHolder che creeremo (cocktailViewHolder)
 class CocktailAdapter(private val onClick: (CocktailUI, View) -> Unit) : Adapter<CocktailViewHolder>(), SectionIndexer {
     // lista di cocktail, inizializzata a empty
@@ -41,7 +43,7 @@ class CocktailAdapter(private val onClick: (CocktailUI, View) -> Unit) : Adapter
     }
 
     override fun getSections(): Array<String> {
-        val sections: MutableList<String> = ArrayList(initialCapacity = 36)
+        val sections: MutableList<String> = ArrayList(INITIAL_CAPACITY)
 
         var i = 0
         val size: Int = cocktailsList.size
