@@ -22,8 +22,9 @@
     <item
         android:id="@+id/search_name"
         android:icon="@drawable/lente"
-        android:title="@string/search"
-        app:showAsAction="always"
+        android:title="Search"
+        app:showAsAction="ifRoom"
+        app:actionViewClass="android.widget.SearchView"
         android:orderInCategory="1" />
 
     <item
