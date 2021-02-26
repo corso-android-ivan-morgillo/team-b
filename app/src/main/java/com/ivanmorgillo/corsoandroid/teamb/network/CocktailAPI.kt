@@ -3,6 +3,7 @@ package com.ivanmorgillo.corsoandroid.teamb.network
 import DetailCocktailDTO
 import com.ivanmorgillo.corsoandroid.teamb.Cocktail
 import com.ivanmorgillo.corsoandroid.teamb.Detail
+import com.ivanmorgillo.corsoandroid.teamb.Search
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.NoCocktailFound
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.NoInternet
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.ServerError
@@ -121,6 +122,28 @@ class CocktailAPI {
             return LoadDetailCocktailResult.Failure(DetailLoadCocktailError.ServerError)
         }
     }
+
+    @Suppress("TooGenericExceptionCaught")
+    suspend fun loadSearchCocktails(query: String): LoadSearchCocktailResult {
+        try {
+            val detailCocktailList = service.loadSearchCocktails(query)
+            val details = detailCocktailList.details.mapNotNull {
+                it.toDomainSearch()
+            }
+            return if (details.isEmpty()) {
+                LoadSearchCocktailResult.Failure(DetailLoadCocktailError.NoDetailFound)
+            } else {
+                LoadSearchCocktailResult.Success(details)
+            }
+        } catch (e: IOException) { // no internet
+            return LoadSearchCocktailResult.Failure(DetailLoadCocktailError.NoInternet)
+        } catch (e: SocketTimeoutException) {
+            return LoadSearchCocktailResult.Failure(DetailLoadCocktailError.SlowInternet)
+        } catch (e: Exception) {
+            Timber.e(e, "Generic Exception on LoadCocktail")
+            return LoadSearchCocktailResult.Failure(DetailLoadCocktailError.ServerError)
+        }
+    }
 }
 
 private fun resolveMeasures(ingredient: String?, measure: String?): String? {
@@ -194,6 +217,21 @@ private fun List<DetailCocktailDTO.Drink>.toDomain(): Detail? {
     }
 }
 
+private fun DetailCocktailDTO.Drink.toDomainSearch(): Search? {
+    val id = idDrink.toLongOrNull()
+    return if (id != null) {
+        Search(
+            name = strDrink,
+            image = strDrinkThumb,
+            idDrink = id,
+            category = strCategory,
+            isAlcoholic = strAlcoholic.toBoolean()
+        )
+    } else {
+        null
+    }
+}
+
 sealed class LoadCocktailError {
     object NoCocktailFound : LoadCocktailError()
     object NoInternet : LoadCocktailError()
@@ -217,6 +255,11 @@ sealed class LoadCocktailResult {
 sealed class LoadDetailCocktailResult {
     data class Success(val details: Detail) : LoadDetailCocktailResult()
     data class Failure(val error: DetailLoadCocktailError) : LoadDetailCocktailResult()
+}
+
+sealed class LoadSearchCocktailResult {
+    data class Success(val details: List<Search>) : LoadSearchCocktailResult()
+    data class Failure(val error: DetailLoadCocktailError) : LoadSearchCocktailResult()
 }
 
 data class Ingredient(val name: String, val quantity: String)

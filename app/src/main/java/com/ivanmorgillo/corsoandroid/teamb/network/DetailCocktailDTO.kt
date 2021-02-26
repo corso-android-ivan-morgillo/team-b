@@ -17,7 +17,7 @@ data class DetailCocktailDTO(
         @SerializedName("strAlcoholic")
         val strAlcoholic: String?,
         @SerializedName("strCategory")
-        val strCategory: String?,
+        val strCategory: String,
         @SerializedName("strCreativeCommonsConfirmed")
         val strCreativeCommonsConfirmed: String?,
         @SerializedName("strDrink")

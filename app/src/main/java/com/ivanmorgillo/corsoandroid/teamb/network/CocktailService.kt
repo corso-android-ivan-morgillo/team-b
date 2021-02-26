@@ -13,4 +13,7 @@ interface CocktailService {
 
     @GET("random.php")
     suspend fun loadRandomDetailCocktails(): DetailCocktailDTO
+
+    @GET("search.php")
+    suspend fun loadSearchCocktails(@Query("s") s: String): DetailCocktailDTO
 }

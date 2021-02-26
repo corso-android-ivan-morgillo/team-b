@@ -4,6 +4,7 @@ import com.ivanmorgillo.corsoandroid.teamb.network.CocktailAPI
 import com.ivanmorgillo.corsoandroid.teamb.network.Ingredient
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailResult
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadDetailCocktailResult
+import com.ivanmorgillo.corsoandroid.teamb.network.LoadSearchCocktailResult
 
 /* Interfaccia Repository Pattern
  * tipo suspend --> rappresenta un'operazione di input output --> è un'operazione che può fallire
@@ -13,6 +14,7 @@ interface CocktailRepository {
     suspend fun loadCocktails(): LoadCocktailResult
     suspend fun loadDetailCocktails(cocktailId: Long): LoadDetailCocktailResult
     suspend fun loadRandomDetailCocktails(): LoadDetailCocktailResult
+    suspend fun loadSearchCocktails(query: String): LoadSearchCocktailResult
 }
 
 /* Implementazione dell'interfaccia definita prima */
@@ -28,6 +30,10 @@ class CocktailRepositoryImpl(private val api: CocktailAPI) : CocktailRepository 
     override suspend fun loadRandomDetailCocktails(): LoadDetailCocktailResult {
         return api.loadRandomDetailCocktails()
     }
+
+    override suspend fun loadSearchCocktails(query: String): LoadSearchCocktailResult {
+        return api.loadSearchCocktails(query)
+    }
 }
 
 /* rappresenta una lista di ricette: lista di oggetti con un nome, immagine e id */
@@ -42,4 +48,12 @@ data class Detail(
     val ingredients: List<Ingredient>,
     val youtubeLink: String?,
     val instructions: String,
+)
+
+data class Search(
+    val name: String,
+    val image: String,
+    val idDrink: Long,
+    val isAlcoholic: Boolean,
+    val category: String
 )
