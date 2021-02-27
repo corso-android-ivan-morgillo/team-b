@@ -2,23 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
-    <menu>
-        <item
-            android:id="@+id/create_new"
-            android:title="voceUno" />
-        <item
-            android:id="@+id/open"
-            android:title="voceDue" />
-    </menu>
-
-    <item
-        android:id="@+id/action_name"
-        android:icon="@drawable/dice"
-        android:title="@string/random_cocktail"
-        app:showAsAction="always"
-        android:orderInCategory="0" />
-
     <item
         android:id="@+id/search_name"
         android:icon="@drawable/lente"
@@ -35,25 +18,12 @@
         android:orderInCategory="0" />
 
     <item
-        android:id="@+id/dots_name"
-        android:icon="@drawable/dots"
-        android:title="@string/submenu"
-        app:showAsAction="ifRoom"
-        android:orderInCategory="0" />
-
-    <item
         android:id="@+id/menu_name"
         android:icon="@drawable/menu"
         android:title="@string/menu"
         app:showAsAction="ifRoom"
         android:orderInCategory="0" />
 
-    <item
-        android:id="@+id/folder_name"
-        android:icon="@drawable/folder"
-        android:title="@string/folder"
-        app:showAsAction="ifRoom"
-        android:orderInCategory="0" />
 
 
 </menu>

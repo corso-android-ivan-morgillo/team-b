@@ -8,10 +8,11 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.Navigation
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import androidx.appcompat.app.AppCompatDelegate
 import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
@@ -48,12 +49,20 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle item selection
         return when (item.itemId) {
+            /*
             R.id.action_name -> {
                 Timber.d("TI PIACE QUANDO CLICCO IL TUO DADO?")
                 true
             }
+             */
             R.id.search_name -> {
                 Timber.d("TI PIACE QUANDO CLICCO IL TUO SEARCH?")
+                true
+            }
+            R.id.menu_name -> {
+                Toast.makeText(applicationContext, "Work in progress Navigate to Settings", 3000)
+                Timber.d("TI PIACE QUANDO CLICCO IL TUO MENU?")
+                mainActivityViewModel.send(MainActivityScreenEvent.OnMenuClick)
                 true
             }
             R.id.theme_name -> {
@@ -81,6 +90,11 @@ class MainActivity : AppCompatActivity() {
             when (action) {
                 is MainActivityScreenAction.NavigateToSearch -> {
                     navController.navigate(R.id.searchFragment)
+                }
+                MainActivityScreenAction.NavigateToSettingMenu -> {
+                    Timber.d(action.toString())
+                    Timber.d("NavigateToSettingMenu", "Menu Button Clicked")
+                    navController.navigate(R.id.settingsFragment)
                 }
             }.exhaustive
         })
