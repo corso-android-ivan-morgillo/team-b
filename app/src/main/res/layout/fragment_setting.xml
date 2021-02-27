@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:id="@+id/option_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Usa sistema metrico decimale"
+        android:fontFamily="@font/firasans_bold" />
+
+    <TextView
+        android:id="@+id/option_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/option_title"
+        app:layout_constraintTop_toBottomOf="@+id/option_title"
+        tools:text="Se non selezionato, sarà usato il sistema Imperiale(US)"
+        android:fontFamily="@font/firasans_light" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/check_of"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@+id/option_description"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/option_title2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/option_description"
+        app:layout_constraintTop_toBottomOf="@+id/option_description"
+        tools:text="Mantieni lo schermo attivo"
+        android:fontFamily="@font/firasans_bold"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/option_description2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/firasans_light"
+        app:layout_constraintStart_toStartOf="@+id/option_description"
+        app:layout_constraintTop_toBottomOf="@+id/option_title2"
+        tools:text="Impedisci al telefono di andare in sospensione quando vengono visualizzati i dettagli di un cocktail" />
+
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/check_of2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/check_of"
+        app:layout_constraintStart_toStartOf="@+id/check_of" />
+
+    <TextView
+        android:id="@+id/option_title3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/option_description"
+        app:layout_constraintTop_toBottomOf="@+id/option_description2"
+        tools:text="Lingua"
+        android:fontFamily="@font/firasans_bold"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/option_description3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/firasans_light"
+        app:layout_constraintStart_toStartOf="@+id/option_description"
+        app:layout_constraintTop_toBottomOf="@+id/option_title3"
+        tools:text="Scegli la tua lingua" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/option_title3"
+        app:layout_constraintEnd_toEndOf="@id/check_of2" />
+
+    <TextView
+        android:id="@+id/option_title4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/option_description"
+        app:layout_constraintTop_toBottomOf="@+id/option_description3"
+        tools:text="Condividi"
+        android:fontFamily="@font/firasans_bold"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/option_description4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/firasans_light"
+        app:layout_constraintStart_toStartOf="@+id/option_description"
+        app:layout_constraintTop_toBottomOf="@+id/option_title4"
+        tools:text="Invita i tuoi amici ad entrare nel magico mondo delle sbronze" />
+
+    <TextView
+        android:id="@+id/option_title5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/option_description"
+        app:layout_constraintTop_toBottomOf="@+id/option_description4"
+        tools:text="Feedback"
+        android:fontFamily="@font/firasans_bold"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/option_description5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/firasans_light"
+        app:layout_constraintStart_toStartOf="@+id/option_description"
+        app:layout_constraintTop_toBottomOf="@+id/option_title5"
+        tools:text="Invia feedback" />
+
+    <TextView
+        android:id="@+id/option_description6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/firasans_light"
+        app:layout_constraintStart_toStartOf="@+id/option_description"
+        app:layout_constraintTop_toBottomOf="@+id/option_description5"
+        tools:text="Contattaci" />
+
+    <TextView
+        android:id="@+id/option_description7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/firasans_light"
+        app:layout_constraintStart_toStartOf="@+id/option_description"
+        app:layout_constraintTop_toBottomOf="@+id/option_description6"
+        tools:text="Valuta App" />
+
+    <TextView
+        android:id="@+id/option_title6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/option_description"
+        app:layout_constraintTop_toBottomOf="@+id/option_description7"
+        tools:text="Chi Siamo"
+        android:fontFamily="@font/firasans_bold"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/option_description8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/firasans_light"
+        app:layout_constraintStart_toStartOf="@+id/option_description"
+        app:layout_constraintTop_toBottomOf="@+id/option_title6"
+        tools:text="Twitter" />
+
+    <TextView
+        android:id="@+id/option_description9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/firasans_light"
+        app:layout_constraintStart_toStartOf="@+id/option_description"
+        app:layout_constraintTop_toBottomOf="@+id/option_description8"
+        tools:text="Facebook" />
+
+    <TextView
+        android:id="@+id/option_description10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/firasans_light"
+        app:layout_constraintStart_toStartOf="@+id/option_description"
+        app:layout_constraintTop_toBottomOf="@+id/option_description9"
+        tools:text="Informativa sulla privacy" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

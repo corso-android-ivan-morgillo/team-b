@@ -114,6 +114,7 @@ dependencies {
 
     // alphabet index
     implementation 'com.github.myinnos:AlphabetIndex-Fast-Scroll-RecyclerView:1.0.95'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
 
     // Testing dependencies

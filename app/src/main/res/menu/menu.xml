@@ -31,28 +31,28 @@
         android:id="@+id/theme_name"
         android:icon="@drawable/theme"
         android:title="@string/theme"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:orderInCategory="0" />
 
     <item
         android:id="@+id/dots_name"
         android:icon="@drawable/dots"
         android:title="@string/submenu"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:orderInCategory="0" />
 
     <item
         android:id="@+id/menu_name"
         android:icon="@drawable/menu"
         android:title="@string/menu"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:orderInCategory="0" />
 
     <item
         android:id="@+id/folder_name"
         android:icon="@drawable/folder"
         android:title="@string/folder"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:orderInCategory="0" />
 
 
