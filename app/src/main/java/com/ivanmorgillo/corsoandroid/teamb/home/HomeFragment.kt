@@ -49,6 +49,8 @@ class HomeFragment : Fragment() {
         swiperefresh.setOnRefreshListener {
             viewModel.send(MainScreenEvents.OnRefreshClicked)
         }
+
+        val categoryAdapter: CategoryAdapter = CategoryAdapter()
         // collega i dati alla UI, per far cio serve adapter
         val adapter = CocktailAdapter { item, view ->
             lastClickedItem = view
@@ -66,6 +68,22 @@ class HomeFragment : Fragment() {
         // creamo adapter
         // Mettiamo in comunicazione l'adapter con la recycleview
         cocktails_List.adapter = adapter
+        category_list.adapter = categoryAdapter
+
+        val categoryList: List<Category> = listOf(
+            Category("Categoria1", "https://i.pinimg.com/originals/99/5b/30/995b30f3bee71a43297f2dc731ba86c1.png"),
+            Category("categoria2", "https://i.pinimg.com/originals/99/5b/30/995b30f3bee71a43297f2dc731ba86c1.png"),
+            Category("categoria3", "https://i.pinimg.com/originals/99/5b/30/995b30f3bee71a43297f2dc731ba86c1.png"),
+            Category("categoria4", "https://i.pinimg.com/originals/99/5b/30/995b30f3bee71a43297f2dc731ba86c1.png"),
+            Category("categoria5", "https://i.pinimg.com/originals/99/5b/30/995b30f3bee71a43297f2dc731ba86c1.png"),
+            Category("categoria6", "https://i.pinimg.com/originals/99/5b/30/995b30f3bee71a43297f2dc731ba86c1.png"),
+            Category("categoria7", "https://i.pinimg.com/originals/99/5b/30/995b30f3bee71a43297f2dc731ba86c1.png"),
+            Category("categoria8", "https://i.pinimg.com/originals/99/5b/30/995b30f3bee71a43297f2dc731ba86c1.png"),
+            Category("categoria9", "https://i.pinimg.com/originals/99/5b/30/995b30f3bee71a43297f2dc731ba86c1.png"),
+            Category("categoria10", "https://i.pinimg.com/originals/99/5b/30/995b30f3bee71a43297f2dc731ba86c1.png"),
+        )
+        categoryAdapter.setCategoryList(categoryList)
+
         indexBarCustom()
 
         // Chiede la lista dei cocktail tramite il ViewModel
