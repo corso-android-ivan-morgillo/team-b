@@ -10,22 +10,22 @@ import coil.load
 import com.ivanmorgillo.corsoandroid.teamb.R
 
 class CategoryAdapter : RecyclerView.Adapter<CategoryViewHolder>() {
-    private var category_list: List<Category> = emptyList()
+    private var categoryList: List<Category> = emptyList()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.category_item, parent, false)
         return CategoryViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
-        holder.bind(category_list.get(position))
+        holder.bind(categoryList.get(position))
     }
 
     override fun getItemCount(): Int {
-        return category_list.size
+        return categoryList.size
     }
 
     fun setCategoryList(items: List<Category>) {
-        category_list = items
+        categoryList = items
         notifyDataSetChanged()
     }
 }
