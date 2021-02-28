@@ -70,17 +70,18 @@ class HomeFragment : Fragment() {
         cocktails_List.adapter = adapter
         category_list.adapter = categoryAdapter
 
+        val image = "https://i.pinimg.com/originals/99/5b/30/995b30f3bee71a43297f2dc731ba86c1.png"
         val categoryList: List<Category> = listOf(
-            Category("Categoria1", "https://i.pinimg.com/originals/99/5b/30/995b30f3bee71a43297f2dc731ba86c1.png"),
-            Category("categoria2", "https://i.pinimg.com/originals/99/5b/30/995b30f3bee71a43297f2dc731ba86c1.png"),
-            Category("categoria3", "https://i.pinimg.com/originals/99/5b/30/995b30f3bee71a43297f2dc731ba86c1.png"),
-            Category("categoria4", "https://i.pinimg.com/originals/99/5b/30/995b30f3bee71a43297f2dc731ba86c1.png"),
-            Category("categoria5", "https://i.pinimg.com/originals/99/5b/30/995b30f3bee71a43297f2dc731ba86c1.png"),
-            Category("categoria6", "https://i.pinimg.com/originals/99/5b/30/995b30f3bee71a43297f2dc731ba86c1.png"),
-            Category("categoria7", "https://i.pinimg.com/originals/99/5b/30/995b30f3bee71a43297f2dc731ba86c1.png"),
-            Category("categoria8", "https://i.pinimg.com/originals/99/5b/30/995b30f3bee71a43297f2dc731ba86c1.png"),
-            Category("categoria9", "https://i.pinimg.com/originals/99/5b/30/995b30f3bee71a43297f2dc731ba86c1.png"),
-            Category("categoria10", "https://i.pinimg.com/originals/99/5b/30/995b30f3bee71a43297f2dc731ba86c1.png"),
+            Category("Categoria1", image),
+            Category("categoria2", image),
+            Category("categoria3", image),
+            Category("categoria4", image),
+            Category("categoria5", image),
+            Category("categoria6", image),
+            Category("categoria7", image),
+            Category("categoria8", image),
+            Category("categoria9", image),
+            Category("categoria10", image),
         )
         categoryAdapter.setCategoryList(categoryList)
 
