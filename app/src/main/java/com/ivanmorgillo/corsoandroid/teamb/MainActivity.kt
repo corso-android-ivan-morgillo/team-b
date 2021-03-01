@@ -103,7 +103,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 true
             }
             R.id.menu_name -> {
-                Toast.makeText(applicationContext, "Work in progress Navigate to Settings", 3000).show()
+                Toast.makeText(applicationContext, "Work in progress Navigate to Settings", R.integer.motion_duration_large).show()
                 Timber.d("TI PIACE QUANDO CLICCO IL TUO MENU?")
                 mainActivityViewModel.send(MainActivityScreenEvent.OnMenuClick)
                 true
