@@ -68,6 +68,24 @@ class HomeFragment : Fragment() {
         cocktails_List.adapter = adapter
         indexBarCustom()
 
+        val categoryAdapter: CategoryAdapter = CategoryAdapter()
+        category_list.adapter = categoryAdapter
+
+        val imageCategory = "https://i.pinimg.com/originals/99/5b/30/995b30f3bee71a43297f2dc731ba86c1.png"
+        val categoryList: List<Category> = listOf(
+            Category("Categoria1", imageCategory),
+            Category("categoria2", imageCategory),
+            Category("categoria3", imageCategory),
+            Category("categoria4", imageCategory),
+            Category("categoria5", imageCategory),
+            Category("categoria6", imageCategory),
+            Category("categoria7", imageCategory),
+            Category("categoria8", imageCategory),
+            Category("categoria9", imageCategory),
+            Category("categoria10", imageCategory),
+        )
+        categoryAdapter.setCategoryList(categoryList)
+
         // Chiede la lista dei cocktail tramite il ViewModel
         /*val cocktailList = viewModel.getCocktails()
         adapter.setCocktailsList(cocktailList)*/
