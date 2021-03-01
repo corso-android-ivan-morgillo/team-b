@@ -4,6 +4,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadSearchCocktailResult
+import com.ivanmorgillo.corsoandroid.teamb.network.SearchLoadCocktailError.NoCocktailFound
+import com.ivanmorgillo.corsoandroid.teamb.network.SearchLoadCocktailError.NoInternet
+import com.ivanmorgillo.corsoandroid.teamb.network.SearchLoadCocktailError.ServerError
+import com.ivanmorgillo.corsoandroid.teamb.network.SearchLoadCocktailError.SlowInternet
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -35,7 +39,7 @@ class SearchViewModel(
         viewModelScope.launch {
             val result = repository.loadSearchCocktails(query)
             when (result) {
-                is LoadSearchCocktailResult.Failure -> onFailure()
+                is LoadSearchCocktailResult.Failure -> onFailure(result)
                 is LoadSearchCocktailResult.Success -> onSuccess(result)
             }.exhaustive
         }
@@ -54,14 +58,20 @@ class SearchViewModel(
         states.postValue(SearchScreenStates.Content(cocktails))
     }
 
-    private fun onFailure() {
+    private fun onFailure(result: LoadSearchCocktailResult.Failure) {
         Timber.d("Failure")
+        when (result.error) {
+            NoCocktailFound -> states.postValue(SearchScreenStates.Error(SearchErrorStates.ShowNoCocktailFound))
+            NoInternet -> states.postValue(SearchScreenStates.Error(SearchErrorStates.ShowNoInternetMessage))
+            ServerError -> states.postValue(SearchScreenStates.Error(SearchErrorStates.ShowServerError))
+            SlowInternet -> states.postValue(SearchScreenStates.Error(SearchErrorStates.ShowSlowInternet))
+        }.exhaustive
     }
 }
 
 sealed class SearchScreenStates {
     object Loading : SearchScreenStates()
-    data class Error(val error: ErrorStates) : SearchScreenStates()
+    data class Error(val error: SearchErrorStates) : SearchScreenStates()
     data class Content(val cocktails: List<SearchCocktailUI>) : SearchScreenStates()
 }
 
@@ -81,3 +91,10 @@ data class SearchCocktailUI(
     val category: String,
     val alcoholic: Boolean
 )
+
+sealed class SearchErrorStates {
+    object ShowNoInternetMessage : SearchErrorStates()
+    object ShowNoCocktailFound : SearchErrorStates()
+    object ShowServerError : SearchErrorStates()
+    object ShowSlowInternet : SearchErrorStates()
+}

@@ -28,7 +28,6 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 
-
 sealed class DetailScreenItems {
     data class Image(val image: String, val title: String) : DetailScreenItems()
     data class GlassType(val glass: String, val isAlcoholic: Boolean) : DetailScreenItems()
@@ -103,8 +102,6 @@ class DetailScreenAdapter : RecyclerView.Adapter<DetailScreenViewHolder>() {
 }
 
 sealed class DetailScreenViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-
     class ImageViewHolder(itemView: View) : DetailScreenViewHolder(itemView) {
         private val cocktailImage: ImageView = itemView.findViewById(R.id.detail_screen_image)
         private val cocktailTitle = itemView.findViewById<TextView>(R.id.detail_screen_title)
