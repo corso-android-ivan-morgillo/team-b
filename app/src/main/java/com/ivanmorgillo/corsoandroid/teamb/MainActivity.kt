@@ -149,20 +149,32 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.nav_profile -> {
-                Toast.makeText(this, "Profile clicked", Toast.LENGTH_SHORT).show()
+            R.id.nav_customCocktail -> {
+                Timber.d("CustomCocktail", "Custom Cocktail Button Clicked")
             }
-            R.id.nav_messages -> {
-                Toast.makeText(this, "Messages clicked", Toast.LENGTH_SHORT).show()
+            R.id.nav_favorites -> {
+                Timber.d("FavoriteCocktail", "Favorite Cocktail Button Clicked")
             }
-            R.id.nav_friends -> {
-                Toast.makeText(this, "Friends clicked", Toast.LENGTH_SHORT).show()
+            R.id.nav_settings -> {
+                Timber.d("Settings", "Settings Button Clicked")
             }
-            R.id.nav_update -> {
-                Toast.makeText(this, "Update clicked", Toast.LENGTH_SHORT).show()
+            R.id.nav_facebook -> {
+                Timber.d("Facebook", "Navigate to Facebook Button Clicked")
             }
-            R.id.nav_logout -> {
-                Toast.makeText(this, "Sign out clicked", Toast.LENGTH_SHORT).show()
+            R.id.nav_twitter -> {
+                Timber.d("Twitter", "Navigate to Twitter Button Clicked")
+            }
+            R.id.nav_feedback -> {
+                Timber.d("FeedBack", "Send FeeBack Button Clicked")
+            }
+            R.id.nav_contact -> {
+                Timber.d("Contacts", "Contact Us Button Clicked")
+            }
+            R.id.nav_share -> {
+                Timber.d("Share", "Share App Button Clicked")
+            }
+            R.id.nav_evaluate -> {
+                Timber.d("Evaluate", "Evaluate App Button Clicked")
             }
         }
         drawer_layout.closeDrawer(GravityCompat.START)
