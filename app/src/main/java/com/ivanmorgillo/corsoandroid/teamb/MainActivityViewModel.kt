@@ -23,6 +23,9 @@ class MainActivityViewModel(
             is MainActivityScreenEvent.OnSearchClick -> {
                 actions.postValue(MainActivityScreenAction.NavigateToSearch(event.query))
             }
+            MainActivityScreenEvent.OnMenuClick -> {
+                actions.postValue(MainActivityScreenAction.NavigateToSettingMenu)
+            }
         }.exhaustive
     }
 
@@ -43,8 +46,10 @@ sealed class MainActivityScreenStates {
 
 sealed class MainActivityScreenEvent {
     data class OnSearchClick(val query: String) : MainActivityScreenEvent()
+    object OnMenuClick : MainActivityScreenEvent()
 }
 
 sealed class MainActivityScreenAction {
     data class NavigateToSearch(val query: String) : MainActivityScreenAction()
+    object NavigateToSettingMenu : MainActivityScreenAction()
 }

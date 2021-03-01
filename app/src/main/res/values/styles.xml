@@ -10,6 +10,11 @@
 
     </style>
 
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
     <style name="firasans_light" parent="@android:style/TextAppearance.Small">
         <item name="android:fontFamily">@font/firasans_light</item>
     </style>

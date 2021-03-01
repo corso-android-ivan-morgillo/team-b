@@ -92,6 +92,7 @@ class HomeFragment : Fragment() {
         observeStates(adapter)
         observeActions()
         viewModel.send(MainScreenEvents.OnReady)
+        // viewModel.send(MainScreenEvents.OnMenuClick)
     }
 
     private fun indexBarCustom() {

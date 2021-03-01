@@ -19,5 +19,13 @@
     <string name="menu">Menu</string>
     <string name="folder">Folder</string>
     <string name="bicchiere">"Bicchiere: "</string>
+    <string name="profile">Profile</string>
+    <string name="messages">Messages</string>
+    <string name="friends">Friends</string>
+    <string name="account_settings">Account Settings</string>
+    <string name="update_profile">Update Profile</string>
+    <string name="sign_out">Sign out</string>
+    <string name="title">TITLE</string>
+    <string name="this_is_our_navigation_drawer">This is our navigation drawer</string>
 
 </resources>
