@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         // Set up navigation menu
         nav_view.setupWithNavController(navController)
-
+        nav_view.setNavigationItemSelectedListener(this)
         observeActions()
     }
 
@@ -102,16 +102,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Timber.d("TI PIACE QUANDO CLICCO IL TUO SEARCH?")
                 true
             }
-            R.id.menu_name -> {
-                Toast.makeText(
-                    applicationContext,
-                    "Work in progress Navigate to Settings",
-                    R.integer.motion_duration_large
-                ).show()
-                Timber.d("TI PIACE QUANDO CLICCO IL TUO MENU?")
-                mainActivityViewModel.send(MainActivityScreenEvent.OnMenuClick)
-                true
-            }
             R.id.theme_name -> {
 
                 val currentNightMode = (resources.configuration.uiMode
@@ -141,6 +131,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 MainActivityScreenAction.NavigateToSettingMenu -> {
                     Timber.d(action.toString())
                     Timber.d("NavigateToSettingMenu", "Menu Button Clicked")
+                    Toast.makeText(
+                        applicationContext,
+                        "Work in progress Navigate to Settings",
+                        R.integer.motion_duration_large
+                    ).show()
                     navController.navigate(R.id.settingsFragment)
                 }
             }.exhaustive
@@ -150,31 +145,32 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_customCocktail -> {
-                Timber.d("CustomCocktail", "Custom Cocktail Button Clicked")
+                Timber.d("CustomCocktail")
             }
             R.id.nav_favorites -> {
-                Timber.d("FavoriteCocktail", "Favorite Cocktail Button Clicked")
+                Timber.d("FavoriteCocktail")
             }
             R.id.nav_settings -> {
-                Timber.d("Settings", "Settings Button Clicked")
+                Timber.d("Settings")
+                mainActivityViewModel.send(MainActivityScreenEvent.OnMenuClick)
             }
             R.id.nav_facebook -> {
-                Timber.d("Facebook", "Navigate to Facebook Button Clicked")
+                Timber.d("Facebook")
             }
             R.id.nav_twitter -> {
-                Timber.d("Twitter", "Navigate to Twitter Button Clicked")
+                Timber.d("Twitter")
             }
             R.id.nav_feedback -> {
-                Timber.d("FeedBack", "Send FeeBack Button Clicked")
+                Timber.d("FeedBack")
             }
             R.id.nav_contact -> {
-                Timber.d("Contacts", "Contact Us Button Clicked")
+                Timber.d("Contacts")
             }
             R.id.nav_share -> {
-                Timber.d("Share", "Share App Button Clicked")
+                Timber.d("Share")
             }
             R.id.nav_evaluate -> {
-                Timber.d("Evaluate", "Evaluate App Button Clicked")
+                Timber.d("Evaluate")
             }
         }
         drawer_layout.closeDrawer(GravityCompat.START)
