@@ -91,6 +91,7 @@ sealed class MainScreenEvents {
     object OnReady : MainScreenEvents()
     object OnRefreshClicked : MainScreenEvents()
     object OnSettingClick : MainScreenEvents()
+
 }
 
 sealed class MainScreenActions {

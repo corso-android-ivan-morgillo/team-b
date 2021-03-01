@@ -9,6 +9,10 @@
         <item name="android:forceDarkAllowed">true</item>
         <item name="color">#293133</item>
         <item name="android:textColorPrimary">#FFFFFF</item>
+    </style>
 
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 </resources>
