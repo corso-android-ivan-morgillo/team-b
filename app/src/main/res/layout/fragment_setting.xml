@@ -3,177 +3,111 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/settingsFragment">
 
     <TextView
-        android:id="@+id/option_title"
+        android:id="@+id/option_titleMetricSystem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Usa sistema metrico decimale"
+        android:text="@string/usa_sistema_metrico_decimale"
         android:fontFamily="@font/firasans_bold" />
 
     <TextView
-        android:id="@+id/option_description"
+        android:id="@+id/option_descriptionMetricSystem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/option_title"
-        app:layout_constraintTop_toBottomOf="@+id/option_title"
-        tools:text="Se non selezionato, sarà usato il sistema Imperiale(US)"
+        app:layout_constraintStart_toStartOf="@id/option_titleMetricSystem"
+        app:layout_constraintTop_toBottomOf="@+id/option_titleMetricSystem"
+        android:text="@string/se_non_selezionato_sar_usato_il_sistema_imperiale_us"
         android:fontFamily="@font/firasans_light" />
 
     <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/check_of"
+        android:id="@+id/check_ofMetricSystem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@+id/option_description"
+        app:layout_constraintStart_toEndOf="@+id/option_descriptionMetricSystem"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/option_title2"
+        android:id="@+id/option_titleScreenActive"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/option_description"
-        app:layout_constraintTop_toBottomOf="@+id/option_description"
-        tools:text="Mantieni lo schermo attivo"
+        app:layout_constraintStart_toStartOf="@id/option_descriptionMetricSystem"
+        app:layout_constraintTop_toBottomOf="@+id/option_descriptionMetricSystem"
+        android:text="@string/mantieni_lo_schermo_attivo"
         android:fontFamily="@font/firasans_bold"
         android:layout_marginTop="16dp" />
 
     <TextView
-        android:id="@+id/option_description2"
+        android:id="@+id/option_descriptionScreenActive"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/firasans_light"
-        app:layout_constraintStart_toStartOf="@+id/option_description"
-        app:layout_constraintTop_toBottomOf="@+id/option_title2"
-        tools:text="Impedisci al telefono di andare in sospensione quando vengono visualizzati i dettagli di un cocktail" />
+        app:layout_constraintStart_toStartOf="@+id/option_descriptionMetricSystem"
+        app:layout_constraintTop_toBottomOf="@+id/option_titleScreenActive"
+        android:text="@string/impedisci_al_telefono_di_andare_in_sospensione_quando_vengono_visualizzati_i_dettagli_di_un_cocktail" />
 
 
     <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/check_of2"
+        android:id="@+id/check_ofScreenActive"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/check_of"
-        app:layout_constraintStart_toStartOf="@+id/check_of" />
+        app:layout_constraintTop_toTopOf="@+id/option_titleScreenActive"
+        app:layout_constraintStart_toStartOf="@+id/check_ofMetricSystem" />
 
     <TextView
-        android:id="@+id/option_title3"
+        android:id="@+id/option_titleTheme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/option_description"
-        app:layout_constraintTop_toBottomOf="@+id/option_description2"
-        tools:text="Lingua"
+        app:layout_constraintStart_toStartOf="@id/option_descriptionMetricSystem"
+        app:layout_constraintTop_toBottomOf="@+id/option_descriptionScreenActive"
+        android:text="@string/scegli_il_tema"
         android:fontFamily="@font/firasans_bold"
         android:layout_marginTop="16dp" />
 
     <TextView
-        android:id="@+id/option_description3"
+        android:id="@+id/option_descriptionTheme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/firasans_light"
-        app:layout_constraintStart_toStartOf="@+id/option_description"
-        app:layout_constraintTop_toBottomOf="@+id/option_title3"
-        tools:text="Scegli la tua lingua" />
+        app:layout_constraintStart_toStartOf="@+id/option_descriptionMetricSystem"
+        app:layout_constraintTop_toBottomOf="@+id/option_titleTheme"
+        android:text="@string/scegli_tra_light_theme_e_dark_theme" />
+
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/check_ofTheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@+id/option_titleTheme"
+        app:layout_constraintStart_toStartOf="@+id/check_ofScreenActive" />
+
+    <TextView
+        android:id="@+id/option_titleLanguage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/option_descriptionMetricSystem"
+        app:layout_constraintTop_toBottomOf="@+id/option_descriptionTheme"
+        android:text="@string/lingua"
+        android:fontFamily="@font/firasans_bold"
+        android:layout_marginTop="16dp" />
+
+    <TextView
+        android:id="@+id/option_descriptionLanguage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/firasans_light"
+        app:layout_constraintStart_toStartOf="@+id/option_descriptionMetricSystem"
+        app:layout_constraintTop_toBottomOf="@+id/option_titleLanguage"
+        android:text="@string/scegli_la_tua_lingua" />
 
     <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/option_title3"
-        app:layout_constraintEnd_toEndOf="@id/check_of2" />
-
-    <TextView
-        android:id="@+id/option_title4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/option_description"
-        app:layout_constraintTop_toBottomOf="@+id/option_description3"
-        tools:text="Condividi"
-        android:fontFamily="@font/firasans_bold"
-        android:layout_marginTop="16dp" />
-
-    <TextView
-        android:id="@+id/option_description4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/firasans_light"
-        app:layout_constraintStart_toStartOf="@+id/option_description"
-        app:layout_constraintTop_toBottomOf="@+id/option_title4"
-        tools:text="Invita i tuoi amici ad entrare nel magico mondo delle sbronze" />
-
-    <TextView
-        android:id="@+id/option_title5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/option_description"
-        app:layout_constraintTop_toBottomOf="@+id/option_description4"
-        tools:text="Feedback"
-        android:fontFamily="@font/firasans_bold"
-        android:layout_marginTop="16dp" />
-
-    <TextView
-        android:id="@+id/option_description5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/firasans_light"
-        app:layout_constraintStart_toStartOf="@+id/option_description"
-        app:layout_constraintTop_toBottomOf="@+id/option_title5"
-        tools:text="Invia feedback" />
-
-    <TextView
-        android:id="@+id/option_description6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/firasans_light"
-        app:layout_constraintStart_toStartOf="@+id/option_description"
-        app:layout_constraintTop_toBottomOf="@+id/option_description5"
-        tools:text="Contattaci" />
-
-    <TextView
-        android:id="@+id/option_description7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/firasans_light"
-        app:layout_constraintStart_toStartOf="@+id/option_description"
-        app:layout_constraintTop_toBottomOf="@+id/option_description6"
-        tools:text="Valuta App" />
-
-    <TextView
-        android:id="@+id/option_title6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/option_description"
-        app:layout_constraintTop_toBottomOf="@+id/option_description7"
-        tools:text="Chi Siamo"
-        android:fontFamily="@font/firasans_bold"
-        android:layout_marginTop="16dp" />
-
-    <TextView
-        android:id="@+id/option_description8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/firasans_light"
-        app:layout_constraintStart_toStartOf="@+id/option_description"
-        app:layout_constraintTop_toBottomOf="@+id/option_title6"
-        tools:text="Twitter" />
-
-    <TextView
-        android:id="@+id/option_description9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/firasans_light"
-        app:layout_constraintStart_toStartOf="@+id/option_description"
-        app:layout_constraintTop_toBottomOf="@+id/option_description8"
-        tools:text="Facebook" />
-
-    <TextView
-        android:id="@+id/option_description10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/firasans_light"
-        app:layout_constraintStart_toStartOf="@+id/option_description"
-        app:layout_constraintTop_toBottomOf="@+id/option_description9"
-        tools:text="Informativa sulla privacy" />
+        app:layout_constraintStart_toStartOf="@+id/check_ofTheme"
+        app:layout_constraintTop_toTopOf="@id/option_titleLanguage"
+        app:layout_constraintEnd_toEndOf="@id/check_ofMetricSystem" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

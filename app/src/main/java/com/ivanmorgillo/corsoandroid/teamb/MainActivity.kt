@@ -38,8 +38,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.homeFragment,
             R.id.settingsFragment
         )
+
         appBarConfiguration = AppBarConfiguration.Builder(topLevelDestinations)
-            .setDrawerLayout(drawer_layout)
+            .setOpenableLayout(drawer_layout)
             .build()
 
         // Set up ActionBar
@@ -48,6 +49,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Set up navigation menu
         nav_view.setupWithNavController(navController)
         nav_view.setNavigationItemSelectedListener(this)
+        actionBar?.title = "Cocktails"
+
+
         observeActions()
     }
 
