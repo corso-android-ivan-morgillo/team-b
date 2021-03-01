@@ -2,7 +2,6 @@ package com.ivanmorgillo.corsoandroid.teamb
 
 import com.ivanmorgillo.corsoandroid.teamb.network.CocktailAPI
 import com.ivanmorgillo.corsoandroid.teamb.network.Ingredient
-import com.ivanmorgillo.corsoandroid.teamb.network.LoadCategoriesResult
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailResult
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadDetailCocktailResult
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadSearchCocktailResult
@@ -16,7 +15,6 @@ interface CocktailRepository {
     suspend fun loadDetailCocktails(cocktailId: Long): LoadDetailCocktailResult
     suspend fun loadRandomDetailCocktails(): LoadDetailCocktailResult
     suspend fun loadSearchCocktails(query: String): LoadSearchCocktailResult
-    suspend fun loadCategories(): LoadCategoriesResult
 }
 
 /* Implementazione dell'interfaccia definita prima */
@@ -35,10 +33,6 @@ class CocktailRepositoryImpl(private val api: CocktailAPI) : CocktailRepository 
 
     override suspend fun loadSearchCocktails(query: String): LoadSearchCocktailResult {
         return api.loadSearchCocktails(query)
-    }
-
-    override suspend fun loadCategories(): LoadCategoriesResult {
-        return api.loadCategories()
     }
 }
 

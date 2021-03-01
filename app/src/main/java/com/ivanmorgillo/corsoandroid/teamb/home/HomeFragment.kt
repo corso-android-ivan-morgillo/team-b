@@ -62,7 +62,6 @@ class HomeFragment : Fragment() {
             }
             viewModel.send(MainScreenEvents.OnCocktailClick(item))
         }
-
         buttonError.setOnClickListener {
             viewModel.send(MainScreenEvents.OnSettingClick)
         }
@@ -72,19 +71,19 @@ class HomeFragment : Fragment() {
         category_list.adapter = categoryAdapter
 
         val image = "https://i.pinimg.com/originals/99/5b/30/995b30f3bee71a43297f2dc731ba86c1.png"
-        val categoryUIList: List<CategoryUI> = listOf(
-            CategoryUI("Categoria1", image),
-            CategoryUI("categoria2", image),
-            CategoryUI("categoria3", image),
-            CategoryUI("categoria4", image),
-            CategoryUI("categoria5", image),
-            CategoryUI("categoria6", image),
-            CategoryUI("categoria7", image),
-            CategoryUI("categoria8", image),
-            CategoryUI("categoria9", image),
-            CategoryUI("categoria10", image),
+        val categoryList: List<Category> = listOf(
+            Category("Categoria1", image),
+            Category("categoria2", image),
+            Category("categoria3", image),
+            Category("categoria4", image),
+            Category("categoria5", image),
+            Category("categoria6", image),
+            Category("categoria7", image),
+            Category("categoria8", image),
+            Category("categoria9", image),
+            Category("categoria10", image),
         )
-        categoryAdapter.setCategoryList(categoryUIList)
+        categoryAdapter.setCategoryList(categoryList)
 
         indexBarCustom()
 
