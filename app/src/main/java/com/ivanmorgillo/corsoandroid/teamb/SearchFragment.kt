@@ -26,6 +26,7 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val myValue = this.arguments!!.getString("query")
         Timber.d("SearchFragmentCreated")
         val imageCocktail = "https://www.thecocktaildb.com/images/media/drink/vwxrsw1478251483.jpg"
         val cocktailList = listOf<SearchCocktailUI>(
