@@ -18,4 +18,12 @@
     <string name="menu">Menu</string>
     <string name="folder">Cartella</string>
     <string name="bicchiere">"Bicchiere: "</string>
+    <string name="profile">Profilo</string>
+    <string name="messages">Messaggio</string>
+    <string name="friends">Amici</string>
+    <string name="account_settings">Impostazioni Account</string>
+    <string name="update_profile">Aggiorna Profilo</string>
+    <string name="sign_out">Esci</string>
+    <string name="title">Titolo</string>
+    <string name="this_is_our_navigation_drawer">Questo è il nostro Drawer</string>
 </resources>
