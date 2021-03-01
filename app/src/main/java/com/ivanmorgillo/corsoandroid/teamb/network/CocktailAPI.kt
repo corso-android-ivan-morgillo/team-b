@@ -145,6 +145,7 @@ class CocktailAPI {
         }
     }
 
+    @Suppress("TooGenericExceptionCaught")
     suspend fun loadCategories(): LoadCategoriesResult {
         try {
             val categoryList = service.loadCategories()
@@ -303,7 +304,7 @@ sealed class LoadSearchCocktailResult {
 
 }
 
-sealed class LoadCategoriesResult() {
+sealed class LoadCategoriesResult {
     data class Success(val categories: List<Category>) : LoadCategoriesResult()
     data class Failure(val error: CategoriesError) : LoadCategoriesResult()
 }
