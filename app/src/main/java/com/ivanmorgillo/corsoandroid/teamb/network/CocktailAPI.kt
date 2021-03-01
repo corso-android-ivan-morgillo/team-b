@@ -144,7 +144,31 @@ class CocktailAPI {
             return LoadSearchCocktailResult.Failure(DetailLoadCocktailError.ServerError)
         }
     }
+
+    suspend fun loadCategories(): LoadCategoriesResult {
+        try {
+            val categoryList = service.loadCategories()
+            val categories = categoryList.categories.mapNotNull {
+                it.toDomainCategories()
+            }
+            return if (categories.isEmpty()) {
+                LoadCategoriesResult.Failure(CategoriesError.NoCategoriesFound)
+            } else {
+                LoadCategoriesResult.Success(categories)
+            }
+        } catch (e: IOException) { // no internet
+            return LoadCategoriesResult.Failure(CategoriesError.NoInternet)
+        } catch (e: SocketTimeoutException) {
+            return LoadCategoriesResult.Failure(CategoriesError.SlowInternet)
+        } catch (e: Exception) {
+            Timber.e(e, "Generic Exception on LoadCocktail")
+            return LoadCategoriesResult.Failure(CategoriesError.ServerError)
+        }
+    }
+
+
 }
+
 
 private fun resolveMeasures(ingredient: String?, measure: String?): String? {
     return when {
@@ -232,6 +256,13 @@ private fun DetailCocktailDTO.Drink.toDomainSearch(): Search? {
     }
 }
 
+private fun CategoriesDTO.Category.toDomainCategories(): Category {
+    return Category(
+        categoryName = strCategory
+    )
+}
+
+
 sealed class LoadCocktailError {
     object NoCocktailFound : LoadCocktailError()
     object NoInternet : LoadCocktailError()
@@ -247,6 +278,15 @@ sealed class DetailLoadCocktailError {
     object NoDetailFound : DetailLoadCocktailError()
 }
 
+sealed class CategoriesError {
+    object NoCategoriesFound : CategoriesError()
+    object NoInternet : CategoriesError()
+    object SlowInternet : CategoriesError()
+    object ServerError : CategoriesError()
+
+
+}
+
 sealed class LoadCocktailResult {
     data class Success(val cocktails: List<Cocktail>) : LoadCocktailResult()
     data class Failure(val error: LoadCocktailError) : LoadCocktailResult()
@@ -260,6 +300,14 @@ sealed class LoadDetailCocktailResult {
 sealed class LoadSearchCocktailResult {
     data class Success(val details: List<Search>) : LoadSearchCocktailResult()
     data class Failure(val error: DetailLoadCocktailError) : LoadSearchCocktailResult()
+
 }
+
+sealed class LoadCategoriesResult() {
+    data class Success(val categories: List<Category>) : LoadCategoriesResult()
+    data class Failure(val error: CategoriesError) : LoadCategoriesResult()
+}
+
+data class Category(val categoryName: String)
 
 data class Ingredient(val name: String, val quantity: String)
