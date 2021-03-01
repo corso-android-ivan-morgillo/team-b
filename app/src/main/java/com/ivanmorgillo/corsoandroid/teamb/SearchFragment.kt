@@ -8,14 +8,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
+import kotlinx.android.synthetic.main.fragment_search.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 class SearchFragment : Fragment() {
     private val searchViewModel: SearchViewModel by viewModel()
     private var lastClickedItem: View? = null
-    //private val args: MainA by navArgs()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -28,23 +27,39 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Timber.d("SearchFragmentCreated")
-        /*val adapter = CocktailAdapter { item, view ->
-            lastClickedItem = view
-            exitTransition = MaterialElevationScale(false).apply {
-                duration = resources.getInteger(R.integer.motion_duration_large).toLong()
-            }
-            reenterTransition = MaterialElevationScale(true).apply {
-                duration = resources.getInteger(R.integer.motion_duration_large).toLong()
-            }
-            searchViewModel.send(SearchScreenEvent.OnCocktailClick(item))
-        }
-        cocktails_search_List.adapter = adapter*/
-        //observeStates(adapter)
-        observeActions(view)
+        val imageCocktail = "https://www.thecocktaildb.com/images/media/drink/vwxrsw1478251483.jpg"
+        val cocktailList = listOf<SearchCocktailUI>(
+            SearchCocktailUI(
+                cocktailName = "Mojito1",
+                image = imageCocktail,
+                category = "Categoria1",
+                id = 0,
+                alcoholic = false
+
+            ),
+            SearchCocktailUI(
+                cocktailName = "Mojito1",
+                image = imageCocktail,
+                category = "Categoria1",
+                id = 0,
+                alcoholic = false
+            ),
+            SearchCocktailUI(
+                cocktailName = "Mojito1",
+                image = imageCocktail,
+                category = "Categoria1",
+                id = 0,
+                alcoholic = false
+            ),
+        )
+        val adapter = SearchCocktailAdapter()
+        cocktails_search_List.adapter = adapter
+        adapter.setSearchList(cocktailList)
+        observeActions()
         searchViewModel.send(SearchScreenEvent.OnReady("margarita"))
     }
 
-    private fun observeActions(view: View) {
+    private fun observeActions() {
         searchViewModel.actions.observe(viewLifecycleOwner, { action ->
             Timber.d(action.toString())
             when (action) {
@@ -60,15 +75,4 @@ class SearchFragment : Fragment() {
             }.exhaustive
         })
     }
-
-    /*private fun observeStates(adapter: CocktailAdapter) {
-        searchViewModel.states.observe(viewLifecycleOwner, { state ->
-            Timber.d(state.toString())
-            when (state) {
-                is SearchScreenStates.Content -> adapter.setCocktailsList(state.cocktails)
-                is SearchScreenStates.Error -> Timber.d("Errore")
-                SearchScreenStates.Loading -> Timber.d("Sto caricando")
-            }
-        })
-    }*/
 }
