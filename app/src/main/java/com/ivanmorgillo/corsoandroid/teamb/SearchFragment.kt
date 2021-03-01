@@ -55,7 +55,7 @@ class SearchFragment : Fragment() {
         val adapter = SearchCocktailAdapter()
         cocktails_search_List.adapter = adapter
         adapter.setSearchList(cocktailList)
-        observeActions(view)
+        observeActions()
         searchViewModel.send(SearchScreenEvent.OnReady("margarita"))
     }
 
