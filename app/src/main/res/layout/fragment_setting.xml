@@ -23,7 +23,7 @@
         android:text="@string/se_non_selezionato_sar_usato_il_sistema_imperiale_us"
         android:fontFamily="@font/firasans_light" />
 
-    <androidx.appcompat.widget.SwitchCompat
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/check_ofMetricSystem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
         android:text="@string/impedisci_al_telefono_di_andare_in_sospensione_quando_vengono_visualizzati_i_dettagli_di_un_cocktail" />
 
 
-    <androidx.appcompat.widget.SwitchCompat
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/check_ofScreenActive"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -77,7 +77,7 @@
         android:text="@string/scegli_tra_light_theme_e_dark_theme" />
 
 
-    <androidx.appcompat.widget.SwitchCompat
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/check_ofTheme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

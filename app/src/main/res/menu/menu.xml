@@ -9,15 +9,4 @@
         app:showAsAction="ifRoom"
         app:actionViewClass="android.widget.SearchView"
         android:orderInCategory="1" />
-
-    <item
-        android:id="@+id/theme_name"
-        android:icon="@drawable/theme"
-        android:title="@string/theme"
-        app:showAsAction="never"
-        android:orderInCategory="0" />
-
-
-
-
 </menu>
