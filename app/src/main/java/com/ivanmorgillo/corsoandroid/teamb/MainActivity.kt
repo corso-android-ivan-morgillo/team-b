@@ -136,7 +136,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             Timber.d(action.toString())
             when (action) {
                 is MainActivityScreenAction.NavigateToSearch -> {
-                    navController.navigate(R.id.searchFragment)
+                    val bundle = Bundle()
+                    bundle.putString("query", action.query)
+                    val fragInfo = SearchFragment()
+                    fragInfo.arguments = bundle
+                    navController.navigate(R.id.searchFragment, fragInfo.arguments)
                 }
                 MainActivityScreenAction.NavigateToSettingMenu -> {
                     Timber.d(action.toString())
