@@ -131,17 +131,17 @@ class CocktailAPI {
                 it.toDomainSearch()
             }
             return if (details.isEmpty()) {
-                LoadSearchCocktailResult.Failure(SearchLoadCocktailError.NoCocktailFound)
+                LoadSearchCocktailResult.Failure(DetailLoadCocktailError.NoDetailFound)
             } else {
                 LoadSearchCocktailResult.Success(details)
             }
         } catch (e: IOException) { // no internet
-            return LoadSearchCocktailResult.Failure(SearchLoadCocktailError.NoInternet)
+            return LoadSearchCocktailResult.Failure(DetailLoadCocktailError.NoInternet)
         } catch (e: SocketTimeoutException) {
-            return LoadSearchCocktailResult.Failure(SearchLoadCocktailError.SlowInternet)
+            return LoadSearchCocktailResult.Failure(DetailLoadCocktailError.SlowInternet)
         } catch (e: Exception) {
             Timber.e(e, "Generic Exception on LoadCocktail")
-            return LoadSearchCocktailResult.Failure(SearchLoadCocktailError.ServerError)
+            return LoadSearchCocktailResult.Failure(DetailLoadCocktailError.ServerError)
         }
     }
 
@@ -149,7 +149,7 @@ class CocktailAPI {
     suspend fun loadCategories(): LoadCategoriesResult {
         try {
             val categoryList = service.loadCategories()
-            val categories = categoryList.categories.mapNotNull {
+            val categories = categoryList.categories.map {
                 it.toDomainCategories()
             }
             return if (categories.isEmpty()) {
@@ -166,10 +166,7 @@ class CocktailAPI {
             return LoadCategoriesResult.Failure(CategoriesError.ServerError)
         }
     }
-
-
 }
-
 
 private fun resolveMeasures(ingredient: String?, measure: String?): String? {
     return when {
@@ -234,7 +231,7 @@ private fun List<DetailCocktailDTO.Drink>.toDomain(): Detail? {
             isAlcoholic = alcolCat,
             glass = first.strGlass,
             ingredients = ingredients,
-            youtubeLink = video,
+            youtubeLink = video, // se si porta dietro un valore null, che succede?
             instructions = first.strInstructions,
         )
     } else {
@@ -263,7 +260,6 @@ private fun CategoriesDTO.Category.toDomainCategories(): Category {
     )
 }
 
-
 sealed class LoadCocktailError {
     object NoCocktailFound : LoadCocktailError()
     object NoInternet : LoadCocktailError()
@@ -279,20 +275,11 @@ sealed class DetailLoadCocktailError {
     object NoDetailFound : DetailLoadCocktailError()
 }
 
-
 sealed class CategoriesError {
     object NoCategoriesFound : CategoriesError()
     object NoInternet : CategoriesError()
     object SlowInternet : CategoriesError()
     object ServerError : CategoriesError()
-
-
-
-sealed class SearchLoadCocktailError {
-    object NoCocktailFound : SearchLoadCocktailError()
-    object NoInternet : SearchLoadCocktailError()
-    object SlowInternet : SearchLoadCocktailError()
-    object ServerError : SearchLoadCocktailError()
 }
 
 sealed class LoadCocktailResult {
@@ -307,7 +294,7 @@ sealed class LoadDetailCocktailResult {
 
 sealed class LoadSearchCocktailResult {
     data class Success(val details: List<Search>) : LoadSearchCocktailResult()
-    data class Failure(val error: SearchLoadCocktailError) : LoadSearchCocktailResult()
+    data class Failure(val error: DetailLoadCocktailError) : LoadSearchCocktailResult()
 }
 
 sealed class LoadCategoriesResult {
