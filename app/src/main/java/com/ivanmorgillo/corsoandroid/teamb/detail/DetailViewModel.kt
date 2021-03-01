@@ -75,7 +75,6 @@ sealed class DetailScreenEvents {
     data class OnReady(val id: Long) : DetailScreenEvents()
 }
 
-
 sealed class DetailErrorStates {
     object ShowNoInternetMessage : DetailErrorStates()
     object ShowNoCocktailFound : DetailErrorStates()
