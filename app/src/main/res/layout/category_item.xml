@@ -1,29 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/category_item">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/category_drink_root"
+    android:backgroundTint="@android:color/white"
+    app:cardElevation="12dp"
+    app:cardCornerRadius="12dp"
+    app:cardUseCompatPadding="true">
 
-
-    <TextView
-        android:id="@+id/category_text"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/category_image"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:text="categoria"
-        android:padding="5dp" />
+        android:id="@+id/category_item">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:id="@+id/category_image"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@mipmap/ic_launcher"
-        android:contentDescription="@string/category_image" />
+        <TextView
+            android:id="@+id/category_text"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/category_image"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="categoria"
+            android:padding="4dp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/category_image"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@mipmap/ic_launcher"
+            android:contentDescription="@string/category_image" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>
