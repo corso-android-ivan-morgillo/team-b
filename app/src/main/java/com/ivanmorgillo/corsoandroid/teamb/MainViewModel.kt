@@ -18,36 +18,36 @@ class MainActivityViewModel(
     // mutable live data: tipo contenitore di T, dove T è il nostro stato
     // states è una variabile che la nostra activity può osservare.
     // Quando si cambia stato questa variabile viene settata
-    val states = MutableLiveData<MainActivityScreenStates>()
-    val actions = SingleLiveEvent<MainActivityScreenAction>()
+    val states = MutableLiveData<MainScreenStates>()
+    val actions = SingleLiveEvent<MainScreenAction>()
 
-    fun send(event: MainActivityScreenEvent) {
+    fun send(event: MainScreenEvent) {
         // controlla il tipo di evento e in base a questo fa qualcosa
         Timber.d(event.toString())
         @Suppress("IMPLICIT_CAST_TO_ANY")
         when (event) {
-            is MainActivityScreenEvent.OnSearchClick -> {
-                actions.postValue(MainActivityScreenAction.NavigateToSearch(event.query))
+            is MainScreenEvent.OnSearchClick -> {
+                actions.postValue(MainScreenAction.NavigateToSearch(event.query))
             }
-            MainActivityScreenEvent.OnMenuClick -> {
-                actions.postValue(MainActivityScreenAction.NavigateToSettingMenu)
+            MainScreenEvent.OnMenuClick -> {
+                actions.postValue(MainScreenAction.NavigateToSettingMenu)
             }
         }.exhaustive
     }
 }
 
-sealed class MainActivityScreenStates {
-    object Loading : MainActivityScreenStates()
-    data class Error(val error: ErrorStates) : MainActivityScreenStates()
-    data class Content(val cocktails: List<SearchCocktailUI>) : MainActivityScreenStates()
+sealed class MainScreenStates {
+    object Loading : MainScreenStates()
+    data class Error(val error: ErrorStates) : MainScreenStates()
+    data class Content(val cocktails: List<SearchCocktailUI>) : MainScreenStates()
 }
 
-sealed class MainActivityScreenEvent {
-    data class OnSearchClick(val query: String) : MainActivityScreenEvent()
-    object OnMenuClick : MainActivityScreenEvent()
+sealed class MainScreenEvent {
+    data class OnSearchClick(val query: String) : MainScreenEvent()
+    object OnMenuClick : MainScreenEvent()
 }
 
-sealed class MainActivityScreenAction {
-    data class NavigateToSearch(val query: String) : MainActivityScreenAction()
-    object NavigateToSettingMenu : MainActivityScreenAction()
+sealed class MainScreenAction {
+    data class NavigateToSearch(val query: String) : MainScreenAction()
+    object NavigateToSettingMenu : MainScreenAction()
 }
