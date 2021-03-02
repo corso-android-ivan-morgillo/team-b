@@ -3,15 +3,15 @@ package com.ivanmorgillo.corsoandroid.teamb.detail
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ivanmorgillo.corsoandroid.teamb.CocktailRepository
-import com.ivanmorgillo.corsoandroid.teamb.Tracking
-import com.ivanmorgillo.corsoandroid.teamb.exhaustive
+import com.ivanmorgillo.corsoandroid.teamb.network.CocktailRepository
 import com.ivanmorgillo.corsoandroid.teamb.network.DetailLoadCocktailError.NoCocktailFound
 import com.ivanmorgillo.corsoandroid.teamb.network.DetailLoadCocktailError.NoDetailFound
 import com.ivanmorgillo.corsoandroid.teamb.network.DetailLoadCocktailError.NoInternet
 import com.ivanmorgillo.corsoandroid.teamb.network.DetailLoadCocktailError.ServerError
 import com.ivanmorgillo.corsoandroid.teamb.network.DetailLoadCocktailError.SlowInternet
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadDetailCocktailResult
+import com.ivanmorgillo.corsoandroid.teamb.utils.Tracking
+import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
 import kotlinx.coroutines.launch
 
 class DetailViewModel(
@@ -43,7 +43,6 @@ class DetailViewModel(
             IngredientUI(nomeIngr = it.name, ingrQty = it.quantity)
         }
         val content: List<DetailScreenItems> = listOf(
-            //DetailScreenItems.Title(details.name),
             DetailScreenItems.Image(details.image, details.name),
             DetailScreenItems.Video(details.youtubeLink),
             DetailScreenItems.GlassType(details.glass, details.isAlcoholic),

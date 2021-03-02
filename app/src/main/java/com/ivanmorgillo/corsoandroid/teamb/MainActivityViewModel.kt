@@ -2,6 +2,12 @@ package com.ivanmorgillo.corsoandroid.teamb
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.ivanmorgillo.corsoandroid.teamb.home.ErrorStates
+import com.ivanmorgillo.corsoandroid.teamb.network.CocktailRepository
+import com.ivanmorgillo.corsoandroid.teamb.search.SearchCocktailUI
+import com.ivanmorgillo.corsoandroid.teamb.utils.SingleLiveEvent
+import com.ivanmorgillo.corsoandroid.teamb.utils.Tracking
+import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
 import timber.log.Timber
 
 class MainActivityViewModel(
@@ -28,14 +34,6 @@ class MainActivityViewModel(
             }
         }.exhaustive
     }
-
-
-    /*private fun onSuccess(result: LoadCocktailResult.Success) {
-        val cocktails = result.cocktails.map {
-            CocktailUI(cocktailName = it.name, image = it.image, id = it.idDrink)
-        }
-        states.postValue(SearchScreenStates.Content(cocktails))
-    }*/
 }
 
 sealed class MainActivityScreenStates {

@@ -1,4 +1,4 @@
-package com.ivanmorgillo.corsoandroid.teamb
+package com.ivanmorgillo.corsoandroid.teamb.utils
 
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase

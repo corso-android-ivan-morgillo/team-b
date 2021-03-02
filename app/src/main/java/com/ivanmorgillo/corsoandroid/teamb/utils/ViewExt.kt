@@ -1,4 +1,4 @@
-package com.ivanmorgillo.corsoandroid.teamb
+package com.ivanmorgillo.corsoandroid.teamb.utils
 
 import android.view.View
 
