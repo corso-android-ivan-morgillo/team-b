@@ -33,10 +33,10 @@ class CocktailAPI {
     }
 
     @Suppress("TooGenericExceptionCaught")
-    suspend fun loadCocktails(): LoadCocktailResult {
+    suspend fun loadDrinks(category: String): LoadCocktailResult {
         // try-catch per gestire errore chiamata di rete
         try {
-            val cocktailList = service.loadCocktails()
+            val cocktailList = service.loadDrinks(category)
             val cocktails = cocktailList.drinks.mapNotNull {
                 it.toDomain()
             }
@@ -55,7 +55,7 @@ class CocktailAPI {
         }
     }
 
-    private fun CocktailDTO.Drink.toDomain(): Cocktail? {
+    private fun DrinkDTO.Drink.toDomain(): Cocktail? {
         val id = idDrink.toLongOrNull()
         return if (id != null) {
             Cocktail(

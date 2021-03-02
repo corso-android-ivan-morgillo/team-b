@@ -48,7 +48,7 @@ class HomeViewModel(
             // l'activity è pronta
             HomeScreenEvents.OnReady -> {
                 loadCategoryContent()
-                loadContent()
+                loadContent("Cocktail")
             }
             is HomeScreenEvents.OnCocktailClick -> {
                 tracking.logEvent("Cocktail_Clicked")
@@ -56,13 +56,14 @@ class HomeViewModel(
             }
             HomeScreenEvents.OnRefreshClicked -> {
                 // add tracking
-                loadContent()
+                loadContent("Cocktail")
             }
             HomeScreenEvents.OnSettingClick -> {
                 actions.postValue(HomeScreenActions.NavigateToSettings)
             }
             is HomeScreenEvents.OnCategoryClick -> {
-                actions.postValue(HomeScreenActions.SetDrinkList)
+                loadContent(event.category.nameCategory)
+                Timber.d("CATEGORIA SCELTA: ${event.category.nameCategory}")
             }
         }.exhaustive
     }
@@ -97,10 +98,10 @@ class HomeViewModel(
         }.exhaustive
     }
 
-    private fun loadContent() {
+    private fun loadContent(category: String) {
         states.postValue(Loading)
         viewModelScope.launch {
-            val result = repository.loadCocktails()
+            val result = repository.loadDrinks(category)
             when (result) {
                 is Failure -> onFailure(result)
                 is Success -> onSuccess(result)
@@ -148,7 +149,6 @@ sealed class HomeScreenEvents {
 sealed class HomeScreenActions {
     data class NavigateToDetail(val drinks: DrinksUI) : HomeScreenActions()
     object NavigateToSettings : HomeScreenActions()
-    object SetDrinkList : HomeScreenActions()
 }
 
 sealed class ErrorStates {

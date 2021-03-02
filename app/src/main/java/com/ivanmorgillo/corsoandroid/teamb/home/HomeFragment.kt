@@ -105,10 +105,7 @@ class HomeFragment : Fragment() {
                     Log.d("NavigateToSettings", "Button Clicked!")
                     startActivity(Intent(Settings.ACTION_WIRELESS_SETTINGS))
                 }
-                HomeScreenActions.SetDrinkList -> {
-                    // drinkListAdapter.se
-                    Timber.d("setting drink list")
-                }
+
             }.exhaustive
         })
     }
