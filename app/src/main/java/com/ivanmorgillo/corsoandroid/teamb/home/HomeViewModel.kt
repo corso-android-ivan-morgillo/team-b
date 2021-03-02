@@ -3,7 +3,7 @@ package com.ivanmorgillo.corsoandroid.teamb.home
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ivanmorgillo.corsoandroid.teamb.CocktailUI
+import com.ivanmorgillo.corsoandroid.teamb.DrinksUI
 import com.ivanmorgillo.corsoandroid.teamb.network.CocktailRepository
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.NoCocktailFound
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.NoInternet
@@ -39,7 +39,7 @@ class HomeViewModel(
             }
             is HomeScreenEvents.OnCocktailClick -> {
                 tracking.logEvent("Cocktail_Clicked")
-                actions.postValue(HomeScreenActions.NavigateToDetail(event.cocktail))
+                actions.postValue(HomeScreenActions.NavigateToDetail(event.drinks))
             }
             HomeScreenEvents.OnRefreshClicked -> {
                 // add tracking
@@ -47,6 +47,9 @@ class HomeViewModel(
             }
             HomeScreenEvents.OnSettingClick -> {
                 actions.postValue(HomeScreenActions.NavigateToSettings)
+            }
+            is HomeScreenEvents.OnCategoryClick -> {
+                actions.postValue(HomeScreenActions.SetDrinkList)
             }
         }.exhaustive
     }
@@ -73,7 +76,7 @@ class HomeViewModel(
 
     private fun onSuccess(result: Success) {
         val cocktails = result.cocktails.map {
-            CocktailUI(cocktailName = it.name, image = it.image, id = it.idDrink)
+            DrinksUI(drinkName = it.name, image = it.image, id = it.idDrink)
         }
         states.postValue(HomeScreenStates.Content(cocktails))
     }
@@ -86,20 +89,22 @@ class HomeViewModel(
 sealed class HomeScreenStates {
     object Loading : HomeScreenStates()
     data class Error(val error: ErrorStates) : HomeScreenStates()
-    data class Content(val cocktails: List<CocktailUI>) : HomeScreenStates()
+    data class Content(val drinks: List<DrinksUI>) : HomeScreenStates()
 }
 
 // contiene eventi che possiamo mandare al nostro view model
 sealed class HomeScreenEvents {
-    data class OnCocktailClick(val cocktail: CocktailUI) : HomeScreenEvents()
+    data class OnCocktailClick(val drinks: DrinksUI) : HomeScreenEvents()
+    data class OnCategoryClick(val category: CategoryUI) : HomeScreenEvents()
     object OnReady : HomeScreenEvents()
     object OnRefreshClicked : HomeScreenEvents()
     object OnSettingClick : HomeScreenEvents()
 }
 
 sealed class HomeScreenActions {
-    data class NavigateToDetail(val cocktail: CocktailUI) : HomeScreenActions()
+    data class NavigateToDetail(val drinks: DrinksUI) : HomeScreenActions()
     object NavigateToSettings : HomeScreenActions()
+    object SetDrinkList : HomeScreenActions()
 }
 
 sealed class ErrorStates {
