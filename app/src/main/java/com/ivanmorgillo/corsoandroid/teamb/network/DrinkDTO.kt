@@ -4,7 +4,7 @@ import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
 @Keep
-data class CocktailDTO(
+data class DrinkDTO(
     @SerializedName("drinks")
     val drinks: List<Drink>
 ) {

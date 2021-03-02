@@ -5,7 +5,7 @@ package com.ivanmorgillo.corsoandroid.teamb.network
  * (fare riferimento alla gestione degli errori del workshop) o che richiede molto tempo per recuperare le info
  * bisogna quindi segnalare agli utilizzatori che questa funzione sta facendo IO e che può crashare o durare tanto */
 interface CocktailRepository {
-    suspend fun loadCocktails(): LoadCocktailResult
+    suspend fun loadDrinks(category: String): LoadCocktailResult
     suspend fun loadDetailCocktails(cocktailId: Long): LoadDetailCocktailResult
     suspend fun loadRandomDetailCocktails(): LoadDetailCocktailResult
     suspend fun loadSearchCocktails(query: String): LoadSearchCocktailResult
@@ -14,8 +14,8 @@ interface CocktailRepository {
 
 /* Implementazione dell'interfaccia definita prima */
 class CocktailRepositoryImpl(private val api: CocktailAPI) : CocktailRepository {
-    override suspend fun loadCocktails(): LoadCocktailResult {
-        return api.loadCocktails()
+    override suspend fun loadDrinks(category: String): LoadCocktailResult {
+        return api.loadDrinks(category)
     }
 
     override suspend fun loadDetailCocktails(cocktailId: Long): LoadDetailCocktailResult {
