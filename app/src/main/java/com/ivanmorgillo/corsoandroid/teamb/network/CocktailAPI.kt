@@ -89,7 +89,7 @@ class CocktailAPI {
         } catch (e: SocketTimeoutException) {
             return LoadDetailCocktailResult.Failure(DetailLoadCocktailError.SlowInternet)
         } catch (e: Exception) {
-            Timber.e(e, "Generic Exception on LoadCocktail")
+            Timber.e(e, "Generic Exception on LoadRandomCocktail")
             return LoadDetailCocktailResult.Failure(DetailLoadCocktailError.ServerError)
         }
     }
@@ -137,7 +137,7 @@ class CocktailAPI {
         } catch (e: SocketTimeoutException) {
             return LoadSearchCocktailResult.Failure(SearchLoadCocktailError.SlowInternet)
         } catch (e: Exception) {
-            Timber.e(e, "Generic Exception on LoadCocktail")
+            Timber.e(e, "Generic Exception on LoadSearchCocktail")
             return LoadSearchCocktailResult.Failure(SearchLoadCocktailError.ServerError)
         }
     }
@@ -159,7 +159,7 @@ class CocktailAPI {
         } catch (e: SocketTimeoutException) {
             return LoadCategoriesResult.Failure(CategoriesError.SlowInternet)
         } catch (e: Exception) {
-            Timber.e(e, "Generic Exception on LoadCocktail")
+            Timber.e(e, "Generic Exception on LoadCategories")
             return LoadCategoriesResult.Failure(CategoriesError.ServerError)
         }
     }
@@ -244,7 +244,7 @@ private fun DetailCocktailDTO.Drink.toDomainSearch(): Search? {
             image = strDrinkThumb,
             idDrink = id,
             category = strCategory,
-            isAlcoholic = strAlcoholic.toBoolean()
+            alcoholic = strAlcoholic
         )
     } else {
         null

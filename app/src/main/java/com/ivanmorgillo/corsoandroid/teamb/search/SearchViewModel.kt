@@ -56,7 +56,7 @@ class SearchViewModel(
                 image = it.image,
                 id = it.idDrink,
                 category = it.category,
-                alcoholic = false
+                alcoholic = it.alcoholic
             )
         }
         states.postValue(SearchScreenStates.Content(cocktails))
@@ -93,7 +93,7 @@ data class SearchCocktailUI(
     val image: String,
     val id: Long,
     val category: String,
-    val alcoholic: Boolean
+    val alcoholic: String
 )
 
 sealed class SearchErrorStates {
