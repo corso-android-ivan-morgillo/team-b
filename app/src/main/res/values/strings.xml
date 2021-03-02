@@ -10,7 +10,6 @@
     <string name="lorem_ipsum">"Lorem ipsum dolor sit amet, consectetur adipisci elit, sed do eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrum exercitationem ullamco laboriosam, nisi ut aliquid ex ea commodi consequatur. Duis aute irure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. "</string>
     <string name="alcolico">Alcoholic: </string>
     <string name="ingredients">Ingredients</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="random_cocktail">Random Cocktail</string>
     <string name="search">Search</string>
@@ -19,13 +18,28 @@
     <string name="menu">Menu</string>
     <string name="folder">Folder</string>
     <string name="bicchiere">"Bicchiere: "</string>
-    <string name="profile">Profile</string>
-    <string name="messages">Messages</string>
-    <string name="friends">Friends</string>
-    <string name="account_settings">Account Settings</string>
-    <string name="update_profile">Update Profile</string>
-    <string name="sign_out">Sign out</string>
     <string name="title">TITLE</string>
     <string name="this_is_our_navigation_drawer">This is our navigation drawer</string>
+    <string name="componi_il_tuo_cocktail">Componi il tuo Cocktail</string>
+    <string name="preferiti">Preferiti</string>
+    <string name="settings">Settings</string>
+    <string name="about_us">About us</string>
+    <string name="facebook">Facebook</string>
+    <string name="twitter">Twitter</string>
+    <string name="feedback">FeedBack</string>
+    <string name="invia_feedback">Send FeedBack</string>
+    <string name="contattaci">Contact Us</string>
+    <string name="social">Social</string>
+    <string name="condividi">Share</string>
+    <string name="valuta_app">Evaluate App</string>
+    <string name="usa_sistema_metrico_decimale">Use metric System</string>
+    <string name="se_non_selezionato_sar_usato_il_sistema_imperiale_us">If not selected, the Imperial (US) system will be used "</string>
+    <string name="mantieni_lo_schermo_attivo">Keep the screen active</string>
+    <string name="impedisci_al_telefono_di_andare_in_sospensione_quando_vengono_visualizzati_i_dettagli_di_un_cocktail">
+        Prevent the phone from going to sleep when the details of a cocktail are displayed</string>
+    <string name="lingua">Languages</string>
+    <string name="scegli_la_tua_lingua">Choose your language</string>
+    <string name="scegli_il_tema">Choose your theme</string>
+    <string name="scegli_tra_light_theme_e_dark_theme">Choose between Light Theme and Dark Theme</string>
 
 </resources>

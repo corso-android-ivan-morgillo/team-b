@@ -1,8 +1,5 @@
 package com.ivanmorgillo.corsoandroid.teamb
 
-import android.app.UiModeManager.MODE_NIGHT_NO
-import android.app.UiModeManager.MODE_NIGHT_YES
-import android.content.res.Configuration
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -10,7 +7,6 @@ import android.view.MenuItem
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.GravityCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -38,16 +34,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.homeFragment,
             R.id.settingsFragment
         )
+
         appBarConfiguration = AppBarConfiguration.Builder(topLevelDestinations)
-            .setDrawerLayout(drawer_layout)
+            .setOpenableLayout(drawer_layout)
             .build()
 
         // Set up ActionBar
         setupActionBarWithNavController(navController, appBarConfiguration)
-
         // Set up navigation menu
         nav_view.setupWithNavController(navController)
-
+        nav_view.setNavigationItemSelectedListener(this)
         observeActions()
     }
 
@@ -88,43 +84,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle item selection
         return when (item.itemId) {
-            /*
-            R.id.action_name -> {
-                Timber.d("TI PIACE QUANDO CLICCO IL TUO DADO?")
-                true
-            }
-             */
-            R.id.home -> {
-                Toast.makeText(this, "Profile clicked", Toast.LENGTH_SHORT).show()
-                true
-            }
             R.id.search_name -> {
                 Timber.d("TI PIACE QUANDO CLICCO IL TUO SEARCH?")
-                true
-            }
-            R.id.menu_name -> {
-                Toast.makeText(
-                    applicationContext,
-                    "Work in progress Navigate to Settings",
-                    R.integer.motion_duration_large
-                ).show()
-                Timber.d("TI PIACE QUANDO CLICCO IL TUO MENU?")
-                mainActivityViewModel.send(MainActivityScreenEvent.OnMenuClick)
-                true
-            }
-            R.id.theme_name -> {
-
-                val currentNightMode = (resources.configuration.uiMode
-                        and Configuration.UI_MODE_NIGHT_MASK)
-                when (currentNightMode) {
-                    Configuration.UI_MODE_NIGHT_NO -> {
-                        AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES)
-                    }
-                    Configuration.UI_MODE_NIGHT_YES,
-                    Configuration.UI_MODE_NIGHT_UNDEFINED -> {
-                        AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_NO)
-                    }
-                }
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -145,6 +106,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 MainActivityScreenAction.NavigateToSettingMenu -> {
                     Timber.d(action.toString())
                     Timber.d("NavigateToSettingMenu", "Menu Button Clicked")
+                    Toast.makeText(
+                        applicationContext,
+                        "Work in progress Navigate to Settings",
+                        R.integer.motion_duration_large
+                    ).show()
                     navController.navigate(R.id.settingsFragment)
                 }
             }.exhaustive
@@ -153,20 +119,33 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.nav_profile -> {
-                Toast.makeText(this, "Profile clicked", Toast.LENGTH_SHORT).show()
+            R.id.nav_customCocktail -> {
+                Timber.d("CustomCocktail")
             }
-            R.id.nav_messages -> {
-                Toast.makeText(this, "Messages clicked", Toast.LENGTH_SHORT).show()
+            R.id.nav_favorites -> {
+                Timber.d("FavoriteCocktail")
             }
-            R.id.nav_friends -> {
-                Toast.makeText(this, "Friends clicked", Toast.LENGTH_SHORT).show()
+            R.id.nav_settings -> {
+                Timber.d("Settings")
+                mainActivityViewModel.send(MainActivityScreenEvent.OnMenuClick)
             }
-            R.id.nav_update -> {
-                Toast.makeText(this, "Update clicked", Toast.LENGTH_SHORT).show()
+            R.id.nav_facebook -> {
+                Timber.d("Facebook")
             }
-            R.id.nav_logout -> {
-                Toast.makeText(this, "Sign out clicked", Toast.LENGTH_SHORT).show()
+            R.id.nav_twitter -> {
+                Timber.d("Twitter")
+            }
+            R.id.nav_feedback -> {
+                Timber.d("FeedBack")
+            }
+            R.id.nav_contact -> {
+                Timber.d("Contacts")
+            }
+            R.id.nav_share -> {
+                Timber.d("Share")
+            }
+            R.id.nav_evaluate -> {
+                Timber.d("Evaluate")
             }
         }
         drawer_layout.closeDrawer(GravityCompat.START)
