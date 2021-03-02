@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 searchView.setQuery(query, false)
                 // Timber.d("Ricerca in corso.. $query")
                 if (!query.isNullOrEmpty()) {
-                    mainActivityViewModel.send(MainActivityScreenEvent.OnSearchClick(query))
+                    mainActivityViewModel.send(MainScreenEvent.OnSearchClick(query))
                 }
                 return false
             }
@@ -94,12 +94,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         mainActivityViewModel.actions.observe(this, { action ->
             Timber.d(action.toString())
             when (action) {
-                is MainActivityScreenAction.NavigateToSearch -> {
+                is MainScreenAction.NavigateToSearch -> {
                     val bundle = Bundle()
                     bundle.putString("query", action.query)
                     navController.navigate(R.id.searchFragment, bundle)
                 }
-                MainActivityScreenAction.NavigateToSettingMenu -> {
+                MainScreenAction.NavigateToSettingMenu -> {
                     Timber.d(action.toString())
                     Timber.d("NavigateToSettingMenu", "Menu Button Clicked")
                     Toast.makeText(
@@ -123,7 +123,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.nav_settings -> {
                 Timber.d("Settings")
-                mainActivityViewModel.send(MainActivityScreenEvent.OnMenuClick)
+                mainActivityViewModel.send(MainScreenEvent.OnMenuClick)
             }
             R.id.nav_facebook -> {
                 Timber.d("Facebook")
