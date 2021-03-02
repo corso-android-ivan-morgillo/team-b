@@ -41,4 +41,6 @@
     <string name="scegli_la_tua_lingua">Scegli la tua lingua</string>
     <string name="scegli_il_tema">Scegli il tema</string>
     <string name="scegli_tra_light_theme_e_dark_theme">Scegli tra Light Theme e Dark Theme</string>
+    <string name="category_image">Category image</string>
+    <string name="drink_image">Drink Image</string>
 </resources>

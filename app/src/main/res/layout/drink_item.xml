@@ -8,7 +8,7 @@
     android:backgroundTint="#E0FFFF"
     app:cardElevation="12dp"
     app:cardUseCompatPadding="true"
-    android:id="@+id/cocktail_root"
+    android:id="@+id/drink_root"
     app:cardCornerRadius="12dp"
     android:elevation="50dp">
 
@@ -18,25 +18,26 @@
         <!--Con padding otteniamo lo spazio all'interno del contenitore-->
 
         <ImageView
-            android:id="@+id/cocktail_image"
+            android:id="@+id/drink_image"
             android:layout_width="200dp"
             android:layout_height="200dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:src="@mipmap/ic_launcher" />
+            tools:src="@mipmap/ic_launcher"
+            android:contentDescription="@string/drink_image" />
 
 
         <TextView
-            android:id="@+id/cocktail_name"
+            android:id="@+id/drink_name"
             android:padding="4dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@id/cocktail_image"
-            app:layout_constraintStart_toStartOf="@id/cocktail_image"
-            app:layout_constraintEnd_toEndOf="@+id/cocktail_image"
+            app:layout_constraintBottom_toBottomOf="@id/drink_image"
+            app:layout_constraintStart_toStartOf="@id/drink_image"
+            app:layout_constraintEnd_toEndOf="@+id/drink_image"
             tools:text="@string/app_name"
             android:textColor="@android:color/white"
             android:background="#99141414" />

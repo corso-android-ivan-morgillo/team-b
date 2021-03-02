@@ -9,7 +9,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/cocktail_List_Root"
+        android:id="@+id/drink_List_Root"
         tools:context=".MainActivity">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -53,7 +53,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:transitionGroup="true"
-                tools:listitem="@layout/cocktails_item"
+                tools:listitem="@layout/drink_item"
                 android:scrollbars="vertical" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

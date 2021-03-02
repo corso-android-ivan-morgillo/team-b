@@ -42,6 +42,6 @@ class SearchCocktailViewHolder(itemView: View) : RecyclerView.ViewHolder(itemVie
         name.text = item.cocktailName
         image.load(item.image)
         category.text = item.category
-        alcoholic.text = item.alcoholic.toString()
+        alcoholic.text = item.alcoholic
     }
 }
