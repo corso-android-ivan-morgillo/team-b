@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.transition.MaterialElevationScale
-import com.ivanmorgillo.corsoandroid.teamb.CocktailAdapter
+import com.ivanmorgillo.corsoandroid.teamb.DrinkAdapter
 import com.ivanmorgillo.corsoandroid.teamb.R
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -45,7 +45,7 @@ class HomeFragment : Fragment() {
             viewModel.send(HomeScreenEvents.OnRefreshClicked)
         }
         // collega i dati alla UI, per far cio serve adapter
-        val adapter = CocktailAdapter { item, view ->
+        val drinkAdapter = DrinkAdapter { item, view ->
             lastClickedItem = view
             exitTransition = MaterialElevationScale(false).apply {
                 duration = resources.getInteger(R.integer.motion_duration_large).toLong()
@@ -60,32 +60,19 @@ class HomeFragment : Fragment() {
         }
         // creamo adapter
         // Mettiamo in comunicazione l'adapter con la recycleview
-        cocktails_List.adapter = adapter
+        cocktails_List.adapter = drinkAdapter
         indexBarCustom()
 
-        val categoryAdapter: CategoryAdapter = CategoryAdapter()
+        val categoryAdapter: CategoryAdapter = CategoryAdapter { item: CategoryUI, view: View ->
+            viewModel.send(HomeScreenEvents.OnCategoryClick(item))
+        }
         category_list.adapter = categoryAdapter
-
-        val imageCategory = "https://i.pinimg.com/originals/99/5b/30/995b30f3bee71a43297f2dc731ba86c1.png"
-        val categoryList: List<Category> = listOf(
-            Category("Categoria1", imageCategory),
-            Category("categoria2", imageCategory),
-            Category("categoria3", imageCategory),
-            Category("categoria4", imageCategory),
-            Category("categoria5", imageCategory),
-            Category("categoria6", imageCategory),
-            Category("categoria7", imageCategory),
-            Category("categoria8", imageCategory),
-            Category("categoria9", imageCategory),
-            Category("categoria10", imageCategory),
-        )
-        categoryAdapter.setCategoryList(categoryList)
 
         // Chiede la lista dei cocktail tramite il ViewModel
         /*val cocktailList = viewModel.getCocktails()
         adapter.setCocktailsList(cocktailList)*/
-        observeStates(adapter)
-        observeActions()
+        observeStates(drinkAdapter)
+        observeActions(drinkAdapter)
         viewModel.send(HomeScreenEvents.OnReady)
         // viewModel.send(MainScreenEvents.OnMenuClick)
     }
@@ -99,7 +86,7 @@ class HomeFragment : Fragment() {
         cocktails_List.setIndexbarMargin(BAR_MARGIN)
     }
 
-    private fun observeActions() {
+    private fun observeActions(drinkListAdapter: DrinkAdapter) {
         viewModel.actions.observe(viewLifecycleOwner, { action ->
             Timber.d(action.toString())
             when (action) {
@@ -107,8 +94,8 @@ class HomeFragment : Fragment() {
                     lastClickedItem?.run {
                         val extras = FragmentNavigatorExtras(this to "cocktail_transition_item")
                         val directions =
-                            HomeFragmentDirections.actionHomeFragmentToDetailFragment(action.cocktail.id)
-                        Log.d("HomeID", " = ${action.cocktail.id}")
+                            HomeFragmentDirections.actionHomeFragmentToDetailFragment(action.drinks.id)
+                        Log.d("HomeID", " = ${action.drinks.id}")
                         findNavController().navigate(directions, extras)
                     }
                 }
@@ -118,6 +105,9 @@ class HomeFragment : Fragment() {
                     Log.d("NavigateToSettings", "Button Clicked!")
                     startActivity(Intent(Settings.ACTION_WIRELESS_SETTINGS))
                 }
+                HomeScreenActions.SetDrinkList -> {
+                    Timber.d("setting drink list")
+                }
             }.exhaustive
         })
     }
@@ -126,13 +116,13 @@ class HomeFragment : Fragment() {
     // comunica che è pronta
     // observe prende 2 argomenti:  lifecycle(main activity è una livecycle)
     // e un observable. Questa è una lambda in quanto contiene una sola funzione
-    private fun observeStates(adapter: CocktailAdapter) {
+    private fun observeStates(adapter: DrinkAdapter) {
         viewModel.states.observe(viewLifecycleOwner, { state ->
             Timber.d(state.toString())
             when (state) {
                 is HomeScreenStates.Content -> {
                     swiperefresh.isRefreshing = false
-                    adapter.setCocktailsList(state.cocktails)
+                    adapter.setDrinksList(state.drinks)
                     errorVisibilityGone()
                 }
                 is HomeScreenStates.Error -> {
