@@ -72,7 +72,7 @@ class HomeFragment : Fragment() {
         /*val cocktailList = viewModel.getCocktails()
         adapter.setCocktailsList(cocktailList)*/
         observeStates(drinkAdapter, categoryAdapter)
-        observeActions(drinkAdapter)
+        observeActions()
         viewModel.send(HomeScreenEvents.OnReady)
         // viewModel.send(MainScreenEvents.OnMenuClick)
     }
@@ -86,7 +86,7 @@ class HomeFragment : Fragment() {
         cocktails_List.setIndexbarMargin(BAR_MARGIN)
     }
 
-    private fun observeActions(drinkListAdapter: DrinkAdapter) {
+    private fun observeActions() {
         viewModel.actions.observe(viewLifecycleOwner, { action ->
             Timber.d(action.toString())
             when (action) {
@@ -120,11 +120,11 @@ class HomeFragment : Fragment() {
             when (state) {
                 is HomeScreenStates.Content -> {
                     swiperefresh.isRefreshing = false
-                    adapter.setDrinksList(state.drinks)
+                    adapter.setDrinksList(state.generalContent.drinksList)
+                    categoryAdapter.setCategoryList(state.generalContent.categoryList)
                     errorVisibilityGone()
-                }
-                is HomeScreenStates.CategoriesContent -> {
-                    categoryAdapter.setCategoryList(state.categories)
+                    innerLayout.visibility = View.VISIBLE
+                    category_layout.visibility = View.VISIBLE
                 }
                 is HomeScreenStates.Error -> {
                     when (state.error) {
@@ -145,7 +145,10 @@ class HomeFragment : Fragment() {
                             errorCustom("SlowInternet")
                             innerLayoutNoInternet_SlowInternet.visibility = View.VISIBLE
                         }
-                        ErrorStates.ShowNoCategoriesFound -> TODO()
+                        ErrorStates.ShowNoCategoriesFound -> {
+                            errorCustom("No Categories Found")
+                            innerLayoutNoCocktailFound.visibility = View.VISIBLE
+                        }
                     }
                 }
                 // quando l'aopp è in loading mostriamo progress bar
@@ -163,7 +166,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun errorCustom(errore: String) {
-
+        innerLayout.visibility = View.GONE
+        category_layout.visibility = View.GONE
         swiperefresh.isRefreshing = false
 
         imageViewError.setImageResource(R.drawable.errorimage)

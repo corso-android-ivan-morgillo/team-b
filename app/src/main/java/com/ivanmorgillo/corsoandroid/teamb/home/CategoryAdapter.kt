@@ -31,11 +31,6 @@ class CategoryAdapter(private val onClick: (CategoryUI, View) -> Unit) : Recycle
     }
 }
 
-data class CategoryUI(
-    val nameCategory: String,
-    val imageCategory: String
-)
-
 class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val text = itemView.findViewById<TextView>(R.id.category_text)
     val image = itemView.findViewById<ImageView>(R.id.category_image)
