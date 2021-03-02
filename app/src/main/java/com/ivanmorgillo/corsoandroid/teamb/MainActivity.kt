@@ -41,13 +41,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         // Set up ActionBar
         setupActionBarWithNavController(navController, appBarConfiguration)
-
         // Set up navigation menu
         nav_view.setupWithNavController(navController)
         nav_view.setNavigationItemSelectedListener(this)
-        actionBar?.title = "Cocktails"
-
-
         observeActions()
     }
 
@@ -88,16 +84,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle item selection
         return when (item.itemId) {
-            /*
-            R.id.action_name -> {
-                Timber.d("TI PIACE QUANDO CLICCO IL TUO DADO?")
-                true
-            }
-             */
-            R.id.home -> {
-                Toast.makeText(this, "Profile clicked", Toast.LENGTH_SHORT).show()
-                true
-            }
             R.id.search_name -> {
                 Timber.d("TI PIACE QUANDO CLICCO IL TUO SEARCH?")
                 true
