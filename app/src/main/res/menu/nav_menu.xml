@@ -12,18 +12,18 @@
             android:title="@string/preferiti" />
         <item
             android:id="@+id/nav_settings"
-            android:icon="@drawable/ic_launcher_background"
+            android:icon="@drawable/gear"
             android:title="@string/settings" />
     </group>
 
     <item android:title="@string/about_us">
         <menu>
             <item android:id="@+id/nav_facebook"
-                android:icon="@drawable/ic_launcher_background"
+                android:icon="@drawable/facebook"
                 android:title="@string/facebook"/>
             <item
                 android:id="@+id/nav_twitter"
-                android:icon="@drawable/ic_launcher_background"
+                android:icon="@drawable/twitter"
                 android:title="@string/twitter"/>
         </menu>
     </item>

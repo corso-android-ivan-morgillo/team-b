@@ -1,5 +1,8 @@
 package com.ivanmorgillo.corsoandroid.teamb
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -46,6 +49,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         nav_view.setupWithNavController(navController)
         // naviga nelle pagine del navigation drawer
         nav_view.setNavigationItemSelectedListener(this)
+        nav_view.itemIconTintList = null
         observeActions()
     }
 
@@ -123,9 +127,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.nav_facebook -> {
                 Timber.d("Facebook")
+                openNewTabWindow("https://www.facebook.com", this)
             }
             R.id.nav_twitter -> {
                 Timber.d("Twitter")
+                openNewTabWindow("https://twitter.com", this)
             }
             R.id.nav_feedback -> {
                 Timber.d("FeedBack")
@@ -142,5 +148,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    fun openNewTabWindow(urls: String, context: Context) {
+        val uris = Uri.parse(urls)
+        val intents = Intent(Intent.ACTION_VIEW, uris)
+        val b = Bundle()
+        b.putBoolean("new_window", true)
+        intents.putExtras(b)
+        context.startActivity(intents)
     }
 }
