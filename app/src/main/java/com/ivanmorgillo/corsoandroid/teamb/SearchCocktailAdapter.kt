@@ -36,9 +36,11 @@ class SearchCocktailViewHolder(itemView: View) : RecyclerView.ViewHolder(itemVie
     val name = itemView.findViewById<TextView>(R.id.search_cocktail_name)
     val image = itemView.findViewById<ImageView>(R.id.search_cocktail_image)
     val category = itemView.findViewById<TextView>(R.id.search_cocktail_category)
+    val alcoholic = itemView.findViewById<TextView>(R.id.search_cocktail_alcoholic)
     fun bind(item: SearchCocktailUI) {
         name.text = item.cocktailName
         image.load(item.image)
         category.text = item.category
+        alcoholic.text = item.alcoholic.toString()
     }
 }
