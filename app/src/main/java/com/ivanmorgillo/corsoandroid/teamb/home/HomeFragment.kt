@@ -71,7 +71,7 @@ class HomeFragment : Fragment() {
         // Chiede la lista dei cocktail tramite il ViewModel
         /*val cocktailList = viewModel.getCocktails()
         adapter.setCocktailsList(cocktailList)*/
-        observeStates(drinkAdapter)
+        observeStates(drinkAdapter, categoryAdapter)
         observeActions(drinkAdapter)
         viewModel.send(HomeScreenEvents.OnReady)
         // viewModel.send(MainScreenEvents.OnMenuClick)
@@ -106,6 +106,7 @@ class HomeFragment : Fragment() {
                     startActivity(Intent(Settings.ACTION_WIRELESS_SETTINGS))
                 }
                 HomeScreenActions.SetDrinkList -> {
+                    // drinkListAdapter.se
                     Timber.d("setting drink list")
                 }
             }.exhaustive
@@ -116,7 +117,7 @@ class HomeFragment : Fragment() {
     // comunica che è pronta
     // observe prende 2 argomenti:  lifecycle(main activity è una livecycle)
     // e un observable. Questa è una lambda in quanto contiene una sola funzione
-    private fun observeStates(adapter: DrinkAdapter) {
+    private fun observeStates(adapter: DrinkAdapter, categoryAdapter: CategoryAdapter) {
         viewModel.states.observe(viewLifecycleOwner, { state ->
             Timber.d(state.toString())
             when (state) {
@@ -124,6 +125,9 @@ class HomeFragment : Fragment() {
                     swiperefresh.isRefreshing = false
                     adapter.setDrinksList(state.drinks)
                     errorVisibilityGone()
+                }
+                is HomeScreenStates.CategoriesContent -> {
+                    categoryAdapter.setCategoryList(state.categories)
                 }
                 is HomeScreenStates.Error -> {
                     when (state.error) {
@@ -144,6 +148,7 @@ class HomeFragment : Fragment() {
                             errorCustom("SlowInternet")
                             innerLayoutNoInternet_SlowInternet.visibility = View.VISIBLE
                         }
+                        ErrorStates.ShowNoCategoriesFound -> TODO()
                     }
                 }
                 // quando l'aopp è in loading mostriamo progress bar
