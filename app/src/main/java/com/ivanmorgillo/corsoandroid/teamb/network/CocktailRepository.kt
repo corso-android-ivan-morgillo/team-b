@@ -53,6 +53,6 @@ data class Search(
     val name: String,
     val image: String,
     val idDrink: Long,
-    val isAlcoholic: Boolean,
+    val alcoholic: String,
     val category: String
 )

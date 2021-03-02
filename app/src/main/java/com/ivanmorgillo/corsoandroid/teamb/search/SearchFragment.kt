@@ -36,7 +36,6 @@ class SearchFragment : Fragment() {
             searchViewModel.send(SearchScreenEvent.OnReady(query))
         }
 
-        Timber.d("SearchFragmentCreated")
         val adapter = SearchCocktailAdapter()
         cocktails_search_List.adapter = adapter
         observeStates(adapter)
