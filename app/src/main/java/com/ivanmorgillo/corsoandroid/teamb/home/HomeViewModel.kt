@@ -4,7 +4,19 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ivanmorgillo.corsoandroid.teamb.DrinksUI
+import com.ivanmorgillo.corsoandroid.teamb.home.ErrorStates.ShowNoCategoriesFound
+import com.ivanmorgillo.corsoandroid.teamb.home.ErrorStates.ShowNoCocktailFound
+import com.ivanmorgillo.corsoandroid.teamb.home.ErrorStates.ShowNoInternetMessage
+import com.ivanmorgillo.corsoandroid.teamb.home.ErrorStates.ShowServerError
+import com.ivanmorgillo.corsoandroid.teamb.home.ErrorStates.ShowSlowInternet
+import com.ivanmorgillo.corsoandroid.teamb.home.HomeScreenStates.CategoriesContent
+import com.ivanmorgillo.corsoandroid.teamb.home.HomeScreenStates.Content
+import com.ivanmorgillo.corsoandroid.teamb.home.HomeScreenStates.Error
+import com.ivanmorgillo.corsoandroid.teamb.home.HomeScreenStates.Loading
+import com.ivanmorgillo.corsoandroid.teamb.network.CategoriesError
+import com.ivanmorgillo.corsoandroid.teamb.network.CategoriesError.NoCategoriesFound
 import com.ivanmorgillo.corsoandroid.teamb.network.CocktailRepository
+import com.ivanmorgillo.corsoandroid.teamb.network.LoadCategoriesResult
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.NoCocktailFound
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.NoInternet
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.ServerError
@@ -35,6 +47,7 @@ class HomeViewModel(
         when (event) {
             // l'activity è pronta
             HomeScreenEvents.OnReady -> {
+                loadCategoryContent()
                 loadContent()
             }
             is HomeScreenEvents.OnCocktailClick -> {
@@ -54,8 +67,38 @@ class HomeViewModel(
         }.exhaustive
     }
 
+    private fun loadCategoryContent() {
+        states.postValue(Loading)
+        viewModelScope.launch {
+            val result = repository.loadCategories()
+            when (result) {
+                is LoadCategoriesResult.Failure -> onCategoriesFailure(result)
+                is LoadCategoriesResult.Success -> onCategoriesSuccess(result)
+            }.exhaustive
+        }
+    }
+
+    private fun onCategoriesSuccess(result: LoadCategoriesResult.Success) {
+        val categories = result.categories.map {
+            CategoryUI(
+                nameCategory = it.categoryName,
+                imageCategory = "https://www.thecocktaildb.com/images/media/drink/ruxuvp1472669600.jpg"
+            )
+        }
+        states.postValue(CategoriesContent(categories))
+    }
+
+    private fun onCategoriesFailure(result: LoadCategoriesResult.Failure) {
+        when (result.error) {
+            NoCategoriesFound -> states.postValue(Error(ShowNoCategoriesFound))
+            CategoriesError.NoInternet -> states.postValue(Error(ShowNoInternetMessage))
+            CategoriesError.ServerError -> states.postValue(Error(ShowServerError))
+            CategoriesError.SlowInternet -> states.postValue(Error(ShowSlowInternet))
+        }.exhaustive
+    }
+
     private fun loadContent() {
-        states.postValue(HomeScreenStates.Loading)
+        states.postValue(Loading)
         viewModelScope.launch {
             val result = repository.loadCocktails()
             when (result) {
@@ -67,10 +110,10 @@ class HomeViewModel(
 
     private fun onFailure(result: Failure) {
         when (result.error) {
-            NoCocktailFound -> states.postValue(HomeScreenStates.Error(ErrorStates.ShowNoCocktailFound))
-            NoInternet -> states.postValue(HomeScreenStates.Error(ErrorStates.ShowNoInternetMessage))
-            ServerError -> states.postValue(HomeScreenStates.Error(ErrorStates.ShowServerError))
-            SlowInternet -> states.postValue(HomeScreenStates.Error(ErrorStates.ShowSlowInternet))
+            NoCocktailFound -> states.postValue(Error(ShowNoCocktailFound))
+            NoInternet -> states.postValue(Error(ShowNoInternetMessage))
+            ServerError -> states.postValue(Error(ShowServerError))
+            SlowInternet -> states.postValue(Error(ShowSlowInternet))
         }.exhaustive
     }
 
@@ -78,7 +121,7 @@ class HomeViewModel(
         val cocktails = result.cocktails.map {
             DrinksUI(drinkName = it.name, image = it.image, id = it.idDrink)
         }
-        states.postValue(HomeScreenStates.Content(cocktails))
+        states.postValue(Content(cocktails))
     }
 }
 
@@ -90,6 +133,7 @@ sealed class HomeScreenStates {
     object Loading : HomeScreenStates()
     data class Error(val error: ErrorStates) : HomeScreenStates()
     data class Content(val drinks: List<DrinksUI>) : HomeScreenStates()
+    data class CategoriesContent(val categories: List<CategoryUI>) : HomeScreenStates()
 }
 
 // contiene eventi che possiamo mandare al nostro view model
@@ -108,6 +152,7 @@ sealed class HomeScreenActions {
 }
 
 sealed class ErrorStates {
+    object ShowNoCategoriesFound : ErrorStates()
     object ShowNoInternetMessage : ErrorStates()
     object ShowNoCocktailFound : ErrorStates()
     object ShowServerError : ErrorStates()
