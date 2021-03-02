@@ -1,11 +1,4 @@
-package com.ivanmorgillo.corsoandroid.teamb
-
-import com.ivanmorgillo.corsoandroid.teamb.network.CocktailAPI
-import com.ivanmorgillo.corsoandroid.teamb.network.Ingredient
-import com.ivanmorgillo.corsoandroid.teamb.network.LoadCategoriesResult
-import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailResult
-import com.ivanmorgillo.corsoandroid.teamb.network.LoadDetailCocktailResult
-import com.ivanmorgillo.corsoandroid.teamb.network.LoadSearchCocktailResult
+package com.ivanmorgillo.corsoandroid.teamb.network
 
 /* Interfaccia Repository Pattern
  * tipo suspend --> rappresenta un'operazione di input output --> è un'operazione che può fallire

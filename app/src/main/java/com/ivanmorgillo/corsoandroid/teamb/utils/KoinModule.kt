@@ -1,7 +1,12 @@
-package com.ivanmorgillo.corsoandroid.teamb
+package com.ivanmorgillo.corsoandroid.teamb.utils
 
+import com.ivanmorgillo.corsoandroid.teamb.MainActivityViewModel
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailViewModel
+import com.ivanmorgillo.corsoandroid.teamb.home.HomeViewModel
 import com.ivanmorgillo.corsoandroid.teamb.network.CocktailAPI
+import com.ivanmorgillo.corsoandroid.teamb.network.CocktailRepository
+import com.ivanmorgillo.corsoandroid.teamb.network.CocktailRepositoryImpl
+import com.ivanmorgillo.corsoandroid.teamb.search.SearchViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -20,7 +25,7 @@ val appModule = module {
     }
 
     // Creiamo un oggetto di tipo MainViewModel
-    viewModel { MainViewModel(repository = get(), tracking = get()) }
+    viewModel { HomeViewModel(repository = get(), tracking = get()) }
     viewModel { DetailViewModel(repository = get(), tracking = get()) }
     viewModel { SearchViewModel(repository = get(), tracking = get()) }
     viewModel { MainActivityViewModel(repository = get(), tracking = get()) }

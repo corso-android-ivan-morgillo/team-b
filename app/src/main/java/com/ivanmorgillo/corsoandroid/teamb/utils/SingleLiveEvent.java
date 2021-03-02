@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package com.ivanmorgillo.corsoandroid.teamb;
+package com.ivanmorgillo.corsoandroid.teamb.utils;
 
 
 import android.util.Log;

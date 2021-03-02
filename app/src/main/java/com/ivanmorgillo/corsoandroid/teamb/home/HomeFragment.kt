@@ -13,13 +13,8 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.transition.MaterialElevationScale
 import com.ivanmorgillo.corsoandroid.teamb.CocktailAdapter
-import com.ivanmorgillo.corsoandroid.teamb.ErrorStates
-import com.ivanmorgillo.corsoandroid.teamb.MainScreenActions
-import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvents
-import com.ivanmorgillo.corsoandroid.teamb.MainScreenStates
-import com.ivanmorgillo.corsoandroid.teamb.MainViewModel
 import com.ivanmorgillo.corsoandroid.teamb.R
-import com.ivanmorgillo.corsoandroid.teamb.exhaustive
+import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.layout_error.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -29,7 +24,7 @@ const val CORNER_RADIUS = 3
 const val BAR_MARGIN = 3f
 
 class HomeFragment : Fragment() {
-    private val viewModel: MainViewModel by viewModel()
+    private val viewModel: HomeViewModel by viewModel()
     private var lastClickedItem: View? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +42,7 @@ class HomeFragment : Fragment() {
         view.doOnPreDraw { startPostponedEnterTransition() }
 
         swiperefresh.setOnRefreshListener {
-            viewModel.send(MainScreenEvents.OnRefreshClicked)
+            viewModel.send(HomeScreenEvents.OnRefreshClicked)
         }
         // collega i dati alla UI, per far cio serve adapter
         val adapter = CocktailAdapter { item, view ->
@@ -58,10 +53,10 @@ class HomeFragment : Fragment() {
             reenterTransition = MaterialElevationScale(true).apply {
                 duration = resources.getInteger(R.integer.motion_duration_large).toLong()
             }
-            viewModel.send(MainScreenEvents.OnCocktailClick(item))
+            viewModel.send(HomeScreenEvents.OnCocktailClick(item))
         }
         buttonError.setOnClickListener {
-            viewModel.send(MainScreenEvents.OnSettingClick)
+            viewModel.send(HomeScreenEvents.OnSettingClick)
         }
         // creamo adapter
         // Mettiamo in comunicazione l'adapter con la recycleview
@@ -91,7 +86,7 @@ class HomeFragment : Fragment() {
         adapter.setCocktailsList(cocktailList)*/
         observeStates(adapter)
         observeActions()
-        viewModel.send(MainScreenEvents.OnReady)
+        viewModel.send(HomeScreenEvents.OnReady)
         // viewModel.send(MainScreenEvents.OnMenuClick)
     }
 
@@ -108,7 +103,7 @@ class HomeFragment : Fragment() {
         viewModel.actions.observe(viewLifecycleOwner, { action ->
             Timber.d(action.toString())
             when (action) {
-                is MainScreenActions.NavigateToDetail -> {
+                is HomeScreenActions.NavigateToDetail -> {
                     lastClickedItem?.run {
                         val extras = FragmentNavigatorExtras(this to "cocktail_transition_item")
                         val directions =
@@ -117,7 +112,7 @@ class HomeFragment : Fragment() {
                         findNavController().navigate(directions, extras)
                     }
                 }
-                MainScreenActions.NavigateToSettings
+                HomeScreenActions.NavigateToSettings
                 -> {
                     Timber.d(action.toString())
                     Log.d("NavigateToSettings", "Button Clicked!")
@@ -135,12 +130,12 @@ class HomeFragment : Fragment() {
         viewModel.states.observe(viewLifecycleOwner, { state ->
             Timber.d(state.toString())
             when (state) {
-                is MainScreenStates.Content -> {
+                is HomeScreenStates.Content -> {
                     swiperefresh.isRefreshing = false
                     adapter.setCocktailsList(state.cocktails)
                     errorVisibilityGone()
                 }
-                is MainScreenStates.Error -> {
+                is HomeScreenStates.Error -> {
                     when (state.error) {
                         ErrorStates.ShowNoInternetMessage -> {
                             innerLayoutNoInternet_SlowInternet.visibility = View.VISIBLE
@@ -162,7 +157,7 @@ class HomeFragment : Fragment() {
                     }
                 }
                 // quando l'aopp è in loading mostriamo progress bar
-                MainScreenStates.Loading -> {
+                HomeScreenStates.Loading -> {
                     swiperefresh.isRefreshing = true
                 }
             }.exhaustive

@@ -1,4 +1,4 @@
-package com.ivanmorgillo.corsoandroid.teamb
+package com.ivanmorgillo.corsoandroid.teamb.search
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.ivanmorgillo.corsoandroid.teamb.R
 import timber.log.Timber
 
 class SearchCocktailAdapter : RecyclerView.Adapter<SearchCocktailViewHolder>() {
