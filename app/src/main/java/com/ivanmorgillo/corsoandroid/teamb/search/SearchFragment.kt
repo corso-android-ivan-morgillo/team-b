@@ -1,4 +1,4 @@
-package com.ivanmorgillo.corsoandroid.teamb
+package com.ivanmorgillo.corsoandroid.teamb.search
 
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
+import com.ivanmorgillo.corsoandroid.teamb.R
+import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
 import kotlinx.android.synthetic.main.fragment_search.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -29,7 +31,7 @@ class SearchFragment : Fragment() {
         val query = this.arguments?.getString("query")
         Timber.d("QUERY ARG $query")
         if (query.isNullOrEmpty()) {
-            Timber.d("argomenti nulli")
+            findNavController().popBackStack()
         } else {
             searchViewModel.send(SearchScreenEvent.OnReady(query))
         }

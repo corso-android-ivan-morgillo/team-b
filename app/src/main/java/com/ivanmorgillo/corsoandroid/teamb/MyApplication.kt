@@ -2,6 +2,9 @@ package com.ivanmorgillo.corsoandroid.teamb
 
 import android.app.Application
 import android.os.StrictMode
+import com.ivanmorgillo.corsoandroid.teamb.utils.CrashReportingTree
+import com.ivanmorgillo.corsoandroid.teamb.utils.LineNumberDebugTree
+import com.ivanmorgillo.corsoandroid.teamb.utils.appModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin

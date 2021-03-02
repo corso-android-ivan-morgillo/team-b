@@ -1,9 +1,6 @@
 package com.ivanmorgillo.corsoandroid.teamb.network
 
 import DetailCocktailDTO
-import com.ivanmorgillo.corsoandroid.teamb.Cocktail
-import com.ivanmorgillo.corsoandroid.teamb.Detail
-import com.ivanmorgillo.corsoandroid.teamb.Search
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.NoCocktailFound
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.NoInternet
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.ServerError

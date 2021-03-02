@@ -15,6 +15,7 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
+import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -76,7 +77,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             override fun onQueryTextSubmit(query: String?): Boolean {
                 searchView.setQuery(query, false)
                 // Timber.d("Ricerca in corso.. $query")
-                mainActivityViewModel.send(MainActivityScreenEvent.OnSearchClick(query.orEmpty()))
+                if (!query.isNullOrEmpty()) {
+                    mainActivityViewModel.send(MainActivityScreenEvent.OnSearchClick(query))
+                }
                 return false
             }
         })
@@ -90,9 +93,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 is MainActivityScreenAction.NavigateToSearch -> {
                     val bundle = Bundle()
                     bundle.putString("query", action.query)
-                    val fragInfo = SearchFragment()
-                    fragInfo.arguments = bundle
-                    navController.navigate(R.id.searchFragment, fragInfo.arguments)
+                    navController.navigate(R.id.searchFragment, bundle)
                 }
                 MainActivityScreenAction.NavigateToSettingMenu -> {
                     Timber.d(action.toString())

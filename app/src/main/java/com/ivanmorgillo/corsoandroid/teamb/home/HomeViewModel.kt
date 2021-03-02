@@ -1,20 +1,24 @@
-package com.ivanmorgillo.corsoandroid.teamb
+package com.ivanmorgillo.corsoandroid.teamb.home
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvents.OnReady
+import com.ivanmorgillo.corsoandroid.teamb.CocktailUI
+import com.ivanmorgillo.corsoandroid.teamb.network.CocktailRepository
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.NoCocktailFound
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.NoInternet
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.ServerError
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.SlowInternet
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailResult.Failure
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailResult.Success
+import com.ivanmorgillo.corsoandroid.teamb.utils.SingleLiveEvent
+import com.ivanmorgillo.corsoandroid.teamb.utils.Tracking
+import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 /* spostiamo la generazione statica della lista all'implementazione della interfaccia */
-class MainViewModel(
+class HomeViewModel(
     private val repository: CocktailRepository,
     private val tracking: Tracking
 
@@ -22,33 +26,33 @@ class MainViewModel(
     // mutable live data: tipo contenitore di T, dove T è il nostro stato
     // states è una variabile che la nostra activity può osservare.
     // Quando si cambia stato questa variabile viene settata
-    val states = MutableLiveData<MainScreenStates>()
-    val actions = SingleLiveEvent<MainScreenActions>()
-    fun send(event: MainScreenEvents) {
+    val states = MutableLiveData<HomeScreenStates>()
+    val actions = SingleLiveEvent<HomeScreenActions>()
+    fun send(event: HomeScreenEvents) {
         // controlla il tipo di evento e in base a questo fa qualcosa
         Timber.d(event.toString())
         @Suppress("IMPLICIT_CAST_TO_ANY")
         when (event) {
             // l'activity è pronta
-            OnReady -> {
+            HomeScreenEvents.OnReady -> {
                 loadContent()
             }
-            is MainScreenEvents.OnCocktailClick -> {
+            is HomeScreenEvents.OnCocktailClick -> {
                 tracking.logEvent("Cocktail_Clicked")
-                actions.postValue(MainScreenActions.NavigateToDetail(event.cocktail))
+                actions.postValue(HomeScreenActions.NavigateToDetail(event.cocktail))
             }
-            MainScreenEvents.OnRefreshClicked -> {
+            HomeScreenEvents.OnRefreshClicked -> {
                 // add tracking
                 loadContent()
             }
-            MainScreenEvents.OnSettingClick -> {
-                actions.postValue(MainScreenActions.NavigateToSettings)
+            HomeScreenEvents.OnSettingClick -> {
+                actions.postValue(HomeScreenActions.NavigateToSettings)
             }
         }.exhaustive
     }
 
     private fun loadContent() {
-        states.postValue(MainScreenStates.Loading)
+        states.postValue(HomeScreenStates.Loading)
         viewModelScope.launch {
             val result = repository.loadCocktails()
             when (result) {
@@ -60,10 +64,10 @@ class MainViewModel(
 
     private fun onFailure(result: Failure) {
         when (result.error) {
-            NoCocktailFound -> states.postValue(MainScreenStates.Error(ErrorStates.ShowNoCocktailFound))
-            NoInternet -> states.postValue(MainScreenStates.Error(ErrorStates.ShowNoInternetMessage))
-            ServerError -> states.postValue(MainScreenStates.Error(ErrorStates.ShowServerError))
-            SlowInternet -> states.postValue(MainScreenStates.Error(ErrorStates.ShowSlowInternet))
+            NoCocktailFound -> states.postValue(HomeScreenStates.Error(ErrorStates.ShowNoCocktailFound))
+            NoInternet -> states.postValue(HomeScreenStates.Error(ErrorStates.ShowNoInternetMessage))
+            ServerError -> states.postValue(HomeScreenStates.Error(ErrorStates.ShowServerError))
+            SlowInternet -> states.postValue(HomeScreenStates.Error(ErrorStates.ShowSlowInternet))
         }.exhaustive
     }
 
@@ -71,7 +75,7 @@ class MainViewModel(
         val cocktails = result.cocktails.map {
             CocktailUI(cocktailName = it.name, image = it.image, id = it.idDrink)
         }
-        states.postValue(MainScreenStates.Content(cocktails))
+        states.postValue(HomeScreenStates.Content(cocktails))
     }
 }
 
@@ -79,24 +83,23 @@ class MainViewModel(
  * Contiene gli oggetti che rappresentano lo stato in cui si può trovare la nostra schermata:
  * Loading, Error, Content
  */
-sealed class MainScreenStates {
-    object Loading : MainScreenStates()
-    data class Error(val error: ErrorStates) : MainScreenStates()
-    data class Content(val cocktails: List<CocktailUI>) : MainScreenStates()
+sealed class HomeScreenStates {
+    object Loading : HomeScreenStates()
+    data class Error(val error: ErrorStates) : HomeScreenStates()
+    data class Content(val cocktails: List<CocktailUI>) : HomeScreenStates()
 }
 
 // contiene eventi che possiamo mandare al nostro view model
-sealed class MainScreenEvents {
-    data class OnCocktailClick(val cocktail: CocktailUI) : MainScreenEvents()
-    object OnReady : MainScreenEvents()
-    object OnRefreshClicked : MainScreenEvents()
-    object OnSettingClick : MainScreenEvents()
-
+sealed class HomeScreenEvents {
+    data class OnCocktailClick(val cocktail: CocktailUI) : HomeScreenEvents()
+    object OnReady : HomeScreenEvents()
+    object OnRefreshClicked : HomeScreenEvents()
+    object OnSettingClick : HomeScreenEvents()
 }
 
-sealed class MainScreenActions {
-    data class NavigateToDetail(val cocktail: CocktailUI) : MainScreenActions()
-    object NavigateToSettings : MainScreenActions()
+sealed class HomeScreenActions {
+    data class NavigateToDetail(val cocktail: CocktailUI) : HomeScreenActions()
+    object NavigateToSettings : HomeScreenActions()
 }
 
 sealed class ErrorStates {

@@ -1,13 +1,17 @@
-package com.ivanmorgillo.corsoandroid.teamb
+package com.ivanmorgillo.corsoandroid.teamb.search
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ivanmorgillo.corsoandroid.teamb.network.CocktailRepository
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadSearchCocktailResult
 import com.ivanmorgillo.corsoandroid.teamb.network.SearchLoadCocktailError.NoCocktailFound
 import com.ivanmorgillo.corsoandroid.teamb.network.SearchLoadCocktailError.NoInternet
 import com.ivanmorgillo.corsoandroid.teamb.network.SearchLoadCocktailError.ServerError
 import com.ivanmorgillo.corsoandroid.teamb.network.SearchLoadCocktailError.SlowInternet
+import com.ivanmorgillo.corsoandroid.teamb.utils.SingleLiveEvent
+import com.ivanmorgillo.corsoandroid.teamb.utils.Tracking
+import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
