@@ -105,7 +105,6 @@ class HomeFragment : Fragment() {
                     Log.d("NavigateToSettings", "Button Clicked!")
                     startActivity(Intent(Settings.ACTION_WIRELESS_SETTINGS))
                 }
-
             }.exhaustive
         })
     }
