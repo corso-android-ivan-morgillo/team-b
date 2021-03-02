@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.ivanmorgillo.corsoandroid.teamb.R
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
@@ -36,7 +35,10 @@ class SearchFragment : Fragment() {
             searchViewModel.send(SearchScreenEvent.OnReady(query))
         }
 
-        val adapter = SearchCocktailAdapter()
+        val adapter = SearchCocktailAdapter { item, view ->
+            lastClickedItem = view
+            searchViewModel.send(SearchScreenEvent.OnCocktailClick(item))
+        }
         cocktails_search_List.adapter = adapter
         observeStates(adapter)
         observeActions()
@@ -49,11 +51,10 @@ class SearchFragment : Fragment() {
             when (action) {
                 is SearchScreenAction.NavigateToDetail -> {
                     lastClickedItem?.run {
-                        val extras = FragmentNavigatorExtras(this to "cocktail_transition_item")
                         val directions =
                             SearchFragmentDirections.actionSearchFragmentToDetailFragment(action.cocktail.id)
                         Log.d("SearchID", " = ${action.cocktail.id}")
-                        findNavController().navigate(directions, extras)
+                        findNavController().navigate(directions)
                     }
                 }
             }.exhaustive
