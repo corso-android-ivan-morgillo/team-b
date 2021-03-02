@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import coil.load
 import com.google.android.material.card.MaterialCardView
+import com.ivanmorgillo.corsoandroid.teamb.home.DrinksUI
 
 const val INITIAL_CAPACITY = 26
 
@@ -96,9 +97,3 @@ class CocktailViewHolder(itemView: View) : ViewHolder(itemView) {
         drinkCardView.transitionName = "cocktail_transition_item${item.id}"
     }
 }
-
-data class DrinksUI(
-    val drinkName: String,
-    val image: String,
-    val id: Long
-)

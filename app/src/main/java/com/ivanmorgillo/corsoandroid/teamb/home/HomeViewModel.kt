@@ -3,13 +3,11 @@ package com.ivanmorgillo.corsoandroid.teamb.home
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ivanmorgillo.corsoandroid.teamb.DrinksUI
 import com.ivanmorgillo.corsoandroid.teamb.home.ErrorStates.ShowNoCategoriesFound
 import com.ivanmorgillo.corsoandroid.teamb.home.ErrorStates.ShowNoCocktailFound
 import com.ivanmorgillo.corsoandroid.teamb.home.ErrorStates.ShowNoInternetMessage
 import com.ivanmorgillo.corsoandroid.teamb.home.ErrorStates.ShowServerError
 import com.ivanmorgillo.corsoandroid.teamb.home.ErrorStates.ShowSlowInternet
-import com.ivanmorgillo.corsoandroid.teamb.home.HomeScreenStates.CategoriesContent
 import com.ivanmorgillo.corsoandroid.teamb.home.HomeScreenStates.Content
 import com.ivanmorgillo.corsoandroid.teamb.home.HomeScreenStates.Error
 import com.ivanmorgillo.corsoandroid.teamb.home.HomeScreenStates.Loading
@@ -47,7 +45,6 @@ class HomeViewModel(
         when (event) {
             // l'activity è pronta
             HomeScreenEvents.OnReady -> {
-                loadCategoryContent()
                 loadContent("Cocktail")
             }
             is HomeScreenEvents.OnCocktailClick -> {
@@ -68,27 +65,6 @@ class HomeViewModel(
         }.exhaustive
     }
 
-    private fun loadCategoryContent() {
-        states.postValue(Loading)
-        viewModelScope.launch {
-            val result = repository.loadCategories()
-            when (result) {
-                is LoadCategoriesResult.Failure -> onCategoriesFailure(result)
-                is LoadCategoriesResult.Success -> onCategoriesSuccess(result)
-            }.exhaustive
-        }
-    }
-
-    private fun onCategoriesSuccess(result: LoadCategoriesResult.Success) {
-        val categories = result.categories.map {
-            CategoryUI(
-                nameCategory = it.categoryName,
-                imageCategory = "https://www.thecocktaildb.com/images/media/drink/ruxuvp1472669600.jpg"
-            )
-        }
-        states.postValue(CategoriesContent(categories))
-    }
-
     private fun onCategoriesFailure(result: LoadCategoriesResult.Failure) {
         when (result.error) {
             NoCategoriesFound -> states.postValue(Error(ShowNoCategoriesFound))
@@ -101,10 +77,28 @@ class HomeViewModel(
     private fun loadContent(category: String) {
         states.postValue(Loading)
         viewModelScope.launch {
-            val result = repository.loadDrinks(category)
-            when (result) {
-                is Failure -> onFailure(result)
-                is Success -> onSuccess(result)
+            val drinkresult = repository.loadDrinks(category)
+            val resultCategories = repository.loadCategories()
+            when (resultCategories) {
+                is LoadCategoriesResult.Failure -> onCategoriesFailure(resultCategories)
+                is LoadCategoriesResult.Success -> {
+                    val categories = resultCategories.categories.map {
+                        CategoryUI(
+                            nameCategory = it.categoryName,
+                            imageCategory = "https://www.thecocktaildb.com/images/media/drink/ruxuvp1472669600.jpg"
+                        )
+                    }
+                    when (drinkresult) {
+                        is Failure -> onFailure(drinkresult)
+                        is Success -> {
+                            val cocktails = drinkresult.cocktails.map {
+                                DrinksUI(drinkName = it.name, image = it.image, id = it.idDrink)
+                            }
+                            val generalContent = GeneralContent(cocktails, categories)
+                            states.postValue(Content(generalContent))
+                        }
+                    }.exhaustive
+                }
             }.exhaustive
         }
     }
@@ -117,13 +111,7 @@ class HomeViewModel(
             SlowInternet -> states.postValue(Error(ShowSlowInternet))
         }.exhaustive
     }
-
-    private fun onSuccess(result: Success) {
-        val cocktails = result.cocktails.map {
-            DrinksUI(drinkName = it.name, image = it.image, id = it.idDrink)
-        }
-        states.postValue(Content(cocktails))
-    }
+    
 }
 
 /**
@@ -133,8 +121,7 @@ class HomeViewModel(
 sealed class HomeScreenStates {
     object Loading : HomeScreenStates()
     data class Error(val error: ErrorStates) : HomeScreenStates()
-    data class Content(val drinks: List<DrinksUI>) : HomeScreenStates()
-    data class CategoriesContent(val categories: List<CategoryUI>) : HomeScreenStates()
+    data class Content(val generalContent: GeneralContent) : HomeScreenStates()
 }
 
 // contiene eventi che possiamo mandare al nostro view model
@@ -158,3 +145,16 @@ sealed class ErrorStates {
     object ShowServerError : ErrorStates()
     object ShowSlowInternet : ErrorStates()
 }
+
+class GeneralContent(val drinksList: List<DrinksUI>, val categoryList: List<CategoryUI>)
+
+data class DrinksUI(
+    val drinkName: String,
+    val image: String,
+    val id: Long
+)
+
+data class CategoryUI(
+    val nameCategory: String,
+    val imageCategory: String
+)
