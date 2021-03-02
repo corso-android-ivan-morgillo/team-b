@@ -26,38 +26,20 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val myValue = this.arguments!!.getString("query")
-        Timber.d("SearchFragmentCreated")
-        val imageCocktail = "https://www.thecocktaildb.com/images/media/drink/vwxrsw1478251483.jpg"
-        val cocktailList = listOf<SearchCocktailUI>(
-            SearchCocktailUI(
-                cocktailName = "Mojito1",
-                image = imageCocktail,
-                category = "Categoria1",
-                id = 0,
-                alcoholic = false
+        val query = this.arguments?.getString("query")
+        Timber.d("QUERY ARG $query")
+        if (query.isNullOrEmpty()) {
+            Timber.d("argomenti nulli")
+        } else {
+            searchViewModel.send(SearchScreenEvent.OnReady(query))
+        }
 
-            ),
-            SearchCocktailUI(
-                cocktailName = "Mojito1",
-                image = imageCocktail,
-                category = "Categoria1",
-                id = 0,
-                alcoholic = false
-            ),
-            SearchCocktailUI(
-                cocktailName = "Mojito1",
-                image = imageCocktail,
-                category = "Categoria1",
-                id = 0,
-                alcoholic = false
-            ),
-        )
+        Timber.d("SearchFragmentCreated")
         val adapter = SearchCocktailAdapter()
         cocktails_search_List.adapter = adapter
-        adapter.setSearchList(cocktailList)
+        observeStates(adapter)
         observeActions()
-        searchViewModel.send(SearchScreenEvent.OnReady("margarita"))
+        // searchViewModel.send(SearchScreenEvent.OnReady("margarita"))
     }
 
     private fun observeActions() {
@@ -74,6 +56,18 @@ class SearchFragment : Fragment() {
                     }
                 }
             }.exhaustive
+        })
+    }
+
+    private fun observeStates(adapter: SearchCocktailAdapter) {
+        searchViewModel.states.observe(viewLifecycleOwner, { state ->
+            when (state) {
+                is SearchScreenStates.Content -> {
+                    adapter.setSearchList(state.cocktails)
+                }
+                is SearchScreenStates.Error -> Timber.d("error state search")
+                SearchScreenStates.Loading -> Timber.d("loading state search")
+            }
         })
     }
 }

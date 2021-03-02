@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setupActionBarWithNavController(navController, appBarConfiguration)
         // Set up navigation menu
         nav_view.setupWithNavController(navController)
+        // naviga nelle pagine del navigation drawer
         nav_view.setNavigationItemSelectedListener(this)
         observeActions()
     }
@@ -51,6 +52,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return NavigationUI.navigateUp(navController, appBarConfiguration)
     }
 
+    // l'hamburger menu si trasforma in freccia per tornare indietro
     override fun onBackPressed() {
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START)
@@ -73,23 +75,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             override fun onQueryTextSubmit(query: String?): Boolean {
                 searchView.setQuery(query, false)
-                Timber.d("Ricerca in corso.. $query")
+                // Timber.d("Ricerca in corso.. $query")
                 mainActivityViewModel.send(MainActivityScreenEvent.OnSearchClick(query.orEmpty()))
                 return false
             }
         })
         return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle item selection
-        return when (item.itemId) {
-            R.id.search_name -> {
-                Timber.d("TI PIACE QUANDO CLICCO IL TUO SEARCH?")
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
     private fun observeActions() {
