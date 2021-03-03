@@ -7,8 +7,6 @@ apply plugin: "androidx.navigation.safeargs.kotlin"
 apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'koin'
 
-def storepassword = System.getenv('KEYSTOREPASSWORD')
-def aliaspassword = System.getenv('ALIASPASSWORD')
 
 android {
     compileSdkVersion 30
@@ -26,9 +24,9 @@ android {
     signingConfigs {
         release {
             storeFile file("../cocktailkeystore.jks")
-            storePassword storepassword
+            storePassword "x^HvSmDh1Qcu"
             keyAlias "Cocktails"
-            keyPassword aliaspassword
+            keyPassword "xalx@1RKUxPH"
         }
     }
 
