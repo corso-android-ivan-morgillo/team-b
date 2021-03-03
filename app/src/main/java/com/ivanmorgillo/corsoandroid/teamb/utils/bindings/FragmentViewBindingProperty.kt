@@ -50,14 +50,16 @@ import androidx.viewbinding.ViewBinding
  * thrown.
  */
 
-private class FragmentViewBindingProperty<F : Fragment, T : ViewBinding>(viewBinder: (F) -> T) : ViewBindingProperty<F, T>(viewBinder) {
+private class FragmentViewBindingProperty<F : Fragment, T : ViewBinding>(viewBinder: (F) -> T) :
+    ViewBindingProperty<F, T>(viewBinder) {
     override fun getLifecycleOwner(thisRef: F) = thisRef.viewLifecycleOwner
 }
 
 /**
  * Create new [ViewBinding] associated with the [Fragment]
  */
-fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(viewBinder: (F) -> T): ViewBindingProperty<F, T> = FragmentViewBindingProperty(viewBinder)
+fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(viewBinder: (F) -> T):
+        ViewBindingProperty<F, T> = FragmentViewBindingProperty(viewBinder)
 
 /**
  * Create new [ViewBinding] associated with the [Fragment]
@@ -81,4 +83,7 @@ inline fun <F : Fragment, T : ViewBinding> Fragment.viewBinding(
 inline fun <T : ViewBinding> Fragment.viewBinding(
     crossinline vbFactory: (View) -> T,
     @IdRes viewBindingRootId: Int
-): ViewBindingProperty<Fragment, T> = viewBinding(vbFactory) { fragment: Fragment -> fragment.requireView().findViewById(viewBindingRootId) }
+):
+        ViewBindingProperty<Fragment, T> = viewBinding(vbFactory) { fragment: Fragment ->
+    fragment.requireView().findViewById(viewBindingRootId)
+}
