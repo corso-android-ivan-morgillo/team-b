@@ -25,10 +25,10 @@ android {
 
     signingConfigs {
         release {
-            storeFile file("key_store_password.keystore")
+            storeFile file("../key_store_password.keystore")
             storePassword storepassword
             keyAlias "Cocktails"
-            keyPassword "aliaspassword"
+            keyPassword aliaspassword
         }
     }
 
