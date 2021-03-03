@@ -9,7 +9,8 @@ apply plugin: 'koin'
 
 def storepassword = System.getenv('KEYSTOREPASSWORD')
 def aliaspassword = System.getenv('ALIASPASSWORD')
-
+def buildNumber = System.getenv('GITHUB_RUN_NUMBER') ?: "1"
+def _versionCode = buildNumber.toInteger()
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -18,8 +19,8 @@ android {
         applicationId "com.apperol"
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        versionCode _versionCode
+        versionName "1.0.1." + _versionCode
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
