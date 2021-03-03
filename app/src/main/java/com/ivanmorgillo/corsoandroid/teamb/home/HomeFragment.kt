@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.transition.MaterialElevationScale
-import com.ivanmorgillo.corsoandroid.teamb.DrinkAdapter
 import com.ivanmorgillo.corsoandroid.teamb.R
 import com.ivanmorgillo.corsoandroid.teamb.databinding.FragmentHomeBinding
 import com.ivanmorgillo.corsoandroid.teamb.home.HomeFragmentDirections.Companion.actionHomeFragmentToDetailFragment
