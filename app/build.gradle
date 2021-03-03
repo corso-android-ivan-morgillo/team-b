@@ -27,7 +27,7 @@ android {
         release {
             storeFile file("../cocktailkeystore.jks")
             storePassword storepassword
-            keyAlias "Cocktails"
+            keyAlias "cocktails2"
             keyPassword aliaspassword
         }
     }
