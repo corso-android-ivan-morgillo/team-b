@@ -7,6 +7,8 @@ apply plugin: "androidx.navigation.safeargs.kotlin"
 apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'koin'
 
+def storepassword = System.getenv('KEYSTOREPASSWORD')
+def aliaspassword = System.getenv('ALIASPASSWORD')
 
 android {
     compileSdkVersion 30
@@ -21,11 +23,21 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        release {
+            storeFile file("key_store_password.keystore")
+            storePassword storepassword
+            keyAlias "Cocktails"
+            keyPassword "aliaspassword"
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             manifestPlaceholders = [crashlyticsCollectionEnabled: "true"]
+            signingConfig signingConfigs.release
         }
         debug {
             manifestPlaceholders = [crashlyticsCollectionEnabled: "false"]
