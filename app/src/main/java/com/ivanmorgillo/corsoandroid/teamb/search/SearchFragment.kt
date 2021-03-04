@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.transition.MaterialElevationScale
 import com.ivanmorgillo.corsoandroid.teamb.R
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
 import kotlinx.android.synthetic.main.fragment_search.*
@@ -28,7 +30,6 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val query = this.arguments?.getString("query")
-        Timber.d("QUERY ARG $query")
         if (query.isNullOrEmpty()) {
             findNavController().popBackStack()
         } else {
@@ -37,6 +38,12 @@ class SearchFragment : Fragment() {
 
         val adapter = SearchCocktailAdapter { item, view ->
             lastClickedItem = view
+            exitTransition = MaterialElevationScale(false).apply {
+                duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+            }
+            reenterTransition = MaterialElevationScale(true).apply {
+                duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+            }
             searchViewModel.send(SearchScreenEvent.OnCocktailClick(item))
         }
         cocktails_search_List.adapter = adapter
@@ -51,10 +58,11 @@ class SearchFragment : Fragment() {
             when (action) {
                 is SearchScreenAction.NavigateToDetail -> {
                     lastClickedItem?.run {
+                        val extras = FragmentNavigatorExtras(this to "cocktail_transition_item")
                         val directions =
                             SearchFragmentDirections.actionSearchFragmentToDetailFragment(action.cocktail.id)
                         Log.d("SearchID", " = ${action.cocktail.id}")
-                        findNavController().navigate(directions)
+                        findNavController().navigate(directions, extras)
                     }
                 }
             }.exhaustive

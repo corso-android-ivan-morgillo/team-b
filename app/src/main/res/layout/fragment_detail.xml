@@ -4,7 +4,6 @@
     android:transitionName="cocktail_transition_item"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-
     <androidx.recyclerview.widget.RecyclerView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/detail_screen_recycleview"
         android:layout_width="match_parent"
