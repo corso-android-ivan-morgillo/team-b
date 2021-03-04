@@ -1,9 +1,5 @@
 package com.ivanmorgillo.corsoandroid.teamb.network
 
-/* Interfaccia Repository Pattern
- * tipo suspend --> rappresenta un'operazione di input output --> è un'operazione che può fallire
- * (fare riferimento alla gestione degli errori del workshop) o che richiede molto tempo per recuperare le info
- * bisogna quindi segnalare agli utilizzatori che questa funzione sta facendo IO e che può crashare o durare tanto */
 interface CocktailRepository {
     suspend fun loadDrinks(category: String): LoadCocktailResult
     suspend fun loadDetailCocktails(cocktailId: Long): LoadDetailCocktailResult
@@ -35,7 +31,6 @@ class CocktailRepositoryImpl(private val api: CocktailAPI) : CocktailRepository 
     }
 }
 
-/* rappresenta una lista di ricette: lista di oggetti con un nome, immagine e id */
 data class Cocktail(val name: String, val image: String, val idDrink: Long)
 
 data class Detail(
