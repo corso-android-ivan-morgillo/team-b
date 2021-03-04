@@ -8,6 +8,7 @@ import com.ivanmorgillo.corsoandroid.teamb.network.CocktailApiImpl
 import com.ivanmorgillo.corsoandroid.teamb.network.CocktailRepository
 import com.ivanmorgillo.corsoandroid.teamb.network.CocktailRepositoryImpl
 import com.ivanmorgillo.corsoandroid.teamb.search.SearchViewModel
+import com.ivanmorgillo.corsoandroid.teamb.settings.SettingViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -30,4 +31,5 @@ val appModule = module {
     viewModel { DetailViewModel(repository = get(), tracking = get()) }
     viewModel { SearchViewModel(repository = get(), tracking = get()) }
     viewModel { MainActivityViewModel(repository = get(), tracking = get()) }
+    viewModel { SettingViewModel(repository = get(), tracking = get()) }
 }

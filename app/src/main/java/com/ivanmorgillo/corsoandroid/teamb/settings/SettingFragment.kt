@@ -13,10 +13,15 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.ivanmorgillo.corsoandroid.teamb.R
+import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
 import kotlinx.android.synthetic.main.fragment_setting.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 class SettingFragment : Fragment() {
+
+    private val viewModel: SettingViewModel by viewModel()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -28,6 +33,7 @@ class SettingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val switchMaterialTheme = check_ofTheme.findViewById<SwitchMaterial>(R.id.check_ofTheme)
         val switchMaterialScreen = check_ofScreenActive.findViewById<SwitchMaterial>(R.id.check_ofScreenActive)
         val currentNightMode = (resources.configuration.uiMode
@@ -41,15 +47,11 @@ class SettingFragment : Fragment() {
                 switchMaterialTheme.isChecked = true
             }
         }
-        switchMaterialTheme.setOnCheckedChangeListener { switchMaterial, isChecked ->
-            if (isChecked) {
-                Timber.d("Controllo sullo switch: positivo")
-                AppCompatDelegate.setDefaultNightMode(UiModeManager.MODE_NIGHT_YES)
-            } else {
-                Timber.d("Controllo sullo switch: negativo")
-                AppCompatDelegate.setDefaultNightMode(UiModeManager.MODE_NIGHT_NO)
-            }
+        switchMaterialTheme.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.send(SettingScreenEvents.OnThemeSwitchClick(isChecked))
         }
+        observeActions()
+
         fun onSwitch() {
 
             val sharedPreferences: SharedPreferences? = activity?.getSharedPreferences("value", Context.MODE_PRIVATE)
@@ -62,17 +64,36 @@ class SettingFragment : Fragment() {
                     activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
                 }
             }
+
             switchMaterialScreen.setOnCheckedChangeListener { _, isChecked ->
-                if (isChecked) {
-                    editor?.putBoolean("value", true)
-                    activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-                } else {
-                    editor?.putBoolean("value", false)
-                    activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-                }
-                editor?.apply()
+                viewModel.send(SettingScreenEvents.OnScreenSwitchClick(isChecked, editor))
             }
         }
         onSwitch()
+    }
+
+    private fun observeActions() {
+        viewModel.actions.observe(viewLifecycleOwner, { action ->
+            Timber.d(action.toString())
+            when (action) {
+                is SettingScreenActions.ChangeTheme -> {
+                    if (action.isChecked) {
+                        AppCompatDelegate.setDefaultNightMode(UiModeManager.MODE_NIGHT_YES)
+                    } else {
+                        AppCompatDelegate.setDefaultNightMode(UiModeManager.MODE_NIGHT_NO)
+                    }
+                }
+                is SettingScreenActions.ChangeScreen -> {
+                    if (action.isChecked) {
+                        action.editor?.putBoolean("value", true)
+                        activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+                    } else {
+                        action.editor?.putBoolean("value", false)
+                        activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+                    }
+                    action.editor?.apply()
+                }
+            }.exhaustive
+        })
     }
 }
