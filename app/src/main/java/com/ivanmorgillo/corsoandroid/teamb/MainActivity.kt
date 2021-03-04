@@ -109,6 +109,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     ).show()
                     navController.navigate(R.id.settingsFragment)
                 }
+                MainScreenAction.NavigateToFacebook -> openNewTabWindow("https://www.facebook.com", this)
+                MainScreenAction.NavigateToTwitter -> openNewTabWindow("https://twitter.com", this)
             }.exhaustive
         })
     }
@@ -122,16 +124,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Timber.d("FavoriteCocktail")
             }
             R.id.nav_settings -> {
-                Timber.d("Settings")
                 mainActivityViewModel.send(MainScreenEvent.OnMenuClick)
             }
             R.id.nav_facebook -> {
-                Timber.d("Facebook")
-                openNewTabWindow("https://www.facebook.com", this)
+                mainActivityViewModel.send(MainScreenEvent.OnFacebookClick)
             }
             R.id.nav_twitter -> {
-                Timber.d("Twitter")
-                openNewTabWindow("https://twitter.com", this)
+                mainActivityViewModel.send(MainScreenEvent.OnTwitterClick)
             }
             R.id.nav_feedback -> {
                 Timber.d("FeedBack")
@@ -150,7 +149,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
-    fun openNewTabWindow(urls: String, context: Context) {
+    private fun openNewTabWindow(urls: String, context: Context) {
         val uris = Uri.parse(urls)
         val intents = Intent(Intent.ACTION_VIEW, uris)
         val b = Bundle()
