@@ -16,4 +16,20 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/search_cocktails_item" />
 
+    <include
+        android:id="@+id/innerLayoutNoInternet_SlowInternet"
+        layout="@layout/layout_error"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/innerLayoutServerError"
+        layout="@layout/layout_error3"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/innerLayoutNoCocktailFound"
+        layout="@layout/layout_error2"
+        android:visibility="gone" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

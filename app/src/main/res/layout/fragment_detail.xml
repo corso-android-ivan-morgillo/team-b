@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView android:layout_width="match_parent"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/detailCard"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:transitionName="cocktail_transition_item"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:transitionName="cocktail_transition_item">
 
     <androidx.recyclerview.widget.RecyclerView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/detail_screen_recycleview"
@@ -11,4 +12,25 @@
         android:clipToPadding="true"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    <include
+        android:id="@+id/innerLayoutNoInternet_SlowInternet"
+        layout="@layout/layout_error"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/innerLayoutServerError"
+        layout="@layout/layout_error3"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/innerLayoutNoCocktailFound"
+        layout="@layout/layout_error2"
+        android:visibility="gone" />
+
+
+    <include
+        android:id="@+id/innerLayoutNoDetailFound"
+        layout="@layout/layout_error_detail"
+        android:visibility="gone" />
 </com.google.android.material.card.MaterialCardView>

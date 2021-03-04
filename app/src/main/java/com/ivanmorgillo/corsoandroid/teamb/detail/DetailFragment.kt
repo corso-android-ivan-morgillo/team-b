@@ -3,9 +3,7 @@ package com.ivanmorgillo.corsoandroid.teamb.detail
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.annotation.AttrRes
 import androidx.core.content.res.use
 import androidx.fragment.app.Fragment
@@ -13,18 +11,19 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.transition.MaterialContainerTransform
 import com.ivanmorgillo.corsoandroid.teamb.R
+import com.ivanmorgillo.corsoandroid.teamb.databinding.FragmentDetailBinding
+import com.ivanmorgillo.corsoandroid.teamb.utils.bindings.viewBinding
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
-import kotlinx.android.synthetic.main.fragment_detail.*
-import kotlinx.android.synthetic.main.layout_error.*
+import kotlinx.android.synthetic.main.layout_error.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 private const val COCKTAILIDDEFAULT = -666L
 
-class DetailFragment : Fragment() {
+class DetailFragment : Fragment(R.layout.fragment_detail) {
     private val viewModel: DetailViewModel by viewModel()
     private val args: DetailFragmentArgs by navArgs()
-
+    private val binding by viewBinding(FragmentDetailBinding::bind)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -36,18 +35,13 @@ class DetailFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_detail, container, false)
-    }
-
     // Equivalente alla onCreate di un activity
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val adapter = DetailScreenAdapter()
         // Mettiamo in comunicazione l'adapter con la recycleview
-        detail_screen_recycleview.adapter = adapter
+        binding.detailScreenRecycleview.adapter = adapter
 
         val cocktailId = args.cocktailId
         if (cocktailId == COCKTAILIDDEFAULT) {
@@ -97,8 +91,8 @@ class DetailFragment : Fragment() {
     }
 
     private fun errorCustom(errore: String) {
-        imageViewError.setImageResource(R.drawable.errorimage)
-        textViewError.text = errore
+        binding.detailCard.imageViewError.setImageResource(R.drawable.errorimage)
+        binding.detailCard.textViewError.text = errore
     }
 
     fun Context.themeColor(

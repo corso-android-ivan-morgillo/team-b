@@ -1,30 +1,24 @@
 package com.ivanmorgillo.corsoandroid.teamb.search
 
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.transition.MaterialElevationScale
 import com.ivanmorgillo.corsoandroid.teamb.R
+import com.ivanmorgillo.corsoandroid.teamb.databinding.FragmentSearchBinding
+import com.ivanmorgillo.corsoandroid.teamb.utils.bindings.viewBinding
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
-import kotlinx.android.synthetic.main.fragment_search.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
-class SearchFragment : Fragment() {
+class SearchFragment : Fragment(R.layout.fragment_search) {
     private val searchViewModel: SearchViewModel by viewModel()
     private var lastClickedItem: View? = null
+    private val binding by viewBinding(FragmentSearchBinding::bind)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -36,7 +30,7 @@ class SearchFragment : Fragment() {
             searchViewModel.send(SearchScreenEvent.OnReady(query))
         }
 
-        val adapter = SearchCocktailAdapter { item, view ->
+        val adapter = SearchCocktailAdapter { item, _ ->
             lastClickedItem = view
             exitTransition = MaterialElevationScale(false).apply {
                 duration = resources.getInteger(R.integer.motion_duration_large).toLong()
@@ -46,22 +40,19 @@ class SearchFragment : Fragment() {
             }
             searchViewModel.send(SearchScreenEvent.OnCocktailClick(item))
         }
-        cocktails_search_List.adapter = adapter
+        binding.cocktailsSearchList.adapter = adapter
         observeStates(adapter)
         observeActions()
-        // searchViewModel.send(SearchScreenEvent.OnReady("margarita"))
     }
 
     private fun observeActions() {
         searchViewModel.actions.observe(viewLifecycleOwner, { action ->
-            Timber.d(action.toString())
             when (action) {
                 is SearchScreenAction.NavigateToDetail -> {
                     lastClickedItem?.run {
                         val extras = FragmentNavigatorExtras(this to "cocktail_transition_item")
                         val directions =
                             SearchFragmentDirections.actionSearchFragmentToDetailFragment(action.cocktail.id)
-                        Log.d("SearchID", " = ${action.cocktail.id}")
                         findNavController().navigate(directions, extras)
                     }
                 }

@@ -4,11 +4,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.ivanmorgillo.corsoandroid.teamb.R
+import com.ivanmorgillo.corsoandroid.teamb.databinding.DetailScreenGlasstypeBinding
+import com.ivanmorgillo.corsoandroid.teamb.databinding.DetailScreenImageBinding
+import com.ivanmorgillo.corsoandroid.teamb.databinding.DetailScreenIngredientsBinding
+import com.ivanmorgillo.corsoandroid.teamb.databinding.DetailScreenInstructionsBinding
+import com.ivanmorgillo.corsoandroid.teamb.databinding.DetailScreenVideoBinding
+import com.ivanmorgillo.corsoandroid.teamb.databinding.IngredientBinding
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenItems.GlassType
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenItems.Image
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenItems.IngredientList
@@ -24,7 +28,6 @@ import com.ivanmorgillo.corsoandroid.teamb.utils.gone
 import com.ivanmorgillo.corsoandroid.teamb.utils.visible
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 
 sealed class DetailScreenItems {
     data class Image(val image: String, val title: String) : DetailScreenItems()
@@ -60,27 +63,46 @@ class DetailScreenAdapter : RecyclerView.Adapter<DetailScreenViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailScreenViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
         return when (viewType) {
             GLASS_TYPE_VIEWTYPE -> {
-                val view = layoutInflater.inflate(R.layout.detail_screen_glasstype, parent, false)
-                GlassTypeViewHolder(view)
+                val binding = DetailScreenGlasstypeBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+                GlassTypeViewHolder(binding)
             }
             IMAGE_VIEWTYPE -> {
-                val view = layoutInflater.inflate(R.layout.detail_screen_image, parent, false)
-                ImageViewHolder(view)
+                val binding = DetailScreenImageBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+                ImageViewHolder(binding)
             }
             INGREDIENT_LIST_VIEWTYPE -> {
-                val view = layoutInflater.inflate(R.layout.detail_screen_ingredients, parent, false)
-                IngredientListViewHolder(view)
+                val binding = DetailScreenIngredientsBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+                IngredientListViewHolder(binding)
             }
             INSTRUCTIONS_VIEWTYPE -> {
-                val view = layoutInflater.inflate(R.layout.detail_screen_instructions, parent, false)
-                InstructionsViewHolder(view)
+                val binding = DetailScreenInstructionsBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+                InstructionsViewHolder(binding)
             }
             VIDEO_VIEWTYPE -> {
-                val view = layoutInflater.inflate(R.layout.detail_screen_video, parent, false)
-                VideoViewHolder(view)
+                val binding = DetailScreenVideoBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+                VideoViewHolder(binding)
             }
             else -> error("ViewType not valid")
         }.exhaustive
@@ -100,53 +122,50 @@ class DetailScreenAdapter : RecyclerView.Adapter<DetailScreenViewHolder>() {
 }
 
 sealed class DetailScreenViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    class ImageViewHolder(itemView: View) : DetailScreenViewHolder(itemView) {
-        private val cocktailImage: ImageView = itemView.findViewById(R.id.detail_screen_image)
-        private val cocktailTitle = itemView.findViewById<TextView>(R.id.detail_screen_title)
+    class ImageViewHolder(private val binding: DetailScreenImageBinding) :
+        DetailScreenViewHolder(binding.root) {
         fun bind(image: Image) {
-            cocktailImage.load(image.image)
-            cocktailTitle.text = image.title
+            binding.detailScreenImage.load(image.image)
+            binding.detailScreenTitle.text = image.title
         }
     }
 
-    class GlassTypeViewHolder(itemView: View) : DetailScreenViewHolder(itemView) {
-        private val cocktailGlassType = itemView.findViewById<TextView>(R.id.glass_type)
-        private val cocktailAlcoholicType = itemView.findViewById<TextView>(R.id.alcoholic_type)
+    class GlassTypeViewHolder(private val binding: DetailScreenGlasstypeBinding) :
+        DetailScreenViewHolder(binding.root) {
         fun bind(glassType: GlassType) {
-            cocktailGlassType.text = glassType.glass
+            binding.glassType.text = glassType.glass
             if (glassType.isAlcoholic) {
-                cocktailAlcoholicType.text = itemView.context.getString(R.string.yes)
+                binding.alcoholicType.text = itemView.context.getString(R.string.yes)
             } else {
-                cocktailAlcoholicType.text = itemView.context.getString(R.string.no)
+                binding.alcoholicType.text = itemView.context.getString(R.string.no)
             }
         }
     }
 
-    class IngredientListViewHolder(itemView: View) : DetailScreenViewHolder(itemView) {
-        private val recyclerView = itemView.findViewById<RecyclerView>(R.id.detail_screen_ingredient_list)
+    class IngredientListViewHolder(private val binding: DetailScreenIngredientsBinding) :
+        DetailScreenViewHolder(binding.root) {
         fun bind(ingredientList: IngredientList) {
             val adapter = IngredientsListAdapter()
-            recyclerView.adapter = adapter
+            binding.detailScreenIngredientList.adapter = adapter
             adapter.setIngredientList(ingredientList.ingredients)
         }
     }
 
-    class InstructionsViewHolder(itemView: View) : DetailScreenViewHolder(itemView) {
-        private val cocktailInstructions = itemView.findViewById<TextView>(R.id.detail_screen_instructions)
+    class InstructionsViewHolder(private val binding: DetailScreenInstructionsBinding) :
+        DetailScreenViewHolder(binding.root) {
         fun bind(instructions: Instructions) {
-            cocktailInstructions.text = instructions.instructions
+            binding.detailScreenInstructions.text = instructions.instructions
         }
     }
 
-    class VideoViewHolder(itemView: View) : DetailScreenViewHolder(itemView) {
-        val youTubePlayerView: YouTubePlayerView = itemView.findViewById<YouTubePlayerView>(R.id.youtube_player_view)
-
+    class VideoViewHolder(private val binding: DetailScreenVideoBinding) :
+        DetailScreenViewHolder(binding.root) {
         fun bind(video: Video) {
             if (video.video.isNullOrEmpty()) { // se il video non è presente
-                youTubePlayerView.gone()
+                binding.youtubePlayerView.gone()
             } else {
-                youTubePlayerView.visible()
-                youTubePlayerView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
+                binding.youtubePlayerView.visible()
+                binding.youtubePlayerView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
                     override fun onReady(youTubePlayer: YouTubePlayer) {
                         video.video
                             .split("v=")
@@ -166,8 +185,8 @@ class IngredientsListAdapter :
 
     // da xml a kotlin per ogni elemento della lista
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IngredientsViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.ingredient, parent, false)
-        return IngredientsViewHolder(view)
+        val binding = IngredientBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return IngredientsViewHolder(binding)
     }
 
     // Con questo metodo un elemento della lista è connesso a un viewHolder.
@@ -191,14 +210,12 @@ class IngredientsListAdapter :
 
 // View Holder è un elemento della lista. Per ogni elemento della lista visibile viene creato un viewHolder
 // l'oggetto view è la rappresentazione in ingredient di un layout XML
-class IngredientsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class IngredientsViewHolder(val binding: IngredientBinding) : RecyclerView.ViewHolder(binding.root) {
     // recupera la textView dell'elemento della lista di ingredienti
-    private val ingredientName = itemView.findViewById<TextView>(R.id.ingredient_item_name)
-    private val ingredientQty = itemView.findViewById<TextView>(R.id.ingredient_item_quantity)
     fun bind(item: IngredientUI) {
         val bullet = "• " + item.nomeIngr
-        ingredientName.text = bullet // imposta lil text dell'elemento al nome dell'ingrediente
-        ingredientQty.text = item.ingrQty // imposta la quantità dell'ingrediente
+        binding.ingredientItemName.text = bullet // imposta lil text dell'elemento al nome dell'ingrediente
+        binding.ingredientItemQuantity.text = item.ingrQty // imposta la quantità dell'ingrediente
     }
 }
 

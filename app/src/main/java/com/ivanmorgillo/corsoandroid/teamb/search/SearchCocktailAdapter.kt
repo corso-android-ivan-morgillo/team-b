@@ -3,21 +3,18 @@ package com.ivanmorgillo.corsoandroid.teamb.search
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import coil.load
-import com.google.android.material.card.MaterialCardView
-import com.ivanmorgillo.corsoandroid.teamb.R
+import com.ivanmorgillo.corsoandroid.teamb.databinding.SearchCocktailsItemBinding
 import timber.log.Timber
 
 class SearchCocktailAdapter
     (private val onClick: (SearchCocktailUI, View) -> Unit) : Adapter<SearchCocktailViewHolder>() {
     var searchCocktailsList: List<SearchCocktailUI> = emptyList()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchCocktailViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.search_cocktails_item, parent, false)
-        return SearchCocktailViewHolder(view)
+        val binding = SearchCocktailsItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return SearchCocktailViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: SearchCocktailViewHolder, position: Int) {
@@ -36,18 +33,13 @@ class SearchCocktailAdapter
     }
 }
 
-class SearchCocktailViewHolder(itemView: View) : ViewHolder(itemView) {
-    val name = itemView.findViewById<TextView>(R.id.search_cocktail_name)
-    val image = itemView.findViewById<ImageView>(R.id.search_cocktail_image)
-    val category = itemView.findViewById<TextView>(R.id.search_cocktail_category)
-    val alcoholic = itemView.findViewById<TextView>(R.id.search_cocktail_alcoholic)
-    val searchCardView = itemView.findViewById<MaterialCardView>(R.id.search_cocktail_root)
+class SearchCocktailViewHolder(val binding: SearchCocktailsItemBinding) : ViewHolder(binding.root) {
     fun bind(item: SearchCocktailUI, onClick: (SearchCocktailUI, View) -> Unit) {
-        name.text = item.cocktailName
-        image.load(item.image)
-        category.text = item.category
-        alcoholic.text = item.alcoholic
-        searchCardView.setOnClickListener { onClick(item, it) }
-        searchCardView.transitionName = "cocktail_transition_item${item.id}"
+        binding.searchCocktailName.text = item.cocktailName
+        binding.searchCocktailImage.load(item.image)
+        binding.searchCocktailCategory.text = item.category
+        binding.searchCocktailAlcoholic.text = item.alcoholic
+        binding.searchCocktailRoot.setOnClickListener { onClick(item, it) }
+        binding.searchCocktailRoot.transitionName = "cocktail_transition_item${item.id}"
     }
 }
