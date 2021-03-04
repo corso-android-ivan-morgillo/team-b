@@ -48,5 +48,6 @@ class SearchCocktailViewHolder(itemView: View) : ViewHolder(itemView) {
         category.text = item.category
         alcoholic.text = item.alcoholic
         searchCardView.setOnClickListener { onClick(item, it) }
+        searchCardView.transitionName = "cocktail_transition_item${item.id}"
     }
 }
