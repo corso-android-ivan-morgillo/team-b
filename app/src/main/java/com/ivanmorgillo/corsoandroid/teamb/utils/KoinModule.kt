@@ -4,6 +4,7 @@ import com.ivanmorgillo.corsoandroid.teamb.MainActivityViewModel
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailViewModel
 import com.ivanmorgillo.corsoandroid.teamb.home.HomeViewModel
 import com.ivanmorgillo.corsoandroid.teamb.network.CocktailAPI
+import com.ivanmorgillo.corsoandroid.teamb.network.CocktailApiImpl
 import com.ivanmorgillo.corsoandroid.teamb.network.CocktailRepository
 import com.ivanmorgillo.corsoandroid.teamb.network.CocktailRepositoryImpl
 import com.ivanmorgillo.corsoandroid.teamb.search.SearchViewModel
@@ -17,7 +18,7 @@ val appModule = module {
     }
 
     single<CocktailAPI> {
-        CocktailAPI()
+        CocktailApiImpl()
     }
 
     single<Tracking> {
