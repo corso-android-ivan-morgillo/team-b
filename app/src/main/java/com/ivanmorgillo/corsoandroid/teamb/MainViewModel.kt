@@ -27,9 +27,11 @@ class MainActivityViewModel(
         @Suppress("IMPLICIT_CAST_TO_ANY")
         when (event) {
             is MainScreenEvent.OnSearchClick -> {
+                tracking.logEvent("search_clicked")
                 actions.postValue(MainScreenAction.NavigateToSearch(event.query))
             }
             MainScreenEvent.OnMenuClick -> {
+                tracking.logEvent("settings_clicked")
                 actions.postValue(MainScreenAction.NavigateToSettingMenu)
             }
         }.exhaustive
