@@ -15,7 +15,24 @@ import timber.log.Timber
 import java.io.IOException
 import java.net.SocketTimeoutException
 
-class CocktailAPI {
+interface CocktailAPI {
+    @Suppress("TooGenericExceptionCaught")
+    suspend fun loadDrinks(category: String): LoadCocktailResult
+
+    @Suppress("TooGenericExceptionCaught")
+    suspend fun loadRandomDetailCocktails(): LoadDetailCocktailResult
+
+    @Suppress("TooGenericExceptionCaught")
+    suspend fun loadDetailCocktails(idDrink: Long): LoadDetailCocktailResult
+
+    @Suppress("TooGenericExceptionCaught")
+    suspend fun loadSearchCocktails(query: String): LoadSearchCocktailResult
+
+    @Suppress("TooGenericExceptionCaught")
+    suspend fun loadCategories(): LoadCategoriesResult
+}
+
+class CocktailApiImpl : CocktailAPI {
     private val service: CocktailService
 
     init {
@@ -33,7 +50,7 @@ class CocktailAPI {
     }
 
     @Suppress("TooGenericExceptionCaught")
-    suspend fun loadDrinks(category: String): LoadCocktailResult {
+    override suspend fun loadDrinks(category: String): LoadCocktailResult {
         // try-catch per gestire errore chiamata di rete
         try {
             val cocktailList = service.loadDrinks(category)
@@ -69,7 +86,7 @@ class CocktailAPI {
     }
 
     @Suppress("TooGenericExceptionCaught")
-    suspend fun loadRandomDetailCocktails(): LoadDetailCocktailResult {
+    override suspend fun loadRandomDetailCocktails(): LoadDetailCocktailResult {
         try {
             val detailCocktailList = service.loadRandomDetailCocktails()
             val details = detailCocktailList.details
@@ -95,7 +112,7 @@ class CocktailAPI {
     }
 
     @Suppress("TooGenericExceptionCaught")
-    suspend fun loadDetailCocktails(idDrink: Long): LoadDetailCocktailResult {
+    override suspend fun loadDetailCocktails(idDrink: Long): LoadDetailCocktailResult {
         try {
             val detailCocktailList = service.loadDetailCocktails(idDrink.toString())
             val details = detailCocktailList.details
@@ -121,7 +138,7 @@ class CocktailAPI {
     }
 
     @Suppress("TooGenericExceptionCaught")
-    suspend fun loadSearchCocktails(query: String): LoadSearchCocktailResult {
+    override suspend fun loadSearchCocktails(query: String): LoadSearchCocktailResult {
         try {
             val detailCocktailList = service.loadSearchCocktails(query)
             val details = detailCocktailList.details.mapNotNull {
@@ -143,7 +160,7 @@ class CocktailAPI {
     }
 
     @Suppress("TooGenericExceptionCaught")
-    suspend fun loadCategories(): LoadCategoriesResult {
+    override suspend fun loadCategories(): LoadCategoriesResult {
         try {
             val categoriesList = service.loadCategories()
             val categories = categoriesList.categories.map {
