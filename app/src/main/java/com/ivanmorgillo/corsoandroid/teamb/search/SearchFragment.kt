@@ -17,10 +17,6 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     private val searchViewModel: SearchViewModel by viewModel()
     private var lastClickedItem: View? = null
     private val binding by viewBinding(FragmentSearchBinding::bind)
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val query = this.arguments?.getString("query")
@@ -30,8 +26,8 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             searchViewModel.send(SearchScreenEvent.OnReady(query))
         }
 
-        val adapter = SearchCocktailAdapter { item, _ ->
-            lastClickedItem = view
+        val adapter = SearchCocktailAdapter { item, clickedView ->
+            lastClickedItem = clickedView
             exitTransition = MaterialElevationScale(false).apply {
                 duration = resources.getInteger(R.integer.motion_duration_large).toLong()
             }
