@@ -14,7 +14,6 @@ import com.ivanmorgillo.corsoandroid.teamb.R
 import com.ivanmorgillo.corsoandroid.teamb.databinding.FragmentDetailBinding
 import com.ivanmorgillo.corsoandroid.teamb.utils.bindings.viewBinding
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
-import kotlinx.android.synthetic.main.layout_error.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
@@ -91,8 +90,8 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
     }
 
     private fun errorCustom(errore: String) {
-        binding.detailCard.imageViewError.setImageResource(R.drawable.errorimage)
-        binding.detailCard.textViewError.text = errore
+        binding.innerLayoutNoInternetSlowInternet.imageViewError.setImageResource(R.drawable.errorimage)
+        binding.innerLayoutNoInternetSlowInternet.textViewError.text = errore
     }
 
     fun Context.themeColor(

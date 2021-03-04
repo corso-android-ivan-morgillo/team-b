@@ -18,19 +18,21 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
+import com.ivanmorgillo.corsoandroid.teamb.databinding.ActivityMainBinding
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
-import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(R.layout.activity_main), NavigationView.OnNavigationItemSelectedListener {
 
     private val mainActivityViewModel: MainActivityViewModel by viewModel()
     lateinit var navController: NavController
     lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main) // carichiamo layout
+        binding = ActivityMainBinding.inflate(layoutInflater)
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
@@ -40,16 +42,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         )
 
         appBarConfiguration = AppBarConfiguration.Builder(topLevelDestinations)
-            .setOpenableLayout(drawer_layout)
+            .setOpenableLayout(binding.drawerLayout)
             .build()
 
         // Set up ActionBar
         setupActionBarWithNavController(navController, appBarConfiguration)
         // Set up navigation menu
-        nav_view.setupWithNavController(navController)
+        binding.navView.setupWithNavController(navController)
         // naviga nelle pagine del navigation drawer
-        nav_view.setNavigationItemSelectedListener(this)
-        nav_view.itemIconTintList = null
+        binding.navView.setNavigationItemSelectedListener(this)
+        binding.navView.itemIconTintList = null
         observeActions()
     }
 
@@ -59,8 +61,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     // l'hamburger menu si trasforma in freccia per tornare indietro
     override fun onBackPressed() {
-        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
-            drawer_layout.closeDrawer(GravityCompat.START)
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
         } else {
             super.onBackPressed()
         }
@@ -145,7 +147,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Timber.d("Evaluate")
             }
         }
-        drawer_layout.closeDrawer(GravityCompat.START)
+        binding.drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
 

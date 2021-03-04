@@ -3,22 +3,19 @@ package com.ivanmorgillo.corsoandroid.teamb.home
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.ivanmorgillo.corsoandroid.teamb.R
+import com.ivanmorgillo.corsoandroid.teamb.databinding.CategoryItemBinding
 
 class CategoryAdapter(private val onClick: (CategoryUI, View) -> Unit) : RecyclerView.Adapter<CategoryViewHolder>() {
     private var categoryList: List<CategoryUI> = emptyList()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.category_item, parent, false)
-        return CategoryViewHolder(view)
+        val binding = CategoryItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return CategoryViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
-        holder.bind(categoryList.get(position), onClick)
+        holder.bind(categoryList[position], onClick)
     }
 
     override fun getItemCount(): Int {
@@ -31,13 +28,10 @@ class CategoryAdapter(private val onClick: (CategoryUI, View) -> Unit) : Recycle
     }
 }
 
-class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    val text = itemView.findViewById<TextView>(R.id.category_text)
-    val image = itemView.findViewById<ImageView>(R.id.category_image)
-    val categoryItem = itemView.findViewById<ConstraintLayout>(R.id.category_item)
+class CategoryViewHolder(val binding: CategoryItemBinding) : RecyclerView.ViewHolder(binding.root) {
     fun bind(item: CategoryUI, onClick: (CategoryUI, View) -> Unit) {
-        text.text = item.nameCategory
-        image.load(item.imageCategory)
-        categoryItem.setOnClickListener { onClick(item, it) }
+        binding.categoryText.text = item.nameCategory
+        binding.categoryImage.load(item.imageCategory)
+        binding.categoryItem.setOnClickListener { onClick(item, it) }
     }
 }
