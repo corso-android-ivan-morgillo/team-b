@@ -33,7 +33,7 @@ class SearchCocktailAdapter
     }
 }
 
-class SearchCocktailViewHolder(val binding: SearchCocktailsItemBinding) : ViewHolder(binding.root) {
+class SearchCocktailViewHolder(private val binding: SearchCocktailsItemBinding) : ViewHolder(binding.root) {
     fun bind(item: SearchCocktailUI, onClick: (SearchCocktailUI, View) -> Unit) {
         binding.searchCocktailName.text = item.cocktailName
         binding.searchCocktailImage.load(item.image)

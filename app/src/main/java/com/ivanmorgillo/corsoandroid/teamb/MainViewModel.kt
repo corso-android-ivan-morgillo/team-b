@@ -27,10 +27,20 @@ class MainActivityViewModel(
         @Suppress("IMPLICIT_CAST_TO_ANY")
         when (event) {
             is MainScreenEvent.OnSearchClick -> {
+                tracking.logEvent("search_clicked")
                 actions.postValue(MainScreenAction.NavigateToSearch(event.query))
             }
             MainScreenEvent.OnMenuClick -> {
+                tracking.logEvent("settings_clicked")
                 actions.postValue(MainScreenAction.NavigateToSettingMenu)
+            }
+            MainScreenEvent.OnFacebookClick -> {
+                tracking.logEvent("facebook_clicked")
+                actions.postValue(MainScreenAction.NavigateToFacebook)
+            }
+            MainScreenEvent.OnTwitterClick -> {
+                tracking.logEvent("twitter_clicked")
+                actions.postValue(MainScreenAction.NavigateToTwitter)
             }
         }.exhaustive
     }
@@ -45,9 +55,13 @@ sealed class MainScreenStates {
 sealed class MainScreenEvent {
     data class OnSearchClick(val query: String) : MainScreenEvent()
     object OnMenuClick : MainScreenEvent()
+    object OnFacebookClick : MainScreenEvent()
+    object OnTwitterClick : MainScreenEvent()
 }
 
 sealed class MainScreenAction {
     data class NavigateToSearch(val query: String) : MainScreenAction()
     object NavigateToSettingMenu : MainScreenAction()
+    object NavigateToFacebook : MainScreenAction()
+    object NavigateToTwitter : MainScreenAction()
 }
