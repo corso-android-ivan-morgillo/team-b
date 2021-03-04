@@ -5,49 +5,39 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
-import com.google.android.material.switchmaterial.SwitchMaterial
 import com.ivanmorgillo.corsoandroid.teamb.R
+import com.ivanmorgillo.corsoandroid.teamb.databinding.FragmentSettingBinding
+import com.ivanmorgillo.corsoandroid.teamb.utils.bindings.viewBinding
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
-import kotlinx.android.synthetic.main.fragment_setting.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
-class SettingFragment : Fragment() {
+class SettingFragment : Fragment(R.layout.fragment_setting) {
 
     private val viewModel: SettingViewModel by viewModel()
-
+    private val binding by viewBinding(FragmentSettingBinding::bind)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_setting, container, false)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val switchMaterialTheme = check_ofTheme.findViewById<SwitchMaterial>(R.id.check_ofTheme)
-        val switchMaterialScreen = check_ofScreenActive.findViewById<SwitchMaterial>(R.id.check_ofScreenActive)
         val currentNightMode = (resources.configuration.uiMode
                 and Configuration.UI_MODE_NIGHT_MASK)
 
         when (currentNightMode) {
             Configuration.UI_MODE_NIGHT_NO -> {
-                switchMaterialTheme.isChecked = false
+                binding.checkOfTheme.isChecked = false
             }
             Configuration.UI_MODE_NIGHT_YES, Configuration.UI_MODE_NIGHT_UNDEFINED -> {
-                switchMaterialTheme.isChecked = true
+                binding.checkOfTheme.isChecked = true
             }
         }
-        switchMaterialTheme.setOnCheckedChangeListener { _, isChecked ->
+        binding.checkOfTheme.setOnCheckedChangeListener { _, isChecked ->
             viewModel.send(SettingScreenEvents.OnThemeSwitchClick(isChecked))
         }
         observeActions()
@@ -57,15 +47,15 @@ class SettingFragment : Fragment() {
             val sharedPreferences: SharedPreferences? = activity?.getSharedPreferences("value", Context.MODE_PRIVATE)
             val editor = sharedPreferences?.edit()
             if (sharedPreferences != null) {
-                switchMaterialScreen.isChecked = sharedPreferences.getBoolean("value", true)
-                if (switchMaterialScreen.isChecked) {
+                binding.checkOfScreenActive.isChecked = sharedPreferences.getBoolean("value", true)
+                if (binding.checkOfScreenActive.isChecked) {
                     activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
                 } else {
                     activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
                 }
             }
 
-            switchMaterialScreen.setOnCheckedChangeListener { _, isChecked ->
+            binding.checkOfScreenActive.setOnCheckedChangeListener { _, isChecked ->
                 viewModel.send(SettingScreenEvents.OnScreenSwitchClick(isChecked, editor))
             }
         }
