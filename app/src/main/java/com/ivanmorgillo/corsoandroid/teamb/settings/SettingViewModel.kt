@@ -19,10 +19,14 @@ class SettingViewModel(
     val actions = SingleLiveEvent<SettingScreenActions>()
     fun send(event: SettingScreenEvents) {
         when (event) {
-            is OnThemeSwitchClick ->
+            is OnThemeSwitchClick -> {
+                tracking.logEvent("settings_on_theme_switch_click")
                 actions.postValue(SettingScreenActions.ChangeTheme(event.isChecked))
-            is OnScreenSwitchClick ->
+            }
+            is OnScreenSwitchClick -> {
+                tracking.logEvent("settings_on_screen_switch_click")
                 actions.postValue(SettingScreenActions.ChangeScreen(event.isChecked, event.editor))
+            }
         }
     }
 }
