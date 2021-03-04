@@ -32,6 +32,7 @@ class SearchViewModel(
         @Suppress("IMPLICIT_CAST_TO_ANY")
         when (event) {
             is SearchScreenEvent.OnCocktailClick -> {
+                tracking.logEvent("search_clicked")
                 actions.postValue(SearchScreenAction.NavigateToDetail(event.cocktail))
             }
             is SearchScreenEvent.OnReady -> loadContent(event.query)
