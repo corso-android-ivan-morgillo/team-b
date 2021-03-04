@@ -1,5 +1,6 @@
 package com.ivanmorgillo.corsoandroid.teamb.home
 
+import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -48,19 +49,22 @@ class HomeViewModel(
                 loadContent("Cocktail")
             }
             is HomeScreenEvents.OnCocktailClick -> {
-                tracking.logEvent("Cocktail_Clicked")
+                tracking.logEvent("home_cocktail_clicked")
                 actions.postValue(HomeScreenActions.NavigateToDetail(event.drinks))
             }
             HomeScreenEvents.OnRefreshClicked -> {
-                // add tracking
+                tracking.logEvent("home_refresh_clicked")
                 loadContent("Cocktail")
             }
             HomeScreenEvents.OnSettingClick -> {
+                tracking.logEvent("home_settings_clicked")
                 actions.postValue(HomeScreenActions.NavigateToSettings)
             }
             is HomeScreenEvents.OnCategoryClick -> {
+                val param = Bundle()
+                param.putString("category_clicked", event.category.nameCategory)
+                tracking.logEvent("home_category_clicked", param)
                 loadContent(event.category.nameCategory)
-                Timber.d("CATEGORIA SCELTA: ${event.category.nameCategory}")
             }
         }.exhaustive
     }
@@ -111,7 +115,6 @@ class HomeViewModel(
             SlowInternet -> states.postValue(Error(ShowSlowInternet))
         }.exhaustive
     }
-    
 }
 
 /**
