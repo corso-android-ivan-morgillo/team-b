@@ -90,7 +90,7 @@ class CocktailApiImpl : CocktailAPI {
         try {
             val detailCocktailList = service.loadRandomDetailCocktails()
             val details = detailCocktailList.details
-            return if (details.isEmpty()) {
+            return if (details.isNullOrEmpty()) {
                 LoadDetailCocktailResult.Failure(DetailLoadCocktailError.NoDetailFound)
             } else {
                 val domainDetails = details.toDomain()
@@ -116,7 +116,7 @@ class CocktailApiImpl : CocktailAPI {
         try {
             val detailCocktailList = service.loadDetailCocktails(idDrink.toString())
             val details = detailCocktailList.details
-            return if (details.isEmpty()) {
+            return if (details.isNullOrEmpty()) {
                 LoadDetailCocktailResult.Failure(DetailLoadCocktailError.NoDetailFound)
             } else {
                 val domainDetails = details.toDomain()
@@ -141,13 +141,20 @@ class CocktailApiImpl : CocktailAPI {
     override suspend fun loadSearchCocktails(query: String): LoadSearchCocktailResult {
         try {
             val detailCocktailList = service.loadSearchCocktails(query)
-            val details = detailCocktailList.details.mapNotNull {
-                it.toDomainSearch()
-            }
-            return if (details.isEmpty()) {
-                LoadSearchCocktailResult.Failure(SearchLoadCocktailError.NoCocktailFound)
-            } else {
-                LoadSearchCocktailResult.Success(details)
+            return when (detailCocktailList.details) {
+                null -> {
+                    LoadSearchCocktailResult.Failure(SearchLoadCocktailError.NoCocktailFound)
+                }
+                else -> {
+                    val details = detailCocktailList.details.mapNotNull {
+                        it.toDomainSearch()
+                    }
+                    return if (details.isEmpty()) {
+                        LoadSearchCocktailResult.Failure(SearchLoadCocktailError.NoCocktailFound)
+                    } else {
+                        LoadSearchCocktailResult.Success(details)
+                    }
+                }
             }
         } catch (e: IOException) { // no internet
             return LoadSearchCocktailResult.Failure(SearchLoadCocktailError.NoInternet)

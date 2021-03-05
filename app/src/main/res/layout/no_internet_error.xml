@@ -6,26 +6,38 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
-        android:id="@+id/textViewError2"
+        android:id="@+id/textViewNoInternetError"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="@string/no_cocktail_found"
+        tools:text="NO INTERNET CONNECTION"
         android:textSize="30sp"
         android:visibility="visible" />
 
     <ImageView
-        android:id="@+id/imageViewError2"
+        android:id="@+id/imageViewNoInternetError"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/textViewError2"
+        app:layout_constraintBottom_toTopOf="@id/textViewNoInternetError"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:src="@mipmap/ic_launcher"
         android:visibility="visible" />
 
+    <Button
+        android:id="@+id/buttonNoInternetError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/textViewNoInternetError"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/control_connection"
+        android:textColor="#293133"
+        android:backgroundTint="#FFFFF0"
+        android:visibility="gone"
+        tools:visibility="visible" />
 </androidx.constraintlayout.widget.ConstraintLayout>

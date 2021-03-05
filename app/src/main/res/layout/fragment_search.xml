@@ -18,17 +18,17 @@
 
     <include
         android:id="@+id/innerLayoutNoInternet_SlowInternet"
-        layout="@layout/layout_error"
+        layout="@layout/no_internet_error"
         android:visibility="gone" />
 
     <include
         android:id="@+id/innerLayoutServerError"
-        layout="@layout/layout_error3"
+        layout="@layout/server_error"
         android:visibility="gone" />
 
     <include
         android:id="@+id/innerLayoutNoCocktailFound"
-        layout="@layout/layout_error2"
+        layout="@layout/no_cocktail_found_error"
         android:visibility="gone" />
 
 

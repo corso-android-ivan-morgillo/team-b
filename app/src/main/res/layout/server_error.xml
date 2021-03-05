@@ -7,7 +7,7 @@
 
 
     <TextView
-        android:id="@+id/textViewError3"
+        android:id="@+id/textViewServerError"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
@@ -19,11 +19,11 @@
         android:visibility="visible" />
 
     <ImageView
-        android:id="@+id/imageViewError3"
+        android:id="@+id/imageViewServerError"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/textViewError3"
+        app:layout_constraintBottom_toTopOf="@id/textViewServerError"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:src="@mipmap/ic_launcher"
