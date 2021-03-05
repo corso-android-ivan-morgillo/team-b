@@ -46,7 +46,7 @@ class HomeViewModel(
         when (event) {
             // l'activity è pronta
             HomeScreenEvents.OnReady -> {
-                loadContent("Cocktail")
+                loadContent("Ordinary Drink")
             }
             is HomeScreenEvents.OnCocktailClick -> {
                 tracking.logEvent("home_cocktail_clicked")
@@ -54,7 +54,7 @@ class HomeViewModel(
             }
             HomeScreenEvents.OnRefreshClicked -> {
                 tracking.logEvent("home_refresh_clicked")
-                loadContent("Cocktail")
+                loadContent("Ordinary Drink")
             }
             HomeScreenEvents.OnSettingClick -> {
                 tracking.logEvent("home_settings_clicked")
