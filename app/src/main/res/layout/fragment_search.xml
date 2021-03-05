@@ -28,7 +28,7 @@
 
     <include
         android:id="@+id/innerLayoutNoCocktailFound"
-        layout="@layout/no_cocktail_found_error"
+        layout="@layout/layout_error_search_empty"
         android:visibility="gone" />
 
 

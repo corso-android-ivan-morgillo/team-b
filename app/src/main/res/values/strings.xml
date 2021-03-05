@@ -44,5 +44,6 @@
     <string name="category_image">Category image</string>
     <string name="drink_image">Drink Image</string>
     <string name="feedback_link">https://docs.google.com/forms/d/e/1FAIpQLSc093kYBIurJhPj2HsJBquFtyzlusG1hKDbiH5tTeWVYrw5rw/viewform?usp=pp_url</string>
+    <string name="nessun_risultato_trovato_nriprova_o_torna_alla_home">NO RESULT FOUND\nRETRY OR GO BACK TO HOME</string>
 
 </resources>
