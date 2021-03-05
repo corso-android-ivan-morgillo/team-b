@@ -60,7 +60,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return NavigationUI.navigateUp(navController, appBarConfiguration)
     }
 
-    // l'hamburger menu si trasforma in freccia per tornare indietro
     override fun onBackPressed() {
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
@@ -77,13 +76,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         searchView.queryHint = "Search cocktail by name"
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String?): Boolean {
-                Timber.d("Aggiorno il testo..")
                 return false
             }
 
             override fun onQueryTextSubmit(query: String?): Boolean {
                 searchView.setQuery(query, false)
-                // Timber.d("Ricerca in corso.. $query")
                 if (!query.isNullOrEmpty()) {
                     mainActivityViewModel.send(MainScreenEvent.OnSearchClick(query))
                 }
@@ -103,11 +100,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     navController.navigate(R.id.searchFragment, bundle)
                 }
                 MainScreenAction.NavigateToSettingMenu -> {
-                    Timber.d(action.toString())
-                    Timber.d("NavigateToSettingMenu", "Menu Button Clicked")
                     Toast.makeText(
                         applicationContext,
-                        "Work in progress Navigate to Settings",
+                        "Work in progress",
                         R.integer.motion_duration_large
                     ).show()
                     navController.navigate(R.id.settingsFragment)
