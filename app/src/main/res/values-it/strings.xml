@@ -45,5 +45,6 @@
     <string name="drink_image">Immagine della bevanda</string>
     <string name="browse_categories">Naviga tra le categorie</string>
     <string name="feedback_link">https://docs.google.com/forms/d/e/1FAIpQLSc093kYBIurJhPj2HsJBquFtyzlusG1hKDbiH5tTeWVYrw5rw/viewform?usp=pp_url</string>
+    <string name="nessun_risultato_trovato_nriprova_o_torna_alla_home">NESSUN RISULTATO TROVATO\nRIPROVA O TORNA ALLA HOME</string>
 
 </resources>
