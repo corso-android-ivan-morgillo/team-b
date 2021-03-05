@@ -54,7 +54,7 @@ class HomeViewModel(
             }
             HomeScreenEvents.OnRefreshClicked -> {
                 tracking.logEvent("home_refresh_clicked")
-                loadContent("Cocktail")
+                loadContent("Ordinary Drink")
             }
             HomeScreenEvents.OnSettingClick -> {
                 tracking.logEvent("home_settings_clicked")
