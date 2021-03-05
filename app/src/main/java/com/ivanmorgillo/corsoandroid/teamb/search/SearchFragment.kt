@@ -68,7 +68,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                             errorCustom("No Internet Connection")
                         }
                         SearchErrorStates.ShowNoCocktailFound -> {
-                            errorSearchCustomError("No Cocktail Found")
+                            errorSearchCustomError()
                         }
                         SearchErrorStates.ShowServerError -> {
                             errorCustom("Server Error")
@@ -88,10 +88,8 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         binding.innerLayoutNoInternetSlowInternet.textViewNoInternetError.text = error
     }
 
-    private fun errorSearchCustomError(error: String) {
+    private fun errorSearchCustomError() {
         binding.cocktailsSearchList.visibility = View.GONE
         binding.innerLayoutNoCocktailFound.root.visibility = View.VISIBLE
-        binding.innerLayoutNoCocktailFound.imageViewNoCocktailFoundError.setImageResource(R.drawable.errorimage)
-        binding.innerLayoutNoCocktailFound.textViewNoCocktailFoundError.text = error
     }
 }
