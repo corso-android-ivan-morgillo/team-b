@@ -3,4 +3,5 @@
     <string name="bicchiere">"Bicchiere: "</string>
     <string name="category_image">Category image</string>
     <string name="drink_image">Drink Image</string>
+    <string name="browse_categories">Browse Categories</string>
 </resources>

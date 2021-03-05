@@ -41,9 +41,11 @@
     <string name="scegli_la_tua_lingua">Scegli la tua lingua</string>
     <string name="scegli_il_tema">Scegli il tema</string>
     <string name="scegli_tra_light_theme_e_dark_theme">Scegli tra Light Theme e Dark Theme</string>
-    <string name="category_image">Category image</string>
-    <string name="drink_image">Drink Image</string>
+    <string name="category_image">Immagine della categoria</string>
+    <string name="drink_image">Immagine della bevanda</string>
+    <string name="browse_categories">Naviga tra le categorie</string>
     <string name="feedback_link">https://docs.google.com/forms/d/e/1FAIpQLSc093kYBIurJhPj2HsJBquFtyzlusG1hKDbiH5tTeWVYrw5rw/viewform?usp=pp_url</string>
     <string name="miscellaneous">varie</string>
     <string name="menu_image">Menu Image</string>
+    <string name="nessun_risultato_trovato_nriprova_o_torna_alla_home">NESSUN RISULTATO TROVATO\nRIPROVA O TORNA ALLA HOME</string>
 </resources>
