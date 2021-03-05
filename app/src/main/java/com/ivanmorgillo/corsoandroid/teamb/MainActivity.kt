@@ -8,7 +8,6 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.navigation.NavController
@@ -100,11 +99,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     navController.navigate(R.id.searchFragment, bundle)
                 }
                 MainScreenAction.NavigateToSettingMenu -> {
-                    Toast.makeText(
-                        applicationContext,
-                        "Work in progress",
-                        R.integer.motion_duration_large
-                    ).show()
                     navController.navigate(R.id.settingsFragment)
                 }
                 MainScreenAction.NavigateToFacebook -> openNewTabWindow("https://www.facebook.com", this)
