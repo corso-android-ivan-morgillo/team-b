@@ -114,6 +114,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
                 MainScreenAction.NavigateToFacebook -> openNewTabWindow("https://www.facebook.com", this)
                 MainScreenAction.NavigateToTwitter -> openNewTabWindow("https://twitter.com", this)
+                MainScreenAction.NavigateToFeedBack -> openNewTabWindow(getString(R.string.feedback_link), this)
             }.exhaustive
         })
     }
@@ -136,7 +137,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 mainActivityViewModel.send(MainScreenEvent.OnTwitterClick)
             }
             R.id.nav_feedback -> {
-                Timber.d("FeedBack")
+                mainActivityViewModel.send(MainScreenEvent.OnFeedBackClick)
             }
             R.id.nav_contact -> {
                 Timber.d("Contacts")

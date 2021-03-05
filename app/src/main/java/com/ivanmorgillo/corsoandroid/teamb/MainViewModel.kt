@@ -42,6 +42,10 @@ class MainActivityViewModel(
                 tracking.logEvent("twitter_clicked")
                 actions.postValue(MainScreenAction.NavigateToTwitter)
             }
+            MainScreenEvent.OnFeedBackClick -> {
+                tracking.logEvent("feedback_clicked")
+                actions.postValue(MainScreenAction.NavigateToFeedBack)
+            }
         }.exhaustive
     }
 }
@@ -57,6 +61,7 @@ sealed class MainScreenEvent {
     object OnMenuClick : MainScreenEvent()
     object OnFacebookClick : MainScreenEvent()
     object OnTwitterClick : MainScreenEvent()
+    object OnFeedBackClick : MainScreenEvent()
 }
 
 sealed class MainScreenAction {
@@ -64,4 +69,5 @@ sealed class MainScreenAction {
     object NavigateToSettingMenu : MainScreenAction()
     object NavigateToFacebook : MainScreenAction()
     object NavigateToTwitter : MainScreenAction()
+    object NavigateToFeedBack : MainScreenAction()
 }
