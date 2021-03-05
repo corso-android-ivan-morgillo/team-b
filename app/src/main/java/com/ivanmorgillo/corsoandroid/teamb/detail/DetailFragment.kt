@@ -90,8 +90,8 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
     }
 
     private fun errorCustom(errore: String) {
-        binding.innerLayoutNoInternetSlowInternet.imageViewError.setImageResource(R.drawable.errorimage)
-        binding.innerLayoutNoInternetSlowInternet.textViewError.text = errore
+        binding.innerLayoutNoInternetSlowInternet.imageViewNoInternetError.setImageResource(R.drawable.errorimage)
+        binding.innerLayoutNoInternetSlowInternet.textViewNoInternetError.text = errore
     }
 
     fun Context.themeColor(

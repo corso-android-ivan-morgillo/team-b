@@ -62,9 +62,36 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                 is SearchScreenStates.Content -> {
                     adapter.setSearchList(state.cocktails)
                 }
-                is SearchScreenStates.Error -> Timber.d("error state search")
+                is SearchScreenStates.Error -> {
+                    when (state.error) {
+                        SearchErrorStates.ShowNoInternetMessage -> {
+                            errorCustom("No Internet Connection")
+                        }
+                        SearchErrorStates.ShowNoCocktailFound -> {
+                            errorSearchCustomError("No Cocktail Found")
+                        }
+                        SearchErrorStates.ShowServerError -> {
+                            errorCustom("Server Error")
+                        }
+                        SearchErrorStates.ShowSlowInternet -> {
+                            errorCustom("Slow Internet")
+                        }
+                    }
+                }
                 SearchScreenStates.Loading -> Timber.d("loading state search")
             }
         })
+    }
+
+    private fun errorCustom(error: String) {
+        binding.innerLayoutNoInternetSlowInternet.imageViewNoInternetError.setImageResource(R.drawable.errorimage)
+        binding.innerLayoutNoInternetSlowInternet.textViewNoInternetError.text = error
+    }
+
+    private fun errorSearchCustomError(error: String) {
+        binding.cocktailsSearchList.visibility = View.GONE
+        binding.innerLayoutNoCocktailFound.root.visibility = View.VISIBLE
+        binding.innerLayoutNoCocktailFound.imageViewNoCocktailFoundError.setImageResource(R.drawable.errorimage)
+        binding.innerLayoutNoCocktailFound.textViewNoCocktailFoundError.text = error
     }
 }
