@@ -23,7 +23,7 @@
     <string name="componi_il_tuo_cocktail">Componi il tuo Cocktail</string>
     <string name="preferiti">Preferiti</string>
     <string name="settings">Impostazioni</string>
-    <string name="about_us">Chi siamo</string>
+    <string name="about_us">Social</string>
     <string name="facebook">Facebook</string>
     <string name="twitter">Twitter</string>
     <string name="feedback">FeedBack</string>
@@ -44,4 +44,6 @@
     <string name="category_image">Category image</string>
     <string name="drink_image">Drink Image</string>
     <string name="feedback_link">https://docs.google.com/forms/d/e/1FAIpQLSc093kYBIurJhPj2HsJBquFtyzlusG1hKDbiH5tTeWVYrw5rw/viewform?usp=pp_url</string>
+    <string name="miscellaneous">varie</string>
+    <string name="menu_image">Menu Image</string>
 </resources>

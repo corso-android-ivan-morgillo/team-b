@@ -142,12 +142,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_contact -> {
                 Timber.d("Contacts")
             }
+            /*
             R.id.nav_share -> {
                 Timber.d("Share")
             }
             R.id.nav_evaluate -> {
                 Timber.d("Evaluate")
             }
+             */
         }
         binding.drawerLayout.closeDrawer(GravityCompat.START)
         return true
