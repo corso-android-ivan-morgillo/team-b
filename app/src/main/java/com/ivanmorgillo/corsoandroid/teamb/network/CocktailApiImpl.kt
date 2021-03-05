@@ -141,6 +141,7 @@ class CocktailApiImpl : CocktailAPI {
     override suspend fun loadSearchCocktails(query: String): LoadSearchCocktailResult {
         try {
             val detailCocktailList = service.loadSearchCocktails(query)
+
             val details = detailCocktailList.details.mapNotNull {
                 it.toDomainSearch()
             }
