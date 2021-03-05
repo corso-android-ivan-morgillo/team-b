@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="8dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/settingsFragment">
 
@@ -16,9 +17,11 @@
 
     <TextView
         android:id="@+id/option_descriptionMetricSystem"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/option_titleMetricSystem"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toStartOf="@id/check_ofMetricSystem"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/option_titleMetricSystem"
         android:text="@string/se_non_selezionato_sar_usato_il_sistema_imperiale_us"
         android:fontFamily="@font/firasans_light" />
@@ -27,6 +30,7 @@
         android:id="@+id/check_ofMetricSystem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/option_descriptionMetricSystem"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -34,7 +38,7 @@
         android:id="@+id/option_titleScreenActive"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/option_descriptionMetricSystem"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/option_descriptionMetricSystem"
         android:text="@string/mantieni_lo_schermo_attivo"
         android:fontFamily="@font/firasans_bold"
@@ -42,10 +46,11 @@
 
     <TextView
         android:id="@+id/option_descriptionScreenActive"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/firasans_light"
-        app:layout_constraintStart_toStartOf="@+id/option_descriptionMetricSystem"
+        app:layout_constraintEnd_toStartOf="@id/check_ofScreenActive"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/option_titleScreenActive"
         android:text="@string/impedisci_al_telefono_di_andare_in_sospensione_quando_vengono_visualizzati_i_dettagli_di_un_cocktail" />
 
@@ -54,7 +59,8 @@
         android:id="@+id/check_ofScreenActive"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@+id/option_titleScreenActive"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/option_descriptionScreenActive"
         app:layout_constraintStart_toStartOf="@+id/check_ofMetricSystem" />
 
     <TextView
@@ -69,9 +75,10 @@
 
     <TextView
         android:id="@+id/option_descriptionTheme"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/firasans_light"
+        app:layout_constraintEnd_toStartOf="@id/check_ofTheme"
         app:layout_constraintStart_toStartOf="@+id/option_descriptionMetricSystem"
         app:layout_constraintTop_toBottomOf="@+id/option_titleTheme"
         android:text="@string/scegli_tra_light_theme_e_dark_theme" />
@@ -81,14 +88,15 @@
         android:id="@+id/check_ofTheme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@+id/option_titleTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/option_descriptionTheme"
         app:layout_constraintStart_toStartOf="@+id/check_ofScreenActive" />
 
     <TextView
         android:id="@+id/option_titleLanguage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/option_descriptionMetricSystem"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/option_descriptionTheme"
         android:text="@string/lingua"
         android:fontFamily="@font/firasans_bold"
@@ -96,10 +104,10 @@
 
     <TextView
         android:id="@+id/option_descriptionLanguage"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/firasans_light"
-        app:layout_constraintStart_toStartOf="@+id/option_descriptionMetricSystem"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/option_titleLanguage"
         android:text="@string/scegli_la_tua_lingua" />
 
@@ -107,7 +115,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="@+id/check_ofTheme"
-        app:layout_constraintTop_toTopOf="@id/option_titleLanguage"
+        app:layout_constraintTop_toTopOf="@id/option_descriptionLanguage"
         app:layout_constraintEnd_toEndOf="@id/check_ofMetricSystem" />
 
     <include
