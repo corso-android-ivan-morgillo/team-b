@@ -51,7 +51,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             }
             viewModel.send(HomeScreenEvents.OnCocktailClick(item))
         }
-        binding.innerLayoutNoInternetSlowInternet.buttonError.setOnClickListener {
+        binding.innerLayoutNoInternetSlowInternet.buttonNoInternetError.setOnClickListener {
             viewModel.send(HomeScreenEvents.OnSettingClick)
         }
 
@@ -115,7 +115,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             ErrorStates.ShowNoInternetMessage -> {
                 fragmentHomeBinding.innerLayoutNoInternetSlowInternet.root.visible()
                 errorCustom("No Internet Connection", fragmentHomeBinding)
-                fragmentHomeBinding.innerLayoutNoInternetSlowInternet.buttonError.visible()
+                fragmentHomeBinding.innerLayoutNoInternetSlowInternet.buttonNoInternetError.visible()
             }
             ErrorStates.ShowNoCocktailFound -> {
                 errorCustom("No Cocktail Found", fragmentHomeBinding)
@@ -161,8 +161,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.innerLayout.visibility = View.GONE
         binding.categoryLayout.visibility = View.GONE
         binding.swiperefresh.isRefreshing = false
-
-        binding.innerLayoutNoInternetSlowInternet.imageViewError.setImageResource(R.drawable.errorimage)
-        binding.innerLayoutNoInternetSlowInternet.textViewError.text = errore
+        binding.innerLayoutNoInternetSlowInternet.imageViewNoInternetError.setImageResource(R.drawable.errorimage)
+        binding.innerLayoutNoInternetSlowInternet.textViewNoInternetError.text = errore
     }
 }
