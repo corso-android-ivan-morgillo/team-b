@@ -10,7 +10,6 @@ import com.ivanmorgillo.corsoandroid.teamb.settings.SettingScreenEvents.OnScreen
 import com.ivanmorgillo.corsoandroid.teamb.settings.SettingScreenEvents.OnThemeSwitchClick
 import com.ivanmorgillo.corsoandroid.teamb.settings.SettingScreenStates.Content
 import com.ivanmorgillo.corsoandroid.teamb.utils.Screens
-import com.ivanmorgillo.corsoandroid.teamb.utils.SingleLiveEvent
 import com.ivanmorgillo.corsoandroid.teamb.utils.Tracking
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
 import kotlinx.coroutines.Dispatchers
@@ -51,7 +50,7 @@ class SettingViewModel(
     private val tracking: Tracking
 ) : ViewModel() {
     val states = MutableLiveData<SettingScreenStates>()
-    val actions = SingleLiveEvent<SettingScreenActions>()
+    // val actions = SingleLiveEvent<SettingScreenActions>()
 
     init {
         tracking.logScreen(Screens.Setting)
@@ -122,9 +121,10 @@ sealed class SettingScreenEvents {
     object OnReady : SettingScreenEvents()
 }
 
+/*
 sealed class SettingScreenActions {
 }
-
+*/
 sealed class SettingScreenStates {
     object Loading : SettingScreenStates()
     data class Error(val error: ErrorStates) : SettingScreenStates()
