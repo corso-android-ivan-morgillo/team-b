@@ -10,6 +10,7 @@ import com.ivanmorgillo.corsoandroid.teamb.network.DetailLoadCocktailError.NoInt
 import com.ivanmorgillo.corsoandroid.teamb.network.DetailLoadCocktailError.ServerError
 import com.ivanmorgillo.corsoandroid.teamb.network.DetailLoadCocktailError.SlowInternet
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadDetailCocktailResult
+import com.ivanmorgillo.corsoandroid.teamb.utils.Screens
 import com.ivanmorgillo.corsoandroid.teamb.utils.Tracking
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
 import kotlinx.coroutines.launch
@@ -19,6 +20,10 @@ class DetailViewModel(
     private val tracking: Tracking
 ) : ViewModel() {
     val states = MutableLiveData<DetailScreenStates>()
+
+    init {
+        tracking.logScreen(Screens.Detail)
+    }
 
     fun send(event: DetailScreenEvents) {
         when (event) {

@@ -9,6 +9,7 @@ import com.ivanmorgillo.corsoandroid.teamb.network.SearchLoadCocktailError.NoCoc
 import com.ivanmorgillo.corsoandroid.teamb.network.SearchLoadCocktailError.NoInternet
 import com.ivanmorgillo.corsoandroid.teamb.network.SearchLoadCocktailError.ServerError
 import com.ivanmorgillo.corsoandroid.teamb.network.SearchLoadCocktailError.SlowInternet
+import com.ivanmorgillo.corsoandroid.teamb.utils.Screens
 import com.ivanmorgillo.corsoandroid.teamb.utils.SingleLiveEvent
 import com.ivanmorgillo.corsoandroid.teamb.utils.Tracking
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
@@ -25,6 +26,10 @@ class SearchViewModel(
     // Quando si cambia stato questa variabile viene settata
     val states = MutableLiveData<SearchScreenStates>()
     val actions = SingleLiveEvent<SearchScreenAction>()
+
+    init {
+        tracking.logScreen(Screens.Search)
+    }
 
     fun send(event: SearchScreenEvent) {
         // controlla il tipo di evento e in base a questo fa qualcosa

@@ -8,6 +8,7 @@ import com.ivanmorgillo.corsoandroid.teamb.home.GeneralContent
 import com.ivanmorgillo.corsoandroid.teamb.network.CocktailRepository
 import com.ivanmorgillo.corsoandroid.teamb.settings.SettingScreenEvents.OnScreenSwitchClick
 import com.ivanmorgillo.corsoandroid.teamb.settings.SettingScreenEvents.OnThemeSwitchClick
+import com.ivanmorgillo.corsoandroid.teamb.utils.Screens
 import com.ivanmorgillo.corsoandroid.teamb.utils.SingleLiveEvent
 import com.ivanmorgillo.corsoandroid.teamb.utils.Tracking
 
@@ -17,6 +18,11 @@ class SettingViewModel(
 ) : ViewModel() {
     val states = MutableLiveData<SettingScreenStates>()
     val actions = SingleLiveEvent<SettingScreenActions>()
+
+    init {
+        tracking.logScreen(Screens.Setting)
+    }
+
     fun send(event: SettingScreenEvents) {
         when (event) {
             is OnThemeSwitchClick -> {

@@ -22,6 +22,7 @@ import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.ServerError
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.SlowInternet
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailResult.Failure
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailResult.Success
+import com.ivanmorgillo.corsoandroid.teamb.utils.Screens
 import com.ivanmorgillo.corsoandroid.teamb.utils.SingleLiveEvent
 import com.ivanmorgillo.corsoandroid.teamb.utils.Tracking
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
@@ -39,6 +40,11 @@ class HomeViewModel(
     // Quando si cambia stato questa variabile viene settata
     val states = MutableLiveData<HomeScreenStates>()
     val actions = SingleLiveEvent<HomeScreenActions>()
+
+    init {
+        tracking.logScreen(Screens.Home)
+    }
+
     fun send(event: HomeScreenEvents) {
         // controlla il tipo di evento e in base a questo fa qualcosa
         Timber.d(event.toString())
