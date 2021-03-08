@@ -11,6 +11,7 @@ import com.ivanmorgillo.corsoandroid.teamb.search.SearchViewModel
 import com.ivanmorgillo.corsoandroid.teamb.settings.SettingViewModel
 import com.ivanmorgillo.corsoandroid.teamb.settings.SettingsRepository
 import com.ivanmorgillo.corsoandroid.teamb.settings.SettingsRepositoryImpl
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -29,7 +30,7 @@ val appModule = module {
     }
 
     single<SettingsRepository> {
-        SettingsRepositoryImpl()
+        SettingsRepositoryImpl(androidContext())
     }
 
     // Creiamo un oggetto di tipo MainViewModel
