@@ -55,30 +55,6 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
                 id = 6,
                 category = "category6"
             ),
-            FavoriteCocktailUI(
-                cocktailName = "Mojito6",
-                image = imageCocktail,
-                id = 7,
-                category = "category7"
-            ),
-            FavoriteCocktailUI(
-                cocktailName = "Mojito7",
-                image = imageCocktail,
-                id = 8,
-                category = "category8"
-            ),
-            FavoriteCocktailUI(
-                cocktailName = "Mojito8",
-                image = imageCocktail,
-                id = 9,
-                category = "category9"
-            ),
-            FavoriteCocktailUI(
-                cocktailName = "Mojito9",
-                image = imageCocktail,
-                id = 10,
-                category = "category10"
-            ),
         )
         adapter.setFavoriteList(favoriteCocktailList)
         binding.cocktailsFavoritesList.adapter = adapter
