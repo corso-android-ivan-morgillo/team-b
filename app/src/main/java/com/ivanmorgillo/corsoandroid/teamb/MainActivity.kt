@@ -20,6 +20,7 @@ import com.google.android.material.navigation.NavigationView
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.DisableDarkMode
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.EnableDarkMode
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToFacebook
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToFavorite
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToFeedBack
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToSearch
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToSettingMenu
@@ -115,6 +116,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 NavigateToFeedBack -> openNewTabWindow(getString(string.feedback_link), this)
                 DisableDarkMode -> Unit
                 EnableDarkMode -> Unit
+                NavigateToFavorite -> navController.navigate(id.favoritesFragment)
             }.exhaustive
         })
     }
@@ -125,7 +127,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Timber.d("CustomCocktail")
             }
             R.id.nav_favorites -> {
-                Timber.d("FavoriteCocktail")
+                mainActivityViewModel.send(MainScreenEvent.OnFavoriteClick)
             }
             R.id.nav_settings -> {
                 mainActivityViewModel.send(MainScreenEvent.OnMenuClick)

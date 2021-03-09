@@ -18,6 +18,9 @@
         <action
             android:id="@+id/action_homeFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_favoritesFragment"
+            app:destination="@id/favoritesFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
@@ -47,5 +50,8 @@
         android:id="@+id/settingsFragment"
         android:name="com.ivanmorgillo.corsoandroid.teamb.settings.SettingFragment"
         tools:layout="@layout/fragment_setting" />
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="com.ivanmorgillo.corsoandroid.teamb.favorites.FavoritesFragment" />
 
 </navigation>
