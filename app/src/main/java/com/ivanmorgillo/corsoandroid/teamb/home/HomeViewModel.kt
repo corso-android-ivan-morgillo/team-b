@@ -4,6 +4,10 @@ import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.apperol.networking.CategoriesError
+import com.apperol.networking.LoadCategoriesResult
+import com.apperol.networking.LoadCocktailError
+import com.apperol.networking.LoadCocktailResult
 import com.ivanmorgillo.corsoandroid.teamb.home.ErrorStates.ShowNoCategoriesFound
 import com.ivanmorgillo.corsoandroid.teamb.home.ErrorStates.ShowNoCocktailFound
 import com.ivanmorgillo.corsoandroid.teamb.home.ErrorStates.ShowNoInternetMessage
@@ -12,16 +16,7 @@ import com.ivanmorgillo.corsoandroid.teamb.home.ErrorStates.ShowSlowInternet
 import com.ivanmorgillo.corsoandroid.teamb.home.HomeScreenStates.Content
 import com.ivanmorgillo.corsoandroid.teamb.home.HomeScreenStates.Error
 import com.ivanmorgillo.corsoandroid.teamb.home.HomeScreenStates.Loading
-import com.ivanmorgillo.corsoandroid.teamb.network.CategoriesError
-import com.ivanmorgillo.corsoandroid.teamb.network.CategoriesError.NoCategoriesFound
 import com.ivanmorgillo.corsoandroid.teamb.network.CocktailRepository
-import com.ivanmorgillo.corsoandroid.teamb.network.LoadCategoriesResult
-import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.NoCocktailFound
-import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.NoInternet
-import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.ServerError
-import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.SlowInternet
-import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailResult.Failure
-import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailResult.Success
 import com.ivanmorgillo.corsoandroid.teamb.utils.Screens
 import com.ivanmorgillo.corsoandroid.teamb.utils.SingleLiveEvent
 import com.ivanmorgillo.corsoandroid.teamb.utils.Tracking
@@ -77,7 +72,7 @@ class HomeViewModel(
 
     private fun onCategoriesFailure(result: LoadCategoriesResult.Failure) {
         when (result.error) {
-            NoCategoriesFound -> states.postValue(Error(ShowNoCategoriesFound))
+            CategoriesError.NoCategoriesFound -> states.postValue(Error(ShowNoCategoriesFound))
             CategoriesError.NoInternet -> states.postValue(Error(ShowNoInternetMessage))
             CategoriesError.ServerError -> states.postValue(Error(ShowServerError))
             CategoriesError.SlowInternet -> states.postValue(Error(ShowSlowInternet))
@@ -99,8 +94,8 @@ class HomeViewModel(
                         )
                     }
                     when (drinkresult) {
-                        is Failure -> onFailure(drinkresult)
-                        is Success -> {
+                        is LoadCocktailResult.Failure -> onFailure(drinkresult)
+                        is LoadCocktailResult.Success -> {
                             val cocktails = drinkresult.cocktails.map {
                                 DrinksUI(drinkName = it.name, image = it.image, id = it.idDrink)
                             }
@@ -113,12 +108,12 @@ class HomeViewModel(
         }
     }
 
-    private fun onFailure(result: Failure) {
+    private fun onFailure(result: LoadCocktailResult.Failure) {
         when (result.error) {
-            NoCocktailFound -> states.postValue(Error(ShowNoCocktailFound))
-            NoInternet -> states.postValue(Error(ShowNoInternetMessage))
-            ServerError -> states.postValue(Error(ShowServerError))
-            SlowInternet -> states.postValue(Error(ShowSlowInternet))
+            LoadCocktailError.NoCocktailFound -> states.postValue(Error(ShowNoCocktailFound))
+            LoadCocktailError.NoInternet -> states.postValue(Error(ShowNoInternetMessage))
+            LoadCocktailError.ServerError -> states.postValue(Error(ShowServerError))
+            LoadCocktailError.SlowInternet -> states.postValue(Error(ShowSlowInternet))
         }.exhaustive
     }
 }

@@ -1,23 +1,18 @@
-package com.ivanmorgillo.corsoandroid.teamb.network
+package com.apperol.networking
 
-import com.apperol.networking.CategoryDTO
-import com.apperol.networking.CocktailAPI
-import com.apperol.networking.CocktailService
-import com.apperol.networking.DetailCocktailDTO
-import com.apperol.networking.DrinkDTO
-import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.NoCocktailFound
-import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.NoInternet
-import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.ServerError
-import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.SlowInternet
-import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailResult.Failure
-import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailResult.Success
+import com.apperol.networking.LoadCocktailError.NoCocktailFound
+import com.apperol.networking.LoadCocktailError.NoInternet
+import com.apperol.networking.LoadCocktailError.ServerError
+import com.apperol.networking.LoadCocktailError.SlowInternet
+import com.apperol.networking.LoadCocktailResult.Failure
+import com.apperol.networking.LoadCocktailResult.Success
+import java.io.IOException
+import java.net.SocketTimeoutException
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import timber.log.Timber
-import java.io.IOException
-import java.net.SocketTimeoutException
 
 class CocktailApiImpl : CocktailAPI {
     private val service: CocktailService
