@@ -2,7 +2,6 @@
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:paddingTop="4dp"
     android:paddingStart="8dp"
     android:paddingBottom="8dp"
     android:paddingEnd="8dp"
@@ -17,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#7f7f7f"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="8dp"
             android:alpha="0.3"
             app:layout_constraintTop_toBottomOf="@id/detail_screen_ingredient_list" />
 
@@ -29,8 +28,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="2"
+            android:paddingBottom="12dp"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             tools:listitem="@layout/ingredient" />
 
         <TextView

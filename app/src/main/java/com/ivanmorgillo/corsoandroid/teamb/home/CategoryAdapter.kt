@@ -20,7 +20,7 @@ class CategoryAdapter(private val onClick: (CategoryUI, View) -> Unit) : Recycle
     }
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
-        holder.bind(categoryList[position], onClick)
+        holder.bind(categoryList[position])
         holder.binding.categoryItem.setOnClickListener {
             onClick(categoryList[position], holder.itemView)
             selectedItemPosition = position
@@ -46,12 +46,8 @@ class CategoryAdapter(private val onClick: (CategoryUI, View) -> Unit) : Recycle
 }
 
 class CategoryViewHolder(val binding: CategoryItemBinding) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(item: CategoryUI, onClick: (CategoryUI, View) -> Unit) {
-        if (item.nameCategory != "") {
-            binding.categoryText.text = item.nameCategory
-        } else {
-            binding.categoryText.text = "Extras"
-        }
+    fun bind(item: CategoryUI) {
+        binding.categoryText.text = item.nameCategory
         when (item.nameCategory) {
             "Ordinary Drink" -> binding.categoryImage.load(R.drawable.ordinary_drink)
             "Cocktail" -> binding.categoryImage.load(R.drawable.cocktails)
@@ -64,7 +60,6 @@ class CategoryViewHolder(val binding: CategoryItemBinding) : RecyclerView.ViewHo
             "Punch / Party Drink" -> binding.categoryImage.load(R.drawable.punch)
             "Beer" -> binding.categoryImage.load(R.drawable.beer)
             "Soft Drink / Soda" -> binding.categoryImage.load(R.drawable.soda)
-            "" -> binding.categoryImage.load(R.drawable.extras)
         }
     }
 }
