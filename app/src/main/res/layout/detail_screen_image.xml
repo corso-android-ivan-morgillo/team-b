@@ -44,5 +44,14 @@
         android:layout_marginBottom="12dp"
         tools:ignore="HardcodedText"
         tools:src="@mipmap/ic_launcher" />
+
+    <ImageView
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:background="@drawable/starempty"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="4dp"
+        android:layout_marginEnd="8dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 

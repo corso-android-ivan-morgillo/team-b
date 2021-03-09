@@ -8,13 +8,6 @@
     android:layout_marginTop="4dp"
     android:layout_marginStart="8dp">
 
-    <!--
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:src="@mipmap/ic_launcher_round"
-        tools:ignore="MissingConstraints"
-        app:layout_constraintStart_toStartOf="parent" />-->
 
     <TextView
         android:id="@+id/ingredient_item_name"
@@ -24,7 +17,6 @@
         android:fontFamily="@font/firasans_bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         tools:text="nome ingrediente"
         android:textSize="14sp" />
 
@@ -35,9 +27,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:fontFamily="@font/firasans_light"
-        app:layout_constraintBottom_toBottomOf="@id/ingredient_item_name"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/ingredient_item_name"
-        app:layout_constraintTop_toTopOf="@id/ingredient_item_name"
         tools:text="quantità"
         android:textSize="12sp" />
 
