@@ -3,6 +3,18 @@ package com.ivanmorgillo.corsoandroid.teamb
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToFacebook
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToFavorite
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToFeedBack
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToSearch
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToSettingMenu
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToTwitter
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnFacebookClick
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnFavoriteClick
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnFeedBackClick
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnMenuClick
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnSearchClick
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnTwitterClick
 import com.ivanmorgillo.corsoandroid.teamb.home.ErrorStates
 import com.ivanmorgillo.corsoandroid.teamb.search.SearchCocktailUI
 import com.ivanmorgillo.corsoandroid.teamb.settings.SettingsRepository
@@ -39,25 +51,29 @@ class MainActivityViewModel(
         Timber.d(event.toString())
         @Suppress("IMPLICIT_CAST_TO_ANY")
         when (event) {
-            is MainScreenEvent.OnSearchClick -> {
+            is OnSearchClick -> {
                 tracking.logEvent("search_clicked")
-                actions.postValue(MainScreenAction.NavigateToSearch(event.query))
+                actions.postValue(NavigateToSearch(event.query))
             }
-            MainScreenEvent.OnMenuClick -> {
+            OnMenuClick -> {
                 tracking.logEvent("settings_clicked")
-                actions.postValue(MainScreenAction.NavigateToSettingMenu)
+                actions.postValue(NavigateToSettingMenu)
             }
-            MainScreenEvent.OnFacebookClick -> {
+            OnFacebookClick -> {
                 tracking.logEvent("facebook_clicked")
-                actions.postValue(MainScreenAction.NavigateToFacebook)
+                actions.postValue(NavigateToFacebook)
             }
-            MainScreenEvent.OnTwitterClick -> {
+            OnTwitterClick -> {
                 tracking.logEvent("twitter_clicked")
-                actions.postValue(MainScreenAction.NavigateToTwitter)
+                actions.postValue(NavigateToTwitter)
             }
-            MainScreenEvent.OnFeedBackClick -> {
+            OnFeedBackClick -> {
                 tracking.logEvent("feedback_clicked")
-                actions.postValue(MainScreenAction.NavigateToFeedBack)
+                actions.postValue(NavigateToFeedBack)
+            }
+            OnFavoriteClick -> {
+                tracking.logEvent("favorite_list_clicked")
+                actions.postValue(NavigateToFavorite)
             }
         }.exhaustive
     }
@@ -75,6 +91,7 @@ sealed class MainScreenEvent {
     object OnFacebookClick : MainScreenEvent()
     object OnTwitterClick : MainScreenEvent()
     object OnFeedBackClick : MainScreenEvent()
+    object OnFavoriteClick : MainScreenEvent()
 }
 
 sealed class MainScreenAction {
@@ -85,4 +102,5 @@ sealed class MainScreenAction {
     object NavigateToFeedBack : MainScreenAction()
     object EnableDarkMode : MainScreenAction()
     object DisableDarkMode : MainScreenAction()
+    object NavigateToFavorite : MainScreenAction()
 }
