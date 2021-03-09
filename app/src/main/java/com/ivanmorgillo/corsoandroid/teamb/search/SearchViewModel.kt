@@ -3,12 +3,19 @@ package com.ivanmorgillo.corsoandroid.teamb.search
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.apperol.networking.LoadSearchCocktailResult
+import com.apperol.networking.SearchLoadCocktailError.NoCocktailFound
+import com.apperol.networking.SearchLoadCocktailError.NoInternet
+import com.apperol.networking.SearchLoadCocktailError.ServerError
+import com.apperol.networking.SearchLoadCocktailError.SlowInternet
 import com.ivanmorgillo.corsoandroid.teamb.network.CocktailRepository
-import com.ivanmorgillo.corsoandroid.teamb.network.LoadSearchCocktailResult
-import com.ivanmorgillo.corsoandroid.teamb.network.SearchLoadCocktailError.NoCocktailFound
-import com.ivanmorgillo.corsoandroid.teamb.network.SearchLoadCocktailError.NoInternet
-import com.ivanmorgillo.corsoandroid.teamb.network.SearchLoadCocktailError.ServerError
-import com.ivanmorgillo.corsoandroid.teamb.network.SearchLoadCocktailError.SlowInternet
+import com.ivanmorgillo.corsoandroid.teamb.search.SearchErrorStates.ShowNoCocktailFound
+import com.ivanmorgillo.corsoandroid.teamb.search.SearchErrorStates.ShowNoInternetMessage
+import com.ivanmorgillo.corsoandroid.teamb.search.SearchErrorStates.ShowServerError
+import com.ivanmorgillo.corsoandroid.teamb.search.SearchErrorStates.ShowSlowInternet
+import com.ivanmorgillo.corsoandroid.teamb.search.SearchScreenStates.Content
+import com.ivanmorgillo.corsoandroid.teamb.search.SearchScreenStates.Error
+import com.ivanmorgillo.corsoandroid.teamb.search.SearchScreenStates.Loading
 import com.ivanmorgillo.corsoandroid.teamb.utils.Screens
 import com.ivanmorgillo.corsoandroid.teamb.utils.SingleLiveEvent
 import com.ivanmorgillo.corsoandroid.teamb.utils.Tracking
@@ -45,7 +52,7 @@ class SearchViewModel(
     }
 
     private fun loadContent(query: String) {
-        states.postValue(SearchScreenStates.Loading)
+        states.postValue(Loading)
         viewModelScope.launch {
             val result = repository.loadSearchCocktails(query)
             when (result) {
@@ -65,16 +72,16 @@ class SearchViewModel(
                 alcoholic = it.alcoholic
             )
         }
-        states.postValue(SearchScreenStates.Content(cocktails))
+        states.postValue(Content(cocktails))
     }
 
     private fun onFailure(result: LoadSearchCocktailResult.Failure) {
         Timber.d("Failure")
         when (result.error) {
-            NoCocktailFound -> states.postValue(SearchScreenStates.Error(SearchErrorStates.ShowNoCocktailFound))
-            NoInternet -> states.postValue(SearchScreenStates.Error(SearchErrorStates.ShowNoInternetMessage))
-            ServerError -> states.postValue(SearchScreenStates.Error(SearchErrorStates.ShowServerError))
-            SlowInternet -> states.postValue(SearchScreenStates.Error(SearchErrorStates.ShowSlowInternet))
+            NoCocktailFound -> states.postValue(Error(ShowNoCocktailFound))
+            NoInternet -> states.postValue(Error(ShowNoInternetMessage))
+            ServerError -> states.postValue(Error(ShowServerError))
+            SlowInternet -> states.postValue(Error(ShowSlowInternet))
         }.exhaustive
     }
 }

@@ -3,13 +3,21 @@ package com.ivanmorgillo.corsoandroid.teamb.detail
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.apperol.networking.DetailLoadCocktailError.NoCocktailFound
+import com.apperol.networking.DetailLoadCocktailError.NoDetailFound
+import com.apperol.networking.DetailLoadCocktailError.NoInternet
+import com.apperol.networking.DetailLoadCocktailError.ServerError
+import com.apperol.networking.DetailLoadCocktailError.SlowInternet
+import com.apperol.networking.LoadDetailCocktailResult
+import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowNoCocktailFound
+import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowNoDetailFound
+import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowNoInternetMessage
+import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowServerError
+import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowSlowInternet
+import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenStates.Content
+import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenStates.Error
+import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenStates.Loading
 import com.ivanmorgillo.corsoandroid.teamb.network.CocktailRepository
-import com.ivanmorgillo.corsoandroid.teamb.network.DetailLoadCocktailError.NoCocktailFound
-import com.ivanmorgillo.corsoandroid.teamb.network.DetailLoadCocktailError.NoDetailFound
-import com.ivanmorgillo.corsoandroid.teamb.network.DetailLoadCocktailError.NoInternet
-import com.ivanmorgillo.corsoandroid.teamb.network.DetailLoadCocktailError.ServerError
-import com.ivanmorgillo.corsoandroid.teamb.network.DetailLoadCocktailError.SlowInternet
-import com.ivanmorgillo.corsoandroid.teamb.network.LoadDetailCocktailResult
 import com.ivanmorgillo.corsoandroid.teamb.utils.Screens
 import com.ivanmorgillo.corsoandroid.teamb.utils.Tracking
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
@@ -32,7 +40,7 @@ class DetailViewModel(
     }
 
     private fun loadDetails(id: Long) {
-        states.postValue(DetailScreenStates.Loading)
+        states.postValue(Loading)
         viewModelScope.launch {
             val result = repository.loadDetailCocktails(cocktailId = id)
             when (result) {
@@ -55,16 +63,16 @@ class DetailViewModel(
             DetailScreenItems.Instructions(details.instructions),
 
             )
-        states.postValue(DetailScreenStates.Content(content))
+        states.postValue(Content(content))
     }
 
     private fun onFailure(result: LoadDetailCocktailResult.Failure) {
         when (result.error) {
-            NoCocktailFound -> states.postValue(DetailScreenStates.Error(DetailErrorStates.ShowNoCocktailFound))
-            NoInternet -> states.postValue(DetailScreenStates.Error(DetailErrorStates.ShowNoInternetMessage))
-            ServerError -> states.postValue(DetailScreenStates.Error(DetailErrorStates.ShowServerError))
-            SlowInternet -> states.postValue(DetailScreenStates.Error(DetailErrorStates.ShowSlowInternet))
-            NoDetailFound -> states.postValue(DetailScreenStates.Error(DetailErrorStates.ShowNoDetailFound))
+            NoCocktailFound -> states.postValue(Error(ShowNoCocktailFound))
+            NoInternet -> states.postValue(Error(ShowNoInternetMessage))
+            ServerError -> states.postValue(Error(ShowServerError))
+            SlowInternet -> states.postValue(Error(ShowSlowInternet))
+            NoDetailFound -> states.postValue(Error(ShowNoDetailFound))
         }.exhaustive
     }
 }

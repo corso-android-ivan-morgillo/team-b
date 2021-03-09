@@ -1,10 +1,10 @@
 package com.ivanmorgillo.corsoandroid.teamb.utils
 
 import com.apperol.networking.CocktailAPI
+import com.apperol.networking.CocktailApiImpl
 import com.ivanmorgillo.corsoandroid.teamb.MainActivityViewModel
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailViewModel
 import com.ivanmorgillo.corsoandroid.teamb.home.HomeViewModel
-import com.ivanmorgillo.corsoandroid.teamb.network.CocktailApiImpl
 import com.ivanmorgillo.corsoandroid.teamb.network.CocktailRepository
 import com.ivanmorgillo.corsoandroid.teamb.network.CocktailRepositoryImpl
 import com.ivanmorgillo.corsoandroid.teamb.search.SearchViewModel
