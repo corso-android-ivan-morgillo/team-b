@@ -50,7 +50,6 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
             when (it) {
                 is SettingScreenStates.Content -> {
                     setupTheme(it)
-
                     setupScreen(it)
                 }
                 is SettingScreenStates.Error -> TODO()

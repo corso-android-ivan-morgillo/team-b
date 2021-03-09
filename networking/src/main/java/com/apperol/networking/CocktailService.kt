@@ -1,6 +1,5 @@
-package com.ivanmorgillo.corsoandroid.teamb.network
+package com.apperol.networking
 
-import DetailCocktailDTO
 import retrofit2.http.GET
 import retrofit2.http.Query
 
