@@ -17,6 +17,15 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.DisableDarkMode
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.EnableDarkMode
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToFacebook
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToFeedBack
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToSearch
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToSettingMenu
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToTwitter
+import com.ivanmorgillo.corsoandroid.teamb.R.id
+import com.ivanmorgillo.corsoandroid.teamb.R.string
 import com.ivanmorgillo.corsoandroid.teamb.databinding.ActivityMainBinding
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -31,6 +40,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        observeActions()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -52,7 +62,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // naviga nelle pagine del navigation drawer
         binding.navView.setNavigationItemSelectedListener(this)
         binding.navView.itemIconTintList = null
-        observeActions()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -93,17 +102,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         mainActivityViewModel.actions.observe(this, { action ->
             Timber.d(action.toString())
             when (action) {
-                is MainScreenAction.NavigateToSearch -> {
+                is NavigateToSearch -> {
                     val bundle = Bundle()
                     bundle.putString("query", action.query)
-                    navController.navigate(R.id.searchFragment, bundle)
+                    navController.navigate(id.searchFragment, bundle)
                 }
-                MainScreenAction.NavigateToSettingMenu -> {
-                    navController.navigate(R.id.settingsFragment)
+                NavigateToSettingMenu -> {
+                    navController.navigate(id.settingsFragment)
                 }
-                MainScreenAction.NavigateToFacebook -> openNewTabWindow("https://www.facebook.com", this)
-                MainScreenAction.NavigateToTwitter -> openNewTabWindow("https://twitter.com", this)
-                MainScreenAction.NavigateToFeedBack -> openNewTabWindow(getString(R.string.feedback_link), this)
+                NavigateToFacebook -> openNewTabWindow("https://www.facebook.com", this)
+                NavigateToTwitter -> openNewTabWindow("https://twitter.com", this)
+                NavigateToFeedBack -> openNewTabWindow(getString(string.feedback_link), this)
+                DisableDarkMode -> Unit
+                EnableDarkMode -> Unit
             }.exhaustive
         })
     }

@@ -1,15 +1,15 @@
 package com.ivanmorgillo.corsoandroid.teamb.settings
 
-import android.app.UiModeManager
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.ivanmorgillo.corsoandroid.teamb.R
 import com.ivanmorgillo.corsoandroid.teamb.databinding.FragmentSettingBinding
 import com.ivanmorgillo.corsoandroid.teamb.utils.bindings.viewBinding
+import com.ivanmorgillo.corsoandroid.teamb.utils.disableDarkMode
+import com.ivanmorgillo.corsoandroid.teamb.utils.enableDarkMode
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -69,9 +69,9 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
 
     private fun setupTheme(it: SettingScreenStates.Content) {
         if (it.changeThemeOn) {
-            AppCompatDelegate.setDefaultNightMode(UiModeManager.MODE_NIGHT_YES)
+            enableDarkMode()
         } else {
-            AppCompatDelegate.setDefaultNightMode(UiModeManager.MODE_NIGHT_NO)
+            disableDarkMode()
         }
         binding.checkOfTheme.isChecked = it.changeThemeOn
     }

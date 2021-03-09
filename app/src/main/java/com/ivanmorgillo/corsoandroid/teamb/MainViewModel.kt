@@ -2,16 +2,18 @@ package com.ivanmorgillo.corsoandroid.teamb
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.ivanmorgillo.corsoandroid.teamb.home.ErrorStates
-import com.ivanmorgillo.corsoandroid.teamb.network.CocktailRepository
 import com.ivanmorgillo.corsoandroid.teamb.search.SearchCocktailUI
+import com.ivanmorgillo.corsoandroid.teamb.settings.SettingsRepository
 import com.ivanmorgillo.corsoandroid.teamb.utils.SingleLiveEvent
 import com.ivanmorgillo.corsoandroid.teamb.utils.Tracking
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class MainActivityViewModel(
-    private val repository: CocktailRepository,
+    private val settingsrepository: SettingsRepository,
     private val tracking: Tracking
 
 ) : ViewModel() {
@@ -20,6 +22,17 @@ class MainActivityViewModel(
     // Quando si cambia stato questa variabile viene settata
     val states = MutableLiveData<MainScreenStates>()
     val actions = SingleLiveEvent<MainScreenAction>()
+
+    init {
+        viewModelScope.launch {
+            val isDarkModeOn = settingsrepository.isThemeSwitchOn()
+            if (isDarkModeOn) {
+                actions.postValue(MainScreenAction.EnableDarkMode)
+            } else {
+                actions.postValue(MainScreenAction.DisableDarkMode)
+            }
+        }
+    }
 
     fun send(event: MainScreenEvent) {
         // controlla il tipo di evento e in base a questo fa qualcosa
@@ -70,4 +83,6 @@ sealed class MainScreenAction {
     object NavigateToFacebook : MainScreenAction()
     object NavigateToTwitter : MainScreenAction()
     object NavigateToFeedBack : MainScreenAction()
+    object EnableDarkMode : MainScreenAction()
+    object DisableDarkMode : MainScreenAction()
 }
