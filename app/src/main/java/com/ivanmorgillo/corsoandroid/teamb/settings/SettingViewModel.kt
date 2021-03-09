@@ -1,7 +1,5 @@
 package com.ivanmorgillo.corsoandroid.teamb.settings
 
-import android.content.Context
-import android.content.SharedPreferences
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,45 +10,13 @@ import com.ivanmorgillo.corsoandroid.teamb.settings.SettingScreenStates.Content
 import com.ivanmorgillo.corsoandroid.teamb.utils.Screens
 import com.ivanmorgillo.corsoandroid.teamb.utils.Tracking
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-
-interface SettingsRepository {
-    suspend fun saveThemeSwitch(themeSwitchOn: Boolean): Boolean
-    suspend fun saveScreenSwitch(screenSwitchOn: Boolean): Boolean
-    suspend fun isThemeSwitchOn(): Boolean
-    suspend fun isScreenSwitchOn(): Boolean
-}
-
-class SettingsRepositoryImpl(val context: Context) : SettingsRepository {
-    private val storage: SharedPreferences by lazy {
-        context.getSharedPreferences("Settings", Context.MODE_PRIVATE)
-    }
-
-    override suspend fun saveThemeSwitch(themeSwitchOn: Boolean) = withContext(Dispatchers.IO) {
-        storage.edit().putBoolean("theme", themeSwitchOn).commit()
-    }
-
-    override suspend fun saveScreenSwitch(screenSwitchOn: Boolean) = withContext(Dispatchers.IO) {
-        storage.edit().putBoolean("screen", screenSwitchOn).commit()
-    }
-
-    override suspend fun isThemeSwitchOn(): Boolean = withContext(Dispatchers.IO) {
-        storage.getBoolean("theme", false)
-    }
-
-    override suspend fun isScreenSwitchOn(): Boolean = withContext(Dispatchers.IO) {
-        storage.getBoolean("screen", true)
-    }
-}
 
 class SettingViewModel(
     private val settingsRepository: SettingsRepository,
     private val tracking: Tracking
 ) : ViewModel() {
     val states = MutableLiveData<SettingScreenStates>()
-    // val actions = SingleLiveEvent<SettingScreenActions>()
 
     init {
         tracking.logScreen(Screens.Setting)
@@ -121,10 +87,6 @@ sealed class SettingScreenEvents {
     object OnReady : SettingScreenEvents()
 }
 
-/*
-sealed class SettingScreenActions {
-}
-*/
 sealed class SettingScreenStates {
     object Loading : SettingScreenStates()
     data class Error(val error: ErrorStates) : SettingScreenStates()

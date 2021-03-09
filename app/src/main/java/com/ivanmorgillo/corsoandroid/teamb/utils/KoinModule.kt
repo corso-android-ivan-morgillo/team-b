@@ -37,6 +37,6 @@ val appModule = module {
     viewModel { HomeViewModel(repository = get(), tracking = get()) }
     viewModel { DetailViewModel(repository = get(), tracking = get()) }
     viewModel { SearchViewModel(repository = get(), tracking = get()) }
-    viewModel { MainActivityViewModel(repository = get(), tracking = get()) }
+    viewModel { MainActivityViewModel(settingsrepository = get(), tracking = get()) }
     viewModel { SettingViewModel(settingsRepository = get(), tracking = get()) }
 }
