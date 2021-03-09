@@ -1,6 +1,10 @@
 package com.ivanmorgillo.corsoandroid.teamb.network
 
-import DetailCocktailDTO
+import com.apperol.networking.CategoryDTO
+import com.apperol.networking.CocktailAPI
+import com.apperol.networking.CocktailService
+import com.apperol.networking.DetailCocktailDTO
+import com.apperol.networking.DrinkDTO
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.NoCocktailFound
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.NoInternet
 import com.ivanmorgillo.corsoandroid.teamb.network.LoadCocktailError.ServerError
@@ -14,23 +18,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import timber.log.Timber
 import java.io.IOException
 import java.net.SocketTimeoutException
-
-interface CocktailAPI {
-    @Suppress("TooGenericExceptionCaught")
-    suspend fun loadDrinks(category: String): LoadCocktailResult
-
-    @Suppress("TooGenericExceptionCaught")
-    suspend fun loadRandomDetailCocktails(): LoadDetailCocktailResult
-
-    @Suppress("TooGenericExceptionCaught")
-    suspend fun loadDetailCocktails(idDrink: Long): LoadDetailCocktailResult
-
-    @Suppress("TooGenericExceptionCaught")
-    suspend fun loadSearchCocktails(query: String): LoadSearchCocktailResult
-
-    @Suppress("TooGenericExceptionCaught")
-    suspend fun loadCategories(): LoadCategoriesResult
-}
 
 class CocktailApiImpl : CocktailAPI {
     private val service: CocktailService
@@ -331,3 +318,24 @@ sealed class LoadCategoriesResult {
 data class Category(val categoryName: String)
 
 data class Ingredient(val name: String, val quantity: String)
+
+data class Cocktail(val name: String, val image: String, val idDrink: Long)
+
+data class Detail(
+    val name: String,
+    val image: String,
+    val idDrink: Long,
+    val isAlcoholic: Boolean,
+    val glass: String,
+    val ingredients: List<Ingredient>,
+    val youtubeLink: String?,
+    val instructions: String,
+)
+
+data class Search(
+    val name: String,
+    val image: String,
+    val idDrink: Long,
+    val alcoholic: String,
+    val category: String
+)

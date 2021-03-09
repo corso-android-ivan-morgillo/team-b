@@ -1,4 +1,4 @@
-package com.ivanmorgillo.corsoandroid.teamb.network
+package com.apperol.networking
 
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName

@@ -1,5 +1,7 @@
 package com.ivanmorgillo.corsoandroid.teamb.network
 
+import com.apperol.networking.CocktailAPI
+
 interface CocktailRepository {
     suspend fun loadDrinks(category: String): LoadCocktailResult
     suspend fun loadDetailCocktails(cocktailId: Long): LoadDetailCocktailResult
@@ -30,24 +32,3 @@ class CocktailRepositoryImpl(private val api: CocktailAPI) : CocktailRepository 
         return api.loadCategories()
     }
 }
-
-data class Cocktail(val name: String, val image: String, val idDrink: Long)
-
-data class Detail(
-    val name: String,
-    val image: String,
-    val idDrink: Long,
-    val isAlcoholic: Boolean,
-    val glass: String,
-    val ingredients: List<Ingredient>,
-    val youtubeLink: String?,
-    val instructions: String,
-)
-
-data class Search(
-    val name: String,
-    val image: String,
-    val idDrink: Long,
-    val alcoholic: String,
-    val category: String
-)
