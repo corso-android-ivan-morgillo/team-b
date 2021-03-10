@@ -53,9 +53,9 @@ class HomeViewModel(
                 tracking.logEvent("home_cocktail_clicked")
                 actions.postValue(HomeScreenActions.NavigateToDetail(event.drinks))
             }
-            HomeScreenEvents.OnRefreshClicked -> {
+            is HomeScreenEvents.OnRefreshClicked -> {
                 tracking.logEvent("home_refresh_clicked")
-                loadContent("Ordinary Drink")
+                loadContent(event.category.nameCategory)
             }
             HomeScreenEvents.OnSettingClick -> {
                 tracking.logEvent("home_settings_clicked")
@@ -133,7 +133,7 @@ sealed class HomeScreenEvents {
     data class OnCocktailClick(val drinks: DrinksUI) : HomeScreenEvents()
     data class OnCategoryClick(val category: CategoryUI) : HomeScreenEvents()
     object OnReady : HomeScreenEvents()
-    object OnRefreshClicked : HomeScreenEvents()
+    data class OnRefreshClicked(val category: CategoryUI) : HomeScreenEvents()
     object OnSettingClick : HomeScreenEvents()
 }
 
