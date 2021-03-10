@@ -57,6 +57,8 @@ class RandomCocktailFragment : Fragment(layout.fragment_random_cocktail) {
             val delta: Float = currentAcceleration - lastAcceleration
             acceleration = acceleration * INDEX + delta
             if (acceleration > ACCELERATION_THRESHOLD) {
+                binding.imageViewRandomCocktail.visibility = View.GONE
+                binding.gifImageViewRandomCocktail.visibility = View.VISIBLE
                 viewModel.send(RandomScreenEvents.OnShaking)
             }
         }

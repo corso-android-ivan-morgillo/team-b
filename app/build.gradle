@@ -130,6 +130,8 @@ dependencies {
     implementation 'com.github.myinnos:AlphabetIndex-Fast-Scroll-RecyclerView:1.0.95'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
+    // Gif image
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
 
     // Testing dependencies
     testImplementation 'junit:junit:4.13.1'
