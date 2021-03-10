@@ -20,6 +20,7 @@ import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
 import java.util.Objects
 import kotlin.math.sqrt
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 private const val ACCELERATION = 10f
 private const val INDEX = 0.9f
@@ -60,7 +61,9 @@ class RandomCocktailFragment : Fragment(layout.fragment_random_cocktail) {
             }
         }
 
-        override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {}
+        override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {
+            Timber.d("OnAccuracyChanged function")
+        }
     }
 
     override fun onResume() {

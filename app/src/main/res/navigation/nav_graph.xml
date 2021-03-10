@@ -59,7 +59,6 @@
     <fragment
         android:id="@+id/randomCocktailFragment"
         android:name="com.ivanmorgillo.corsoandroid.teamb.random.RandomCocktailFragment"
-        android:label="fragment_random_cocktail"
         tools:layout="@layout/fragment_random_cocktail">
         <action
             android:id="@+id/action_randomCocktailFragment_to_detailFragment"
