@@ -48,4 +48,6 @@
     <string name="miscellaneous">miscellaneous</string>
     <string name="menu_image">Menu Image</string>
     <string name="nessun_risultato_trovato_nriprova_o_torna_alla_home">NO RESULT FOUND\nRETRY OR GO BACK TO HOME</string>
+    <string name="categories_loading_error">CATEGORIES LOADING ERROR</string>
+    <string name="internet_settings">Internet Settings</string>
 </resources>
