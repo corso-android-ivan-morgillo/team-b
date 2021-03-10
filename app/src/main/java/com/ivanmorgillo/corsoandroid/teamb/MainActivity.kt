@@ -45,11 +45,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navHostFragment = supportFragmentManager.findFragmentById(id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
         val topLevelDestinations = setOf(
-            R.id.homeFragment,
-            R.id.settingsFragment
+            id.homeFragment,
+            id.settingsFragment
         )
 
         appBarConfiguration = AppBarConfiguration.Builder(topLevelDestinations)
@@ -66,7 +66,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        return NavigationUI.navigateUp(navController, appBarConfiguration)
+        Timber.d("Hamburger CLicked")
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+            return false
+        } else {
+            return NavigationUI.navigateUp(navController, appBarConfiguration)
+        }
     }
 
     override fun onBackPressed() {
@@ -80,7 +86,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater: MenuInflater = menuInflater
         inflater.inflate(R.menu.menu, menu)
-        val searchItem = menu.findItem(R.id.search_name)
+        val searchItem = menu.findItem(id.search_name)
         val searchView = searchItem.actionView as SearchView
         searchView.queryHint = "Search cocktail by name"
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -123,25 +129,25 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.nav_customCocktail -> {
+            id.nav_customCocktail -> {
                 Timber.d("CustomCocktail")
             }
-            R.id.nav_favorites -> {
+            id.nav_favorites -> {
                 mainActivityViewModel.send(MainScreenEvent.OnFavoriteClick)
             }
-            R.id.nav_settings -> {
+            id.nav_settings -> {
                 mainActivityViewModel.send(MainScreenEvent.OnMenuClick)
             }
-            R.id.nav_facebook -> {
+            id.nav_facebook -> {
                 mainActivityViewModel.send(MainScreenEvent.OnFacebookClick)
             }
-            R.id.nav_twitter -> {
+            id.nav_twitter -> {
                 mainActivityViewModel.send(MainScreenEvent.OnTwitterClick)
             }
-            R.id.nav_feedback -> {
+            id.nav_feedback -> {
                 mainActivityViewModel.send(MainScreenEvent.OnFeedBackClick)
             }
-            R.id.nav_contact -> {
+            id.nav_contact -> {
                 Timber.d("Contacts")
             }
             /*
