@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Cocktails</string>
     <string name="main_screen_error">Qualcosa è andato storto</string>
-    <string name="yes">Yes</string>
+    <string name="yes">Sì</string>
     <string name="no">No</string>
     <string name="control_connection">Controlla la tua Connessione Internet</string>
     <string name="no_cocktail_found">Non ho trovato i Cocktails</string>
@@ -11,7 +11,7 @@
     <string name="alcolico">Alcolico:</string>
     <string name="ingredients">Ingredienti:</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="random_cocktail">Cocktail a caso</string>
+    <string name="random_cocktail">Drink casuale</string>
     <string name="search">Cerca</string>
     <string name="theme">Tema</string>
     <string name="submenu">SottoMenu</string>
@@ -50,4 +50,6 @@
     <string name="nessun_risultato_trovato_nriprova_o_torna_alla_home">NESSUN RISULTATO TROVATO\nRIPROVA O TORNA ALLA HOME</string>
     <string name="categories_loading_error">ERRORE NEL CARICAMENTO DELLE CATEGORIE</string>
     <string name="internet_settings">Impostazioni Connessione</string>
+    <string name="shake_your_phone">SHAKERA IL TUO TELEFONO\n PER OTTENERE \nUN DRINK CASUALE</string>
+    <string name="shaker_image">immagine Shaker</string>
 </resources>

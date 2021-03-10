@@ -29,6 +29,11 @@ sealed class Screens {
         override val className: String = "Search Fragment"
         override val name: String = "Search"
     }
+
+    object Random : Screens() {
+        override val className: String = "Random Fragment"
+        override val name: String = "Random"
+    }
 }
 
 interface Tracking {

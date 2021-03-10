@@ -35,6 +35,8 @@ class HomeViewModel(
     // Quando si cambia stato questa variabile viene settata
     val states = MutableLiveData<HomeScreenStates>()
     val actions = SingleLiveEvent<HomeScreenActions>()
+    private var selectedCategory = 0
+    private var categoryList: List<CategoryUI>? = null
 
     init {
         tracking.logScreen(Screens.Home)
@@ -53,9 +55,9 @@ class HomeViewModel(
                 tracking.logEvent("home_cocktail_clicked")
                 actions.postValue(HomeScreenActions.NavigateToDetail(event.drinks))
             }
-            HomeScreenEvents.OnRefreshClicked -> {
+            is HomeScreenEvents.OnRefreshClicked -> {
                 tracking.logEvent("home_refresh_clicked")
-                loadContent("Ordinary Drink")
+                loadContent(event.category.nameCategory)
             }
             HomeScreenEvents.OnSettingClick -> {
                 tracking.logEvent("home_settings_clicked")
@@ -65,6 +67,8 @@ class HomeViewModel(
                 val param = Bundle()
                 param.putString("category_clicked", event.category.nameCategory)
                 tracking.logEvent("home_category_clicked", param)
+                val categoryPosition = categoryList?.indexOf(event.category) ?: 0
+                selectedCategory = categoryPosition
                 loadContent(event.category.nameCategory)
             }
         }.exhaustive
@@ -87,12 +91,15 @@ class HomeViewModel(
             when (resultCategories) {
                 is LoadCategoriesResult.Failure -> onCategoriesFailure(resultCategories)
                 is LoadCategoriesResult.Success -> {
-                    val categories = resultCategories.categories.map {
+                    val categories = resultCategories.categories.mapIndexed { index, category ->
                         CategoryUI(
-                            nameCategory = it.categoryName,
-                            imageCategory = "https://www.thecocktaildb.com/images/media/drink/ruxuvp1472669600.jpg"
+                            nameCategory = category.categoryName,
+                            imageCategory = "https://www.thecocktaildb.com/images/media/drink/ruxuvp1472669600.jpg",
+                            isSelected = index == selectedCategory
+
                         )
                     }
+                    categoryList = categories
                     when (drinkresult) {
                         is LoadCocktailResult.Failure -> onFailure(drinkresult)
                         is LoadCocktailResult.Success -> {
@@ -133,7 +140,7 @@ sealed class HomeScreenEvents {
     data class OnCocktailClick(val drinks: DrinksUI) : HomeScreenEvents()
     data class OnCategoryClick(val category: CategoryUI) : HomeScreenEvents()
     object OnReady : HomeScreenEvents()
-    object OnRefreshClicked : HomeScreenEvents()
+    data class OnRefreshClicked(val category: CategoryUI) : HomeScreenEvents()
     object OnSettingClick : HomeScreenEvents()
 }
 
@@ -160,5 +167,6 @@ data class DrinksUI(
 
 data class CategoryUI(
     val nameCategory: String,
-    val imageCategory: String
+    val imageCategory: String,
+    val isSelected: Boolean
 )

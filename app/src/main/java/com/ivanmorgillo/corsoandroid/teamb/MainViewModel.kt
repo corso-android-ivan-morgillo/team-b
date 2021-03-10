@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToFacebook
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToFavorite
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToFeedBack
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToRandom
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToSearch
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToSettingMenu
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToTwitter
@@ -13,6 +14,7 @@ import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnFacebookClick
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnFavoriteClick
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnFeedBackClick
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnMenuClick
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnRandomClick
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnSearchClick
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnTwitterClick
 import com.ivanmorgillo.corsoandroid.teamb.home.ErrorStates
@@ -75,6 +77,10 @@ class MainActivityViewModel(
                 tracking.logEvent("favorite_list_clicked")
                 actions.postValue(NavigateToFavorite)
             }
+            OnRandomClick -> {
+                tracking.logEvent("random_clicked")
+                actions.postValue(NavigateToRandom)
+            }
         }.exhaustive
     }
 }
@@ -92,6 +98,7 @@ sealed class MainScreenEvent {
     object OnTwitterClick : MainScreenEvent()
     object OnFeedBackClick : MainScreenEvent()
     object OnFavoriteClick : MainScreenEvent()
+    object OnRandomClick : MainScreenEvent()
 }
 
 sealed class MainScreenAction {
@@ -103,4 +110,5 @@ sealed class MainScreenAction {
     object EnableDarkMode : MainScreenAction()
     object DisableDarkMode : MainScreenAction()
     object NavigateToFavorite : MainScreenAction()
+    object NavigateToRandom : MainScreenAction()
 }

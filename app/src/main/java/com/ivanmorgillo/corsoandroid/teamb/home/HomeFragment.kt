@@ -32,15 +32,16 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private var lastClickedItem: View? = null
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.send(HomeScreenEvents.OnReady)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         postponeEnterTransition()
         view.doOnPreDraw { startPostponedEnterTransition() }
-
-        binding.swiperefresh.setOnRefreshListener {
-            viewModel.send(HomeScreenEvents.OnRefreshClicked)
-        }
         val drinkAdapter = DrinkAdapter { item, v ->
             lastClickedItem = v
             exitTransition = MaterialElevationScale(false).apply {
@@ -60,12 +61,14 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         val categoryAdapter = CategoryAdapter { item: CategoryUI, _: View ->
             viewModel.send(HomeScreenEvents.OnCategoryClick(item))
+            binding.swiperefresh.setOnRefreshListener {
+                viewModel.send(HomeScreenEvents.OnRefreshClicked(item))
+            }
         }
         binding.categoryList.adapter = categoryAdapter
 
         observeStates(drinkAdapter, categoryAdapter, binding)
         observeActions()
-        viewModel.send(HomeScreenEvents.OnReady)
     }
 
     private fun indexBarCustom(indexBarBinding: FragmentHomeBinding) {
