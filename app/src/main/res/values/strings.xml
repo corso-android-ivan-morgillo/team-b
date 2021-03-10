@@ -11,7 +11,7 @@
     <string name="alcolico">Alcoholic: </string>
     <string name="ingredients">Ingredients</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="random_cocktail">Random Cocktail</string>
+    <string name="random_cocktail">Random drink</string>
     <string name="search">Search</string>
     <string name="theme">Theme</string>
     <string name="submenu">SubMenu</string>
@@ -48,4 +48,6 @@
     <string name="miscellaneous">miscellaneous</string>
     <string name="menu_image">Menu Image</string>
     <string name="nessun_risultato_trovato_nriprova_o_torna_alla_home">NO RESULT FOUND\nRETRY OR GO BACK TO HOME</string>
+    <string name="shake_your_phone">SHAKE YOUR PHONE \nTO CHOOSE A RANDOM DRINK</string>
+    <string name="shaker_image">Shaker image</string>
 </resources>

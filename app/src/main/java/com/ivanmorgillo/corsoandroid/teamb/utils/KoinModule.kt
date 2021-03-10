@@ -7,6 +7,7 @@ import com.ivanmorgillo.corsoandroid.teamb.detail.DetailViewModel
 import com.ivanmorgillo.corsoandroid.teamb.home.HomeViewModel
 import com.ivanmorgillo.corsoandroid.teamb.network.CocktailRepository
 import com.ivanmorgillo.corsoandroid.teamb.network.CocktailRepositoryImpl
+import com.ivanmorgillo.corsoandroid.teamb.random.RandomCocktailViewModel
 import com.ivanmorgillo.corsoandroid.teamb.search.SearchViewModel
 import com.ivanmorgillo.corsoandroid.teamb.settings.SettingViewModel
 import com.ivanmorgillo.corsoandroid.teamb.settings.SettingsRepository
@@ -35,8 +36,9 @@ val appModule = module {
 
     // Creiamo un oggetto di tipo MainViewModel
     viewModel { HomeViewModel(repository = get(), tracking = get()) }
-    viewModel { DetailViewModel(repository = get(), tracking = get()) }
+    viewModel { DetailViewModel(repository = get()) }
     viewModel { SearchViewModel(repository = get(), tracking = get()) }
     viewModel { MainActivityViewModel(settingsrepository = get(), tracking = get()) }
     viewModel { SettingViewModel(settingsRepository = get(), tracking = get()) }
+    viewModel { RandomCocktailViewModel(tracking = get()) }
 }

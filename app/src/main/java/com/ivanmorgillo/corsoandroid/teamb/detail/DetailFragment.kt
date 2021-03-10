@@ -18,6 +18,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 private const val COCKTAILIDDEFAULT = -666L
+private const val RANDOMCOCKTAIL = -1000L
 
 class DetailFragment : Fragment(R.layout.fragment_detail) {
     private val viewModel: DetailViewModel by viewModel()
@@ -46,12 +47,13 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
         if (cocktailId == COCKTAILIDDEFAULT) {
             // Torna indietro nella schermata da cui provieni.
             findNavController().popBackStack()
+        } else if (cocktailId == RANDOMCOCKTAIL) {
+            viewModel.send(DetailScreenEvents.LoadRandomDrink)
         } else {
             Timber.d("CocktailId= $cocktailId")
-            viewModel.send(DetailScreenEvents.OnReady(cocktailId))
+            viewModel.send(DetailScreenEvents.LoadDrink(cocktailId))
         }
         observeStates(adapter)
-        viewModel.send(DetailScreenEvents.OnReady(cocktailId))
     }
 
     private fun observeStates(adapter: DetailScreenAdapter) {
