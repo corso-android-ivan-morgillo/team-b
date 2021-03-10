@@ -35,6 +35,8 @@ class HomeViewModel(
     // Quando si cambia stato questa variabile viene settata
     val states = MutableLiveData<HomeScreenStates>()
     val actions = SingleLiveEvent<HomeScreenActions>()
+    private var selectedCategory = 0
+    private var categoryList: List<CategoryUI>? = null
 
     init {
         tracking.logScreen(Screens.Home)
@@ -65,6 +67,8 @@ class HomeViewModel(
                 val param = Bundle()
                 param.putString("category_clicked", event.category.nameCategory)
                 tracking.logEvent("home_category_clicked", param)
+                val categoryPosition = categoryList?.indexOf(event.category) ?: 0
+                selectedCategory = categoryPosition
                 loadContent(event.category.nameCategory)
             }
         }.exhaustive
@@ -87,12 +91,15 @@ class HomeViewModel(
             when (resultCategories) {
                 is LoadCategoriesResult.Failure -> onCategoriesFailure(resultCategories)
                 is LoadCategoriesResult.Success -> {
-                    val categories = resultCategories.categories.map {
+                    val categories = resultCategories.categories.mapIndexed { index, category ->
                         CategoryUI(
-                            nameCategory = it.categoryName,
-                            imageCategory = "https://www.thecocktaildb.com/images/media/drink/ruxuvp1472669600.jpg"
+                            nameCategory = category.categoryName,
+                            imageCategory = "https://www.thecocktaildb.com/images/media/drink/ruxuvp1472669600.jpg",
+                            isSelected = index == selectedCategory
+
                         )
                     }
+                    categoryList = categories
                     when (drinkresult) {
                         is LoadCocktailResult.Failure -> onFailure(drinkresult)
                         is LoadCocktailResult.Success -> {
@@ -160,5 +167,6 @@ data class DrinksUI(
 
 data class CategoryUI(
     val nameCategory: String,
-    val imageCategory: String
+    val imageCategory: String,
+    val isSelected: Boolean
 )

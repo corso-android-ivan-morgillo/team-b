@@ -13,26 +13,13 @@ const val BORDER_WIDTH = 8
 
 class CategoryAdapter(private val onClick: (CategoryUI, View) -> Unit) : RecyclerView.Adapter<CategoryViewHolder>() {
     private var categoryList: List<CategoryUI> = emptyList()
-    private var selectedItemPosition: Int = 0
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
         val binding = CategoryItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return CategoryViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
-        holder.bind(categoryList[position])
-        holder.binding.categoryItem.setOnClickListener {
-            onClick(categoryList[position], holder.itemView)
-            selectedItemPosition = position
-            notifyDataSetChanged()
-        }
-        if (selectedItemPosition == position) {
-            holder.binding.categoryImage.borderWidth = BORDER_WIDTH
-            holder.binding.categoryText.setTextColor(Color.parseColor("#03DAC5"))
-        } else {
-            holder.binding.categoryImage.borderWidth = 0
-            holder.binding.categoryText.setTextColor(Color.parseColor("#7f7f7f"))
-        }
+        holder.bind(categoryList[position], onClick)
     }
 
     override fun getItemCount(): Int {
@@ -45,8 +32,8 @@ class CategoryAdapter(private val onClick: (CategoryUI, View) -> Unit) : Recycle
     }
 }
 
-class CategoryViewHolder(val binding: CategoryItemBinding) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(item: CategoryUI) {
+class CategoryViewHolder(private val binding: CategoryItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    fun bind(item: CategoryUI, onClick: (CategoryUI, View) -> Unit) {
         binding.categoryText.text = item.nameCategory
         when (item.nameCategory) {
             "Ordinary Drink" -> binding.categoryImage.load(R.drawable.ordinary_drink)
@@ -60,6 +47,16 @@ class CategoryViewHolder(val binding: CategoryItemBinding) : RecyclerView.ViewHo
             "Punch / Party Drink" -> binding.categoryImage.load(R.drawable.punch)
             "Beer" -> binding.categoryImage.load(R.drawable.beer)
             "Soft Drink / Soda" -> binding.categoryImage.load(R.drawable.soda)
+        }
+        binding.categoryItem.setOnClickListener {
+            onClick(item, itemView)
+        }
+        if (item.isSelected) {
+            binding.categoryImage.borderWidth = BORDER_WIDTH
+            binding.categoryText.setTextColor(Color.parseColor("#03DAC5"))
+        } else {
+            binding.categoryImage.borderWidth = 0
+            binding.categoryText.setTextColor(Color.parseColor("#7f7f7f"))
         }
     }
 }
