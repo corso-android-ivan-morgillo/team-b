@@ -32,6 +32,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private var lastClickedItem: View? = null
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.send(HomeScreenEvents.OnReady)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -64,7 +69,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         observeStates(drinkAdapter, categoryAdapter, binding)
         observeActions()
-        viewModel.send(HomeScreenEvents.OnReady)
     }
 
     private fun indexBarCustom(indexBarBinding: FragmentHomeBinding) {
