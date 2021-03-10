@@ -92,7 +92,6 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
     }
 
     private fun errorCustom(errore: String) {
-        binding.innerLayoutNoInternetSlowInternet.imageViewNoInternetError.setImageResource(R.drawable.errorimage)
         binding.innerLayoutNoInternetSlowInternet.textViewNoInternetError.text = errore
     }
 

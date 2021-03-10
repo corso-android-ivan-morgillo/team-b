@@ -11,7 +11,6 @@ import com.ivanmorgillo.corsoandroid.teamb.databinding.FragmentSearchBinding
 import com.ivanmorgillo.corsoandroid.teamb.utils.bindings.viewBinding
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import timber.log.Timber
 
 class SearchFragment : Fragment(R.layout.fragment_search) {
     private val searchViewModel: SearchViewModel by viewModel()
@@ -78,17 +77,19 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                         }
                     }
                 }
-                SearchScreenStates.Loading -> Timber.d("loading state search")
+                SearchScreenStates.Loading ->
+                    binding.searchProgressBar.visibility = View.VISIBLE
             }
         })
     }
 
     private fun errorCustom(error: String) {
-        binding.innerLayoutNoInternetSlowInternet.imageViewNoInternetError.setImageResource(R.drawable.errorimage)
+        binding.searchProgressBar.visibility = View.GONE
         binding.innerLayoutNoInternetSlowInternet.textViewNoInternetError.text = error
     }
 
     private fun errorSearchCustomError() {
+        binding.searchProgressBar.visibility = View.GONE
         binding.cocktailsSearchList.visibility = View.GONE
         binding.innerLayoutNoCocktailFound.root.visibility = View.VISIBLE
     }

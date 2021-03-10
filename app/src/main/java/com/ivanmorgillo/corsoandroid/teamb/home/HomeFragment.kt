@@ -134,8 +134,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             }
             ErrorStates.ShowNoCategoriesFound -> {
                 errorCustom("No Categories Found", fragmentHomeBinding)
-                // da sistemare
-                fragmentHomeBinding.innerLayoutNoCocktailFound.root.visible()
+                fragmentHomeBinding.innerLayoutNoCategoriesFound.root.visible()
             }
         }
     }
@@ -158,13 +157,14 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         errorBinding.innerLayoutNoInternetSlowInternet.root.visibility = View.GONE
         errorBinding.innerLayoutNoCocktailFound.root.visibility = View.GONE
         errorBinding.innerLayoutServerError.root.visibility = View.GONE
+        errorBinding.innerLayoutNoCategoriesFound.root.visibility = View.GONE
     }
 
     private fun errorCustom(errore: String, binding: FragmentHomeBinding) {
         binding.innerLayout.visibility = View.GONE
         binding.categoryLayout.visibility = View.GONE
         binding.swiperefresh.isRefreshing = false
-        binding.innerLayoutNoInternetSlowInternet.imageViewNoInternetError.setImageResource(R.drawable.errorimage)
+
         binding.innerLayoutNoInternetSlowInternet.textViewNoInternetError.text = errore
     }
 }

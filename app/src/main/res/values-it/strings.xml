@@ -45,9 +45,11 @@
     <string name="drink_image">Immagine della bevanda</string>
     <string name="browse_categories">Naviga tra le categorie</string>
     <string name="feedback_link">https://docs.google.com/forms/d/e/1FAIpQLSc093kYBIurJhPj2HsJBquFtyzlusG1hKDbiH5tTeWVYrw5rw/viewform?usp=pp_url</string>
-    <string name="miscellaneous">varie</string>
+    <string name="miscellaneous">Varie</string>
     <string name="menu_image">Menu Image</string>
     <string name="nessun_risultato_trovato_nriprova_o_torna_alla_home">NESSUN RISULTATO TROVATO\nRIPROVA O TORNA ALLA HOME</string>
+    <string name="categories_loading_error">ERRORE NEL CARICAMENTO DELLE CATEGORIE</string>
+    <string name="internet_settings">Impostazioni Connessione</string>
     <string name="shake_your_phone">SHAKERA IL TUO TELEFONO\n PER OTTENERE \nUN DRINK CASUALE</string>
-    <string name="shaker_image">Shaker image</string>
+    <string name="shaker_image">immagine Shaker</string>
 </resources>

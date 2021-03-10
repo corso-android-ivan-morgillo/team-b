@@ -4,5 +4,8 @@
     <string name="category_image">Category image</string>
     <string name="drink_image">Drink Image</string>
     <string name="browse_categories">Browse Categories</string>
+    <string name="categories_loading_error">CATEGORIES LOADING ERROR</string>
+    <string name="internet_settings">Internet Settings</string>
     <string name="shaker_image">Shaker image</string>
+
 </resources>

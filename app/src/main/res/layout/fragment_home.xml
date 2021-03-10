@@ -91,5 +91,10 @@
             layout="@layout/no_cocktail_found_error"
             android:visibility="gone" />
 
+        <include
+            android:id="@+id/innerLayoutNoCategoriesFound"
+            layout="@layout/category_error"
+            android:visibility="gone" />
+
     </LinearLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

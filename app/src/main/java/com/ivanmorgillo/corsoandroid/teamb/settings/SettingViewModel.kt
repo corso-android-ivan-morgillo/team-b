@@ -3,10 +3,10 @@ package com.ivanmorgillo.corsoandroid.teamb.settings
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ivanmorgillo.corsoandroid.teamb.home.ErrorStates
 import com.ivanmorgillo.corsoandroid.teamb.settings.SettingScreenEvents.OnScreenSwitchClick
 import com.ivanmorgillo.corsoandroid.teamb.settings.SettingScreenEvents.OnThemeSwitchClick
 import com.ivanmorgillo.corsoandroid.teamb.settings.SettingScreenStates.Content
+import com.ivanmorgillo.corsoandroid.teamb.settings.SettingScreenStates.Loading
 import com.ivanmorgillo.corsoandroid.teamb.utils.Screens
 import com.ivanmorgillo.corsoandroid.teamb.utils.Tracking
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
@@ -48,6 +48,7 @@ class SettingViewModel(
     }
 
     private fun onScreenSwitchClicked(event: OnScreenSwitchClick) {
+        states.postValue(Loading)
         tracking.logEvent("settings_on_screen_switch_click")
         val screenSwitchOn = event.isChecked
         viewModelScope.launch {
@@ -63,6 +64,7 @@ class SettingViewModel(
     }
 
     private fun onThemeSwitchClicked(event: OnThemeSwitchClick) {
+        states.postValue(Loading)
         tracking.logEvent("settings_on_theme_switch_click")
         val themeSwitchOn = event.isChecked
         viewModelScope.launch {
@@ -89,7 +91,6 @@ sealed class SettingScreenEvents {
 
 sealed class SettingScreenStates {
     object Loading : SettingScreenStates()
-    data class Error(val error: ErrorStates) : SettingScreenStates()
     data class Content(
         val metricSystemOn: Boolean,
         val screenActiveOn: Boolean,

@@ -49,11 +49,11 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
         viewModel.states.observe(viewLifecycleOwner, {
             when (it) {
                 is SettingScreenStates.Content -> {
+                    binding.settingsProgressBar.visibility = View.GONE
                     setupTheme(it)
                     setupScreen(it)
                 }
-                is SettingScreenStates.Error -> TODO()
-                SettingScreenStates.Loading -> TODO()
+                SettingScreenStates.Loading -> binding.settingsProgressBar.visibility = View.VISIBLE
             }.exhaustive
         })
     }

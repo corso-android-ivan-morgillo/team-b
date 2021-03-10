@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="12dp">
 
     <TextView
         android:id="@+id/textViewNoCocktailFoundError"
@@ -15,7 +16,8 @@
         app:layout_constraintStart_toStartOf="parent"
         android:text="@string/no_cocktail_found"
         android:textSize="30sp"
-        android:visibility="visible" />
+        android:visibility="visible"
+        android:gravity="center" />
 
     <ImageView
         android:id="@+id/imageViewNoCocktailFoundError"
