@@ -14,28 +14,32 @@ import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowNoDetail
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowNoInternetMessage
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowServerError
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowSlowInternet
+import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenEvents.LoadDrink
+import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenEvents.LoadRandomDrink
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenStates.Content
-import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenStates.Error
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenStates.Loading
 import com.ivanmorgillo.corsoandroid.teamb.network.CocktailRepository
-import com.ivanmorgillo.corsoandroid.teamb.utils.Screens
-import com.ivanmorgillo.corsoandroid.teamb.utils.Tracking
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
 import kotlinx.coroutines.launch
 
 class DetailViewModel(
-    private val repository: CocktailRepository,
-    private val tracking: Tracking
+    private val repository: CocktailRepository
 ) : ViewModel() {
     val states = MutableLiveData<DetailScreenStates>()
-
-    init {
-        tracking.logScreen(Screens.Detail)
-    }
-
     fun send(event: DetailScreenEvents) {
         when (event) {
-            is DetailScreenEvents.OnReady -> loadDetails(event.id)
+            is LoadDrink -> loadDetails(event.id)
+            is LoadRandomDrink -> loadRandomDrink()
+        }.exhaustive
+    }
+
+    private fun loadRandomDrink() {
+        viewModelScope.launch {
+            val result = repository.loadRandomDetailCocktails()
+            when (result) {
+                is LoadDetailCocktailResult.Failure -> onFailure(result)
+                is LoadDetailCocktailResult.Success -> onSuccess(result)
+            }.exhaustive
         }
     }
 
@@ -68,11 +72,11 @@ class DetailViewModel(
 
     private fun onFailure(result: LoadDetailCocktailResult.Failure) {
         when (result.error) {
-            NoCocktailFound -> states.postValue(Error(ShowNoCocktailFound))
-            NoInternet -> states.postValue(Error(ShowNoInternetMessage))
-            ServerError -> states.postValue(Error(ShowServerError))
-            SlowInternet -> states.postValue(Error(ShowSlowInternet))
-            NoDetailFound -> states.postValue(Error(ShowNoDetailFound))
+            NoCocktailFound -> states.postValue(DetailScreenStates.Error(ShowNoCocktailFound))
+            NoInternet -> states.postValue(DetailScreenStates.Error(ShowNoInternetMessage))
+            ServerError -> states.postValue(DetailScreenStates.Error(ShowServerError))
+            SlowInternet -> states.postValue(DetailScreenStates.Error(ShowSlowInternet))
+            NoDetailFound -> states.postValue(DetailScreenStates.Error(ShowNoDetailFound))
         }.exhaustive
     }
 }
@@ -84,7 +88,8 @@ sealed class DetailScreenStates {
 }
 
 sealed class DetailScreenEvents {
-    data class OnReady(val id: Long) : DetailScreenEvents()
+    object LoadRandomDrink : DetailScreenEvents()
+    data class LoadDrink(val id: Long) : DetailScreenEvents()
 }
 
 sealed class DetailErrorStates {

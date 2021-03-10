@@ -21,6 +21,9 @@
         <action
             android:id="@+id/action_homeFragment_to_favoritesFragment"
             app:destination="@id/favoritesFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_randomCocktailFragment"
+            app:destination="@id/randomCocktailFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
@@ -53,5 +56,14 @@
     <fragment
         android:id="@+id/favoritesFragment"
         android:name="com.ivanmorgillo.corsoandroid.teamb.favorites.FavoritesFragment" />
+    <fragment
+        android:id="@+id/randomCocktailFragment"
+        android:name="com.ivanmorgillo.corsoandroid.teamb.random.RandomCocktailFragment"
+        android:label="fragment_random_cocktail"
+        tools:layout="@layout/fragment_random_cocktail">
+        <action
+            android:id="@+id/action_randomCocktailFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
 
 </navigation>

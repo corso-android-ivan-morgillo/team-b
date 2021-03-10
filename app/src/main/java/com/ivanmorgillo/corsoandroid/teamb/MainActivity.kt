@@ -22,6 +22,7 @@ import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.EnableDarkMode
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToFacebook
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToFavorite
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToFeedBack
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToRandom
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToSearch
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToSettingMenu
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToTwitter
@@ -117,6 +118,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 DisableDarkMode -> Unit
                 EnableDarkMode -> Unit
                 NavigateToFavorite -> navController.navigate(id.favoritesFragment)
+                NavigateToRandom -> navController.navigate(id.randomCocktailFragment)
             }.exhaustive
         })
     }
@@ -143,6 +145,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.nav_contact -> {
                 Timber.d("Contacts")
+            }
+            R.id.nav_randomCocktail -> {
+                mainActivityViewModel.send(MainScreenEvent.OnRandomClick)
             }
             /*
             R.id.nav_share -> {
