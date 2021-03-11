@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Cocktails</string>
+    <string name="app_name">Apperol</string>
     <string name="main_screen_error">Something went wrong</string>
     <string name="control_connection">Control Connection</string>
     <string name="no_cocktail_found">NO COCKTAIL FOUND</string>
