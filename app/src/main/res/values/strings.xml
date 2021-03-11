@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Cocktails</string>
+    <string name="app_name">Apperol</string>
     <string name="main_screen_error">Something went wrong</string>
     <string name="control_connection">Control Connection</string>
     <string name="no_cocktail_found">NO COCKTAIL FOUND</string>
@@ -50,6 +50,10 @@
     <string name="nessun_risultato_trovato_nriprova_o_torna_alla_home">NO RESULT FOUND\nRETRY OR GO BACK TO HOME</string>
     <string name="categories_loading_error">CATEGORIES LOADING ERROR</string>
     <string name="internet_settings">Internet Settings</string>
-    <string name="shake_your_phone">SHAKE YOUR PHONE \nTO CHOOSE A RANDOM DRINK</string>
+    <string name="shake_your_phone">SHAKE YOUR SMARTPHONE</string>
     <string name="shaker_image">Shaker image</string>
+    <string name="error_image_no_detail_found">Error image no detail found</string>
+    <string name="error_image_no_cocktail">Error image no cocktail found</string>
+    <string name="error_image_no_server">"Error image no server "</string>
+    <string name="error_image_no_internet">Error image no internet</string>
 </resources>
