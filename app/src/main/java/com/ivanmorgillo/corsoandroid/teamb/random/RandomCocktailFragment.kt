@@ -62,7 +62,8 @@ class RandomCocktailFragment : Fragment(layout.fragment_random_cocktail) {
             if (acceleration > ACCELERATION_THRESHOLD) {
                 binding.imageViewRandomCocktail.visibility = View.GONE
                 binding.gifImageViewRandomCocktail.visibility = View.VISIBLE
-                viewModel.send(RandomScreenEvents.OnShaking)
+                Handler(Looper.getMainLooper())
+                    .postDelayed({ viewModel.send(RandomScreenEvents.OnShaking) }, DELAYRANDOMDRINKTRANSITION)
             }
         }
 
