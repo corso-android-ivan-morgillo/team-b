@@ -23,14 +23,14 @@ class RandomCocktailViewModel(
             is RandomScreenEvents.OnReady -> Timber.d("OnReady in RandomCocktailViewModel")
             is RandomScreenEvents.OnShaking -> {
                 tracking.logEvent("shaking_action_performed")
-                action.postValue(RandomScreenAction.NavigatetoDetail)
+                action.postValue(RandomScreenAction.NavigateToDetail)
             }
         }
     }
 }
 
 sealed class RandomScreenAction {
-    object NavigatetoDetail : RandomScreenAction()
+    object NavigateToDetail : RandomScreenAction()
 }
 
 sealed class RandomScreenStates {

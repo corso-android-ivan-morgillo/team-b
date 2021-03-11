@@ -20,14 +20,15 @@
 
     <ImageView
         android:id="@+id/imageViewErrorDetail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/textViewErrorDetail"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:src="@mipmap/ic_launcher"
-        android:visibility="visible" />
+        android:src="@drawable/no_detail_found_error"
+        android:visibility="visible"
+        android:contentDescription="@string/error_image_no_detail_found" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

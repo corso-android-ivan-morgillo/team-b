@@ -269,7 +269,6 @@ sealed class LoadCocktailError {
 }
 
 sealed class DetailLoadCocktailError {
-    object NoCocktailFound : DetailLoadCocktailError()
     object NoInternet : DetailLoadCocktailError()
     object SlowInternet : DetailLoadCocktailError()
     object ServerError : DetailLoadCocktailError()

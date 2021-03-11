@@ -3,33 +3,40 @@ package com.ivanmorgillo.corsoandroid.teamb.detail
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apperol.networking.DetailLoadCocktailError.NoCocktailFound
 import com.apperol.networking.DetailLoadCocktailError.NoDetailFound
 import com.apperol.networking.DetailLoadCocktailError.NoInternet
 import com.apperol.networking.DetailLoadCocktailError.ServerError
 import com.apperol.networking.DetailLoadCocktailError.SlowInternet
 import com.apperol.networking.LoadDetailCocktailResult
-import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowNoCocktailFound
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowNoDetailFound
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowNoInternetMessage
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowServerError
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowSlowInternet
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenEvents.LoadDrink
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenEvents.LoadRandomDrink
+import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenEvents.OnSettingClick
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenStates.Content
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenStates.Loading
 import com.ivanmorgillo.corsoandroid.teamb.network.CocktailRepository
+import com.ivanmorgillo.corsoandroid.teamb.utils.SingleLiveEvent
+import com.ivanmorgillo.corsoandroid.teamb.utils.Tracking
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
 import kotlinx.coroutines.launch
 
 class DetailViewModel(
-    private val repository: CocktailRepository
+    private val repository: CocktailRepository,
+    private val tracking: Tracking
 ) : ViewModel() {
     val states = MutableLiveData<DetailScreenStates>()
+    val actions = SingleLiveEvent<DetailScreenActions>()
     fun send(event: DetailScreenEvents) {
         when (event) {
             is LoadDrink -> loadDetails(event.id)
             is LoadRandomDrink -> loadRandomDrink()
+            is OnSettingClick -> {
+                tracking.logEvent("no_internet_on_setting_click")
+                actions.postValue(DetailScreenActions.NavigateToSetting)
+            }
         }.exhaustive
     }
 
@@ -73,13 +80,16 @@ class DetailViewModel(
 
     private fun onFailure(result: LoadDetailCocktailResult.Failure) {
         when (result.error) {
-            NoCocktailFound -> states.postValue(DetailScreenStates.Error(ShowNoCocktailFound))
             NoInternet -> states.postValue(DetailScreenStates.Error(ShowNoInternetMessage))
             ServerError -> states.postValue(DetailScreenStates.Error(ShowServerError))
             SlowInternet -> states.postValue(DetailScreenStates.Error(ShowSlowInternet))
             NoDetailFound -> states.postValue(DetailScreenStates.Error(ShowNoDetailFound))
         }.exhaustive
     }
+}
+
+sealed class DetailScreenActions {
+    object NavigateToSetting : DetailScreenActions()
 }
 
 sealed class DetailScreenStates {
@@ -90,12 +100,12 @@ sealed class DetailScreenStates {
 
 sealed class DetailScreenEvents {
     object LoadRandomDrink : DetailScreenEvents()
+    object OnSettingClick : DetailScreenEvents()
     data class LoadDrink(val id: Long) : DetailScreenEvents()
 }
 
 sealed class DetailErrorStates {
     object ShowNoInternetMessage : DetailErrorStates()
-    object ShowNoCocktailFound : DetailErrorStates()
     object ShowServerError : DetailErrorStates()
     object ShowSlowInternet : DetailErrorStates()
     object ShowNoDetailFound : DetailErrorStates()

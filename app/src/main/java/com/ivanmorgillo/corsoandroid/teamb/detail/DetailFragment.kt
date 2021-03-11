@@ -1,8 +1,10 @@
 package com.ivanmorgillo.corsoandroid.teamb.detail
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.provider.Settings
 import android.view.View
 import androidx.annotation.AttrRes
 import androidx.core.content.res.use
@@ -12,8 +14,10 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.transition.MaterialContainerTransform
 import com.ivanmorgillo.corsoandroid.teamb.R
 import com.ivanmorgillo.corsoandroid.teamb.databinding.FragmentDetailBinding
+import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenActions.NavigateToSetting
 import com.ivanmorgillo.corsoandroid.teamb.utils.bindings.viewBinding
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
+import com.ivanmorgillo.corsoandroid.teamb.utils.visible
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
@@ -54,6 +58,18 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
             viewModel.send(DetailScreenEvents.LoadDrink(cocktailId))
         }
         observeStates(adapter)
+        observeActions()
+        binding.innerLayoutNoInternetSlowInternet.buttonNoInternetError.setOnClickListener {
+            viewModel.send(DetailScreenEvents.OnSettingClick)
+        }
+    }
+
+    private fun observeActions() {
+        viewModel.actions.observe(viewLifecycleOwner, { actions ->
+            when (actions) {
+                NavigateToSetting -> startActivity(Intent(Settings.ACTION_WIRELESS_SETTINGS))
+            }.exhaustive
+        })
     }
 
     private fun observeStates(adapter: DetailScreenAdapter) {
@@ -62,23 +78,29 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
             when (state) {
                 is DetailScreenStates.Content -> {
                     adapter.items = state.details
+                    binding.innerLayoutNoDetailFound.root.visibility = View.GONE
+                    binding.innerLayoutServerError.root.visibility = View.GONE
+                    binding.innerLayoutNoInternetSlowInternet.root.visibility = View.GONE
+                    binding.detailScreenRecycleview.visibility = View.VISIBLE
                 }
                 is DetailScreenStates.Error -> {
                     when (state.error) {
                         DetailErrorStates.ShowNoInternetMessage -> {
                             errorCustom("No Internet Connection")
-                        }
-                        DetailErrorStates.ShowNoCocktailFound -> {
-                            errorCustom("No Cocktail Found")
+                            binding.innerLayoutNoInternetSlowInternet.root.visibility = View.VISIBLE
+                            binding.innerLayoutNoInternetSlowInternet.buttonNoInternetError.visible()
                         }
                         DetailErrorStates.ShowServerError -> {
                             errorCustom("Server Error")
+                            binding.innerLayoutServerError.root.visibility = View.VISIBLE
                         }
                         DetailErrorStates.ShowSlowInternet -> {
                             errorCustom("SlowInternet")
+                            binding.innerLayoutNoInternetSlowInternet.root.visibility = View.VISIBLE
                         }
                         DetailErrorStates.ShowNoDetailFound -> {
                             errorCustom("No Detail Found")
+                            binding.innerLayoutNoDetailFound.root.visibility = View.VISIBLE
                         }
                     }
                 }
@@ -93,6 +115,7 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
 
     private fun errorCustom(errore: String) {
         binding.innerLayoutNoInternetSlowInternet.textViewNoInternetError.text = errore
+        binding.detailScreenRecycleview.visibility = View.GONE
     }
 
     fun Context.themeColor(

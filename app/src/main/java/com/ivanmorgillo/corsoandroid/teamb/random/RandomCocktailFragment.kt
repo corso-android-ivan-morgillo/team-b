@@ -16,7 +16,7 @@ import androidx.navigation.fragment.findNavController
 import com.ivanmorgillo.corsoandroid.teamb.R.layout
 import com.ivanmorgillo.corsoandroid.teamb.databinding.FragmentRandomCocktailBinding
 import com.ivanmorgillo.corsoandroid.teamb.random.RandomCocktailFragmentDirections.Companion.actionRandomCocktailFragmentToDetailFragment
-import com.ivanmorgillo.corsoandroid.teamb.random.RandomScreenAction.NavigatetoDetail
+import com.ivanmorgillo.corsoandroid.teamb.random.RandomScreenAction.NavigateToDetail
 import com.ivanmorgillo.corsoandroid.teamb.utils.bindings.viewBinding
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
 import java.util.Objects
@@ -102,7 +102,7 @@ class RandomCocktailFragment : Fragment(layout.fragment_random_cocktail) {
     private fun observeActions() {
         viewModel.action.observe(viewLifecycleOwner, { action ->
             when (action) {
-                NavigatetoDetail -> {
+                NavigateToDetail -> {
                     val directions =
                         actionRandomCocktailFragmentToDetailFragment(COCKTAIL_RANDOM_ID)
                     findNavController().navigate(directions)
