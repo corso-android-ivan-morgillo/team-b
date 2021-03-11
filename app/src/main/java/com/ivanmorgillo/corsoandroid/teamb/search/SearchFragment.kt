@@ -59,6 +59,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         searchViewModel.states.observe(viewLifecycleOwner, { state ->
             when (state) {
                 is SearchScreenStates.Content -> {
+                    binding.searchProgressBar.visibility = View.GONE
                     adapter.setSearchList(state.cocktails)
                 }
                 is SearchScreenStates.Error -> {

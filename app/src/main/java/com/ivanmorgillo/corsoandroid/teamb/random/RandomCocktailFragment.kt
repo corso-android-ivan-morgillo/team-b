@@ -6,6 +6,8 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +28,7 @@ private const val ACCELERATION = 10f
 private const val INDEX = 0.9f
 private const val ACCELERATION_THRESHOLD = 12
 private const val COCKTAIL_RANDOM_ID = -1000L
+private const val DELAYRANDOMDRINKTRANSITION = 1500L
 
 class RandomCocktailFragment : Fragment(layout.fragment_random_cocktail) {
     private val viewModel: RandomCocktailViewModel by viewModel()

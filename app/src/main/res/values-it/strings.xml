@@ -50,6 +50,6 @@
     <string name="nessun_risultato_trovato_nriprova_o_torna_alla_home">NESSUN RISULTATO TROVATO\nRIPROVA O TORNA ALLA HOME</string>
     <string name="categories_loading_error">ERRORE NEL CARICAMENTO DELLE CATEGORIE</string>
     <string name="internet_settings">Impostazioni Connessione</string>
-    <string name="shake_your_phone">SHAKERA IL TUO TELEFONO\n PER OTTENERE \nUN DRINK CASUALE</string>
+    <string name="shake_your_phone">SHAKERA IL TUO SMARTPHONE</string>
     <string name="shaker_image">immagine Shaker</string>
 </resources>

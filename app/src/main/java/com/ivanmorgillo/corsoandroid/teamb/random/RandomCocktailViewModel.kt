@@ -21,7 +21,6 @@ class RandomCocktailViewModel(
     fun send(event: RandomScreenEvents) {
         when (event) {
             is RandomScreenEvents.OnReady -> Timber.d("OnReady in RandomCocktailViewModel")
-            /* GESTIRE SHAKING ACCELEROMETRO --> carica dettaglio */
             is RandomScreenEvents.OnShaking -> {
                 tracking.logEvent("shaking_action_performed")
                 action.postValue(RandomScreenAction.NavigatetoDetail)

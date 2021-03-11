@@ -56,17 +56,18 @@ class DetailViewModel(
 
     private fun onSuccess(result: LoadDetailCocktailResult.Success) {
         val details = result.details
-        val ingredientsUI = details.ingredients.map {
-            IngredientUI(nomeIngr = it.name, ingrQty = it.quantity)
-        }
+        val ingredientsUI = details.ingredients
+            .filter { it.name.isNotBlank() && it.quantity.isNotBlank() }
+            .map {
+                IngredientUI(nomeIngr = it.name, ingrQty = it.quantity)
+            }
         val content: List<DetailScreenItems> = listOf(
             DetailScreenItems.Image(details.image, details.name),
             DetailScreenItems.Video(details.youtubeLink),
             DetailScreenItems.GlassType(details.glass, details.isAlcoholic),
             DetailScreenItems.IngredientList(ingredientsUI),
             DetailScreenItems.Instructions(details.instructions),
-
-            )
+        )
         states.postValue(Content(content))
     }
 
