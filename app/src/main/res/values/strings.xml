@@ -52,4 +52,7 @@
     <string name="internet_settings">Internet Settings</string>
     <string name="shake_your_phone">SHAKE YOUR PHONE \nTO CHOOSE A RANDOM DRINK</string>
     <string name="shaker_image">Shaker image</string>
+    <string name="background_image">background image</string>
+    <string name="add_favorite">add favorite</string>
+    <string name="delete_favorite">delete favorite</string>
 </resources>

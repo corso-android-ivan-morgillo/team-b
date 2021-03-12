@@ -12,6 +12,7 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.transition.MaterialContainerTransform
 import com.ivanmorgillo.corsoandroid.teamb.R
 import com.ivanmorgillo.corsoandroid.teamb.databinding.FragmentDetailBinding
+import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenActions.FavoriteClicked
 import com.ivanmorgillo.corsoandroid.teamb.utils.bindings.viewBinding
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -39,7 +40,9 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = DetailScreenAdapter()
+        val adapter = DetailScreenAdapter {
+            viewModel.send(DetailScreenEvents.OnFavoriteClick)
+        }
         // Mettiamo in comunicazione l'adapter con la recycleview
         binding.detailScreenRecycleview.adapter = adapter
 
@@ -54,6 +57,15 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
             viewModel.send(DetailScreenEvents.LoadDrink(cocktailId))
         }
         observeStates(adapter)
+        observeActions()
+    }
+
+    private fun observeActions() {
+        viewModel.actions.observe(viewLifecycleOwner, { action ->
+            when (action) {
+                FavoriteClicked -> Timber.d("Aggiunto ai preferiti!")
+            }.exhaustive
+        })
     }
 
     private fun observeStates(adapter: DetailScreenAdapter) {

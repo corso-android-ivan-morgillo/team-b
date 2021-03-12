@@ -1,12 +1,4 @@
-package com.ivanmorgillo.corsoandroid.teamb.network
-
-import com.apperol.networking.CocktailAPI
-import com.apperol.networking.LoadCategoriesResult
-import com.apperol.networking.LoadCocktailResult
-import com.apperol.networking.LoadDetailCocktailResult
-import com.apperol.networking.LoadSearchCocktailResult
-
-// import com.apperol.networking.CocktailAPI
+package com.apperol
 
 interface CocktailRepository {
     suspend fun loadDrinks(category: String): LoadCocktailResult

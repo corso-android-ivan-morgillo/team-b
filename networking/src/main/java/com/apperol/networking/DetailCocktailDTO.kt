@@ -8,10 +8,10 @@ import com.google.gson.annotations.SerializedName
 @Keep
 data class DetailCocktailDTO(
     @SerializedName("drinks")
-    val details: List<Drink>?
+    val details: List<DrinkDTO>?
 ) {
     @Keep
-    data class Drink(
+    data class DrinkDTO(
         @SerializedName("dateModified")
         val dateModified: String?,
         @SerializedName("idDrink")

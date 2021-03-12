@@ -4,12 +4,12 @@ import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 
 @Keep
-data class CategoryDTO(
+data class CategoriesDTO(
     @SerializedName("drinks")
-    val categories: List<Category>
+    val categories: List<CategoryDTO>
 ) {
     @Keep
-    data class Category(
+    data class CategoryDTO(
         @SerializedName("strCategory")
         val strCategory: String
     )

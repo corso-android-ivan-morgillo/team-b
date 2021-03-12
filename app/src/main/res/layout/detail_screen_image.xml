@@ -12,7 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/bancone"
-        android:alpha="0.9" />
+        android:alpha="0.9"
+        android:contentDescription="@string/background_image" />
 
     <TextView
         android:id="@+id/detail_screen_title"
@@ -48,10 +49,12 @@
     <ImageView
         android:layout_width="35dp"
         android:layout_height="35dp"
-        android:background="@drawable/starempty"
+        android:id="@+id/detail_add_favorite"
+        android:src="@drawable/ic_star_border"
+        app:tint="#FFFF00"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="4dp"
-        android:layout_marginEnd="8dp" />
+        android:layout_marginEnd="8dp"
+        android:contentDescription="@string/add_favorite" />
 </androidx.constraintlayout.widget.ConstraintLayout>
-

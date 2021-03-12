@@ -1,4 +1,4 @@
-package com.apperol.networking
+package com.apperol
 
 interface CocktailAPI {
     @Suppress("TooGenericExceptionCaught")

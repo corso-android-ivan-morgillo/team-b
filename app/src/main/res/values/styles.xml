@@ -7,6 +7,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorPrimary">#FFFFFF</item>
         <item name="android:textColorHint">#7F7F7F</item>
+        <item name="android:navigationBarColor">@color/colorPrimary</item>
 
     </style>
 

@@ -3,12 +3,15 @@ package com.ivanmorgillo.corsoandroid.teamb.detail
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apperol.networking.DetailLoadCocktailError.NoCocktailFound
-import com.apperol.networking.DetailLoadCocktailError.NoDetailFound
-import com.apperol.networking.DetailLoadCocktailError.NoInternet
-import com.apperol.networking.DetailLoadCocktailError.ServerError
-import com.apperol.networking.DetailLoadCocktailError.SlowInternet
-import com.apperol.networking.LoadDetailCocktailResult
+import com.apperol.CocktailRepository
+import com.apperol.Detail
+import com.apperol.DetailLoadCocktailError.NoCocktailFound
+import com.apperol.DetailLoadCocktailError.NoDetailFound
+import com.apperol.DetailLoadCocktailError.NoInternet
+import com.apperol.DetailLoadCocktailError.ServerError
+import com.apperol.DetailLoadCocktailError.SlowInternet
+import com.apperol.FavoriteRepository
+import com.apperol.LoadDetailCocktailResult
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowNoCocktailFound
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowNoDetailFound
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowNoInternetMessage
@@ -16,21 +19,40 @@ import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowServerEr
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowSlowInternet
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenEvents.LoadDrink
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenEvents.LoadRandomDrink
+import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenEvents.OnFavoriteClick
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenStates.Content
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenStates.Loading
-import com.ivanmorgillo.corsoandroid.teamb.network.CocktailRepository
+import com.ivanmorgillo.corsoandroid.teamb.utils.SingleLiveEvent
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
 import kotlinx.coroutines.launch
 
 class DetailViewModel(
-    private val repository: CocktailRepository
+    private val repository: CocktailRepository,
+    private val favoriteRepository: FavoriteRepository
 ) : ViewModel() {
     val states = MutableLiveData<DetailScreenStates>()
+    val actions = SingleLiveEvent<DetailScreenActions>()
+    private var cocktailDetail: Detail? = null
+    private var cocktailId = 0L
+    private var isFavorite: Boolean = false
+
+    @Suppress("IMPLICIT_CAST_TO_ANY")
     fun send(event: DetailScreenEvents) {
         when (event) {
             is LoadDrink -> loadDetails(event.id)
             is LoadRandomDrink -> loadRandomDrink()
+            OnFavoriteClick -> {
+                viewModelScope.launch { saveFavorite() }
+            }
         }.exhaustive
+    }
+
+    private suspend fun saveFavorite() {
+        val cocktail = cocktailDetail ?: return
+        val updateFavorite = !isFavorite
+        favoriteRepository.save(cocktail, updateFavorite)
+        this.isFavorite = updateFavorite
+        createContent(cocktail)
     }
 
     private fun loadRandomDrink() {
@@ -38,7 +60,7 @@ class DetailViewModel(
             val result = repository.loadRandomDetailCocktails()
             when (result) {
                 is LoadDetailCocktailResult.Failure -> onFailure(result)
-                is LoadDetailCocktailResult.Success -> onSuccess(result)
+                is LoadDetailCocktailResult.Success -> createContent(result.details)
             }.exhaustive
         }
     }
@@ -49,18 +71,20 @@ class DetailViewModel(
             val result = repository.loadDetailCocktails(cocktailId = id)
             when (result) {
                 is LoadDetailCocktailResult.Failure -> onFailure(result)
-                is LoadDetailCocktailResult.Success -> onSuccess(result)
+                is LoadDetailCocktailResult.Success -> createContent(result.details)
             }.exhaustive
         }
     }
 
-    private fun onSuccess(result: LoadDetailCocktailResult.Success) {
-        val details = result.details
+    private suspend fun createContent(details: Detail) {
+        this.cocktailDetail = details
+        val isFavorite = favoriteRepository.isFavorite(details.id)
+        this.isFavorite = isFavorite
         val ingredientsUI = details.ingredients.map {
             IngredientUI(nomeIngr = it.name, ingrQty = it.quantity)
         }
         val content: List<DetailScreenItems> = listOf(
-            DetailScreenItems.Image(details.image, details.name),
+            DetailScreenItems.Image(details.image, details.name, isFavorite),
             DetailScreenItems.Video(details.youtubeLink),
             DetailScreenItems.GlassType(details.glass, details.isAlcoholic),
             DetailScreenItems.IngredientList(ingredientsUI),
@@ -90,6 +114,11 @@ sealed class DetailScreenStates {
 sealed class DetailScreenEvents {
     object LoadRandomDrink : DetailScreenEvents()
     data class LoadDrink(val id: Long) : DetailScreenEvents()
+    object OnFavoriteClick : DetailScreenEvents()
+}
+
+sealed class DetailScreenActions {
+    object FavoriteClicked : DetailScreenActions()
 }
 
 sealed class DetailErrorStates {

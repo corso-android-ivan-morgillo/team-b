@@ -55,7 +55,15 @@
         tools:layout="@layout/fragment_setting" />
     <fragment
         android:id="@+id/favoritesFragment"
-        android:name="com.ivanmorgillo.corsoandroid.teamb.favorites.FavoritesFragment" />
+        android:name="com.ivanmorgillo.corsoandroid.teamb.favorites.FavoritesFragment">
+        <action
+            android:id="@+id/action_favoritesFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+        <argument
+            android:name="cocktail_favorite_id"
+            app:argType="long"
+            android:defaultValue="-666L" />
+    </fragment>
     <fragment
         android:id="@+id/randomCocktailFragment"
         android:name="com.ivanmorgillo.corsoandroid.teamb.random.RandomCocktailFragment"

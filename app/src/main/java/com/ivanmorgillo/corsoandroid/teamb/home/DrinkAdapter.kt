@@ -8,15 +8,14 @@ import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import coil.load
 import com.ivanmorgillo.corsoandroid.teamb.databinding.DrinkItemBinding
-import java.util.*
-import kotlin.collections.ArrayList
+import java.util.Locale
 
 const val INITIAL_CAPACITY = 26
 
 // l'adapter ha bisogno di un viewHolder che creeremo (cocktailViewHolder)
-class DrinkAdapter(private val onClick: (DrinksUI, View) -> Unit) : Adapter<CocktailViewHolder>(), SectionIndexer {
+class DrinkAdapter(private val onClick: (DrinkUI, View) -> Unit) : Adapter<CocktailViewHolder>(), SectionIndexer {
     // lista di cocktail, inizializzata a empty
-    private var drinksList: List<DrinksUI> = emptyList()
+    private var drinkList: List<DrinkUI> = emptyList()
     private var mSectionPositions = mutableListOf<Int>()
 
     // da xml a kotlin per ogni elemento della lista
@@ -28,17 +27,17 @@ class DrinkAdapter(private val onClick: (DrinksUI, View) -> Unit) : Adapter<Cock
     // Con questo metodo un elemento della lista è connesso a un viewHolder.
     // La position è l'indice dell'elemento nella lista
     override fun onBindViewHolder(holder: CocktailViewHolder, position: Int) {
-        holder.bind(drinksList[position], onClick)
+        holder.bind(drinkList[position], onClick)
     }
 
     // ritorna il numero di elementi nella lista
     override fun getItemCount(): Int {
-        return drinksList.size
+        return drinkList.size
     }
 
     // inizializza la lista di cocktail con quella passata come argomento
-    fun setDrinksList(items: List<DrinksUI>) {
-        drinksList = items
+    fun setDrinksList(items: List<DrinkUI>) {
+        drinkList = items
         notifyDataSetChanged()
     }
 
@@ -46,9 +45,9 @@ class DrinkAdapter(private val onClick: (DrinksUI, View) -> Unit) : Adapter<Cock
         val sections: MutableList<String> = ArrayList(INITIAL_CAPACITY)
 
         var i = 0
-        val size: Int = drinksList.size
+        val size: Int = drinkList.size
         while (i < size) {
-            val section: String = (drinksList[i].drinkName.take(1)).toUpperCase(Locale.getDefault())
+            val section: String = (drinkList[i].drinkName.take(1)).toUpperCase(Locale.getDefault())
             if (!sections.contains(section)) {
                 existInSectionList(section, sections, i)
             }
@@ -83,7 +82,7 @@ class DrinkAdapter(private val onClick: (DrinksUI, View) -> Unit) : Adapter<Cock
 // View Holder è un elemento della lista. Per ogni elemento della lista visibile viene creato un viewHolder
 // l'oggetto view è la rappresentazione in cocktail di un layout XML
 class CocktailViewHolder(private val binding: DrinkItemBinding) : ViewHolder(binding.root) {
-    fun bind(item: DrinksUI, onClick: (DrinksUI, View) -> Unit) {
+    fun bind(item: DrinkUI, onClick: (DrinkUI, View) -> Unit) {
         binding.drinkName.text = item.drinkName // imposta lil text dell'elemento al nome del cocktail
         binding.drinkImage.load(item.image) // imposta l'immagine all'elemento
         binding.drinkImage.contentDescription = item.drinkName

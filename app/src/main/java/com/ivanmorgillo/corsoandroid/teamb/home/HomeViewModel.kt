@@ -4,10 +4,11 @@ import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apperol.networking.CategoriesError
-import com.apperol.networking.LoadCategoriesResult
-import com.apperol.networking.LoadCocktailError
-import com.apperol.networking.LoadCocktailResult
+import com.apperol.CategoriesError
+import com.apperol.CocktailRepository
+import com.apperol.LoadCategoriesResult
+import com.apperol.LoadCocktailError
+import com.apperol.LoadCocktailResult
 import com.ivanmorgillo.corsoandroid.teamb.home.ErrorStates.ShowNoCategoriesFound
 import com.ivanmorgillo.corsoandroid.teamb.home.ErrorStates.ShowNoCocktailFound
 import com.ivanmorgillo.corsoandroid.teamb.home.ErrorStates.ShowNoInternetMessage
@@ -16,7 +17,6 @@ import com.ivanmorgillo.corsoandroid.teamb.home.ErrorStates.ShowSlowInternet
 import com.ivanmorgillo.corsoandroid.teamb.home.HomeScreenStates.Content
 import com.ivanmorgillo.corsoandroid.teamb.home.HomeScreenStates.Error
 import com.ivanmorgillo.corsoandroid.teamb.home.HomeScreenStates.Loading
-import com.ivanmorgillo.corsoandroid.teamb.network.CocktailRepository
 import com.ivanmorgillo.corsoandroid.teamb.utils.Screens
 import com.ivanmorgillo.corsoandroid.teamb.utils.SingleLiveEvent
 import com.ivanmorgillo.corsoandroid.teamb.utils.Tracking
@@ -53,7 +53,7 @@ class HomeViewModel(
             }
             is HomeScreenEvents.OnCocktailClick -> {
                 tracking.logEvent("home_cocktail_clicked")
-                actions.postValue(HomeScreenActions.NavigateToDetail(event.drinks))
+                actions.postValue(HomeScreenActions.NavigateToDetail(event.drink))
             }
             is HomeScreenEvents.OnRefreshClicked -> {
                 tracking.logEvent("home_refresh_clicked")
@@ -104,7 +104,7 @@ class HomeViewModel(
                         is LoadCocktailResult.Failure -> onFailure(drinkresult)
                         is LoadCocktailResult.Success -> {
                             val cocktails = drinkresult.cocktails.map {
-                                DrinksUI(drinkName = it.name, image = it.image, id = it.idDrink)
+                                DrinkUI(drinkName = it.name, image = it.image, id = it.idDrink)
                             }
                             val generalContent = GeneralContent(cocktails, categories)
                             states.postValue(Content(generalContent))
@@ -137,7 +137,7 @@ sealed class HomeScreenStates {
 
 // contiene eventi che possiamo mandare al nostro view model
 sealed class HomeScreenEvents {
-    data class OnCocktailClick(val drinks: DrinksUI) : HomeScreenEvents()
+    data class OnCocktailClick(val drink: DrinkUI) : HomeScreenEvents()
     data class OnCategoryClick(val category: CategoryUI) : HomeScreenEvents()
     object OnReady : HomeScreenEvents()
     data class OnRefreshClicked(val category: CategoryUI) : HomeScreenEvents()
@@ -145,7 +145,7 @@ sealed class HomeScreenEvents {
 }
 
 sealed class HomeScreenActions {
-    data class NavigateToDetail(val drinks: DrinksUI) : HomeScreenActions()
+    data class NavigateToDetail(val drink: DrinkUI) : HomeScreenActions()
     object NavigateToSettings : HomeScreenActions()
 }
 
@@ -157,9 +157,9 @@ sealed class ErrorStates {
     object ShowSlowInternet : ErrorStates()
 }
 
-class GeneralContent(val drinksList: List<DrinksUI>, val categoryList: List<CategoryUI>)
+class GeneralContent(val drinkList: List<DrinkUI>, val categoryList: List<CategoryUI>)
 
-data class DrinksUI(
+data class DrinkUI(
     val drinkName: String,
     val image: String,
     val id: Long

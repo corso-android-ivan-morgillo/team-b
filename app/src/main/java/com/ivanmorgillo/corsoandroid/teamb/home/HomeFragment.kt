@@ -87,7 +87,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 is NavigateToDetail -> {
                     lastClickedItem?.run {
                         val extras = FragmentNavigatorExtras(this to "cocktail_transition_item")
-                        val directions = actionHomeFragmentToDetailFragment(action.drinks.id)
+                        val directions = actionHomeFragmentToDetailFragment(action.drink.id)
                         findNavController().navigate(directions, extras)
                     }
                 }
@@ -146,7 +146,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         categoryAdapter: CategoryAdapter
     ) {
         fragmentHomeBinding.swiperefresh.isRefreshing = false
-        adapter.setDrinksList(state.generalContent.drinksList)
+        adapter.setDrinksList(state.generalContent.drinkList)
         categoryAdapter.setCategoryList(state.generalContent.categoryList)
         errorVisibilityGone(fragmentHomeBinding)
         fragmentHomeBinding.innerLayout.visibility = View.VISIBLE

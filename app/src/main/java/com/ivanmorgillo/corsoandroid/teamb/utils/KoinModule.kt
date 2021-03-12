@@ -1,12 +1,14 @@
 package com.ivanmorgillo.corsoandroid.teamb.utils
 
-import com.apperol.networking.CocktailAPI
-import com.apperol.networking.CocktailApiImpl
+import com.apperol.CocktailRepository
+import com.apperol.CocktailRepositoryImpl
+import com.apperol.FavoriteRepository
+import com.apperol.FavoriteRepositoryImpl
+import com.google.gson.Gson
 import com.ivanmorgillo.corsoandroid.teamb.MainActivityViewModel
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailViewModel
+import com.ivanmorgillo.corsoandroid.teamb.favorites.FavoriteViewModel
 import com.ivanmorgillo.corsoandroid.teamb.home.HomeViewModel
-import com.ivanmorgillo.corsoandroid.teamb.network.CocktailRepository
-import com.ivanmorgillo.corsoandroid.teamb.network.CocktailRepositoryImpl
 import com.ivanmorgillo.corsoandroid.teamb.random.RandomCocktailViewModel
 import com.ivanmorgillo.corsoandroid.teamb.search.SearchViewModel
 import com.ivanmorgillo.corsoandroid.teamb.settings.SettingViewModel
@@ -21,11 +23,6 @@ val appModule = module {
     single<CocktailRepository> {
         CocktailRepositoryImpl(api = get())
     }
-
-    single<CocktailAPI> {
-        CocktailApiImpl()
-    }
-
     single<Tracking> {
         TrackingImpl()
     }
@@ -34,11 +31,16 @@ val appModule = module {
         SettingsRepositoryImpl(androidContext())
     }
 
+    single<FavoriteRepository> {
+        FavoriteRepositoryImpl(androidContext(), Gson())
+    }
+
     // Creiamo un oggetto di tipo MainViewModel
     viewModel { HomeViewModel(repository = get(), tracking = get()) }
-    viewModel { DetailViewModel(repository = get()) }
+    viewModel { DetailViewModel(repository = get(), favoriteRepository = get()) }
     viewModel { SearchViewModel(repository = get(), tracking = get()) }
     viewModel { MainActivityViewModel(settingsrepository = get(), tracking = get()) }
     viewModel { SettingViewModel(settingsRepository = get(), tracking = get()) }
     viewModel { RandomCocktailViewModel(tracking = get()) }
+    viewModel { FavoriteViewModel(tracking = get(), repository = get()) }
 }

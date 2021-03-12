@@ -52,4 +52,7 @@
     <string name="internet_settings">Impostazioni Connessione</string>
     <string name="shake_your_phone">SHAKERA IL TUO TELEFONO\n PER OTTENERE \nUN DRINK CASUALE</string>
     <string name="shaker_image">immagine Shaker</string>
+    <string name="background_image">immagine di sfondo</string>
+    <string name="add_favorite">aggiungi ai preferiti</string>
+    <string name="delete_favorite">elimina dai preferiti</string>
 </resources>
