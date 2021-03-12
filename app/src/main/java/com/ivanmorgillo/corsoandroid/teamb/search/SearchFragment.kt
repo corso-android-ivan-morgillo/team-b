@@ -8,6 +8,8 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.transition.MaterialElevationScale
 import com.ivanmorgillo.corsoandroid.teamb.R
 import com.ivanmorgillo.corsoandroid.teamb.databinding.FragmentSearchBinding
+import com.ivanmorgillo.corsoandroid.teamb.search.SearchScreenAction.NavigateToDetail
+import com.ivanmorgillo.corsoandroid.teamb.search.SearchScreenAction.NavigateToHome
 import com.ivanmorgillo.corsoandroid.teamb.utils.bindings.viewBinding
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -36,6 +38,9 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             searchViewModel.send(SearchScreenEvent.OnCocktailClick(item))
         }
         binding.cocktailsSearchList.adapter = adapter
+        binding.innerLayoutNoCocktailFound.buttonEmptySearchError.setOnClickListener {
+            searchViewModel.send(SearchScreenEvent.OnBackPressed)
+        }
         observeStates(adapter)
         observeActions()
     }
@@ -43,13 +48,17 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     private fun observeActions() {
         searchViewModel.actions.observe(viewLifecycleOwner, { action ->
             when (action) {
-                is SearchScreenAction.NavigateToDetail -> {
+                is NavigateToDetail -> {
                     lastClickedItem?.run {
                         val extras = FragmentNavigatorExtras(this to "cocktail_transition_item")
                         val directions =
                             SearchFragmentDirections.actionSearchFragmentToDetailFragment(action.cocktail.id)
                         findNavController().navigate(directions, extras)
                     }
+                }
+                NavigateToHome -> {
+                    val directions = SearchFragmentDirections.actionSearchFragmentToHomeFragment()
+                    findNavController().navigate(directions)
                 }
             }.exhaustive
         })

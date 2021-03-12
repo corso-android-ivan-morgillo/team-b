@@ -29,6 +29,7 @@ private const val INDEX = 0.9f
 private const val ACCELERATION_THRESHOLD = 12
 private const val COCKTAIL_RANDOM_ID = -1000L
 private const val DELAYRANDOMDRINKTRANSITION = 1500L
+private var RANDOM_FLAG = false
 
 class RandomCocktailFragment : Fragment(layout.fragment_random_cocktail) {
     private val viewModel: RandomCocktailViewModel by viewModel()
@@ -59,7 +60,8 @@ class RandomCocktailFragment : Fragment(layout.fragment_random_cocktail) {
             currentAcceleration = sqrt((x * x + y * y + z * z).toDouble()).toFloat()
             val delta: Float = currentAcceleration - lastAcceleration
             acceleration = acceleration * INDEX + delta
-            if (acceleration > ACCELERATION_THRESHOLD) {
+            if (acceleration > ACCELERATION_THRESHOLD && RANDOM_FLAG == false) {
+                RANDOM_FLAG = true
                 binding.imageViewRandomCocktail.visibility = View.GONE
                 binding.gifImageViewRandomCocktail.visibility = View.VISIBLE
                 Handler(Looper.getMainLooper())
@@ -68,6 +70,7 @@ class RandomCocktailFragment : Fragment(layout.fragment_random_cocktail) {
         }
 
         override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {
+            RANDOM_FLAG = false
             Timber.d("OnAccuracyChanged function")
         }
     }

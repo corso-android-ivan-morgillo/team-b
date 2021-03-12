@@ -48,6 +48,10 @@ class SearchViewModel(
                 actions.postValue(SearchScreenAction.NavigateToDetail(event.cocktail))
             }
             is SearchScreenEvent.OnReady -> loadContent(event.query)
+            is SearchScreenEvent.OnBackPressed -> {
+                tracking.logEvent("back_to_home_clicked")
+                actions.postValue(SearchScreenAction.NavigateToHome)
+            }
         }.exhaustive
     }
 
@@ -95,10 +99,12 @@ sealed class SearchScreenStates {
 sealed class SearchScreenEvent {
     data class OnCocktailClick(val cocktail: SearchCocktailUI) : SearchScreenEvent()
     data class OnReady(val query: String) : SearchScreenEvent()
+    object OnBackPressed : SearchScreenEvent()
 }
 
 sealed class SearchScreenAction {
     data class NavigateToDetail(val cocktail: SearchCocktailUI) : SearchScreenAction()
+    object NavigateToHome : SearchScreenAction()
 }
 
 data class SearchCocktailUI(
