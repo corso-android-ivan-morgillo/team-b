@@ -12,7 +12,6 @@ import com.apperol.DetailLoadCocktailError.ServerError
 import com.apperol.DetailLoadCocktailError.SlowInternet
 import com.apperol.FavoriteRepository
 import com.apperol.LoadDetailCocktailResult
-import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowNoCocktailFound
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowNoDetailFound
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowNoInternetMessage
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowServerError
@@ -20,15 +19,17 @@ import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowSlowInte
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenEvents.LoadDrink
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenEvents.LoadRandomDrink
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenEvents.OnFavoriteClick
+import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenEvents.OnSettingClick
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenStates.Content
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenStates.Loading
+import com.ivanmorgillo.corsoandroid.teamb.utils.Tracking
 import com.ivanmorgillo.corsoandroid.teamb.utils.SingleLiveEvent
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
 import kotlinx.coroutines.launch
 
 class DetailViewModel(
     private val repository: CocktailRepository,
-    private val favoriteRepository: FavoriteRepository
+    private val favoriteRepository: FavoriteRepository,
     private val tracking: Tracking
 ) : ViewModel() {
     val states = MutableLiveData<DetailScreenStates>()
@@ -45,7 +46,7 @@ class DetailViewModel(
             OnFavoriteClick -> {
                 viewModelScope.launch { saveFavorite() }
             }
-            is OnSettingClick -> {
+            OnSettingClick -> {
                 tracking.logEvent("no_internet_on_setting_click")
                 actions.postValue(DetailScreenActions.NavigateToSetting)
             }
@@ -125,10 +126,6 @@ sealed class DetailScreenEvents {
     object OnSettingClick : DetailScreenEvents()
     data class LoadDrink(val id: Long) : DetailScreenEvents()
     object OnFavoriteClick : DetailScreenEvents()
-}
-
-sealed class DetailScreenActions {
-    object FavoriteClicked : DetailScreenActions()
 }
 
 sealed class DetailErrorStates {
