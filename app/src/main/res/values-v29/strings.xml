@@ -11,5 +11,6 @@
     <string name="error_image_no_cocktail">Error image no cocktail found</string>
     <string name="error_image_no_server">"Error image no server "</string>
     <string name="error_image_no_internet">Error image no internet</string>
+    <string name="empty_search_error">HOME</string>
 
 </resources>
