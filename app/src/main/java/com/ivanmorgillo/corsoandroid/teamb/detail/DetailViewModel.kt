@@ -44,6 +44,7 @@ class DetailViewModel(
             is LoadRandomDrink -> loadRandomDrink()
             OnFavoriteClick -> {
                 viewModelScope.launch { saveFavorite() }
+            }
             is OnSettingClick -> {
                 tracking.logEvent("no_internet_on_setting_click")
                 actions.postValue(DetailScreenActions.NavigateToSetting)
