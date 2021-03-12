@@ -14,7 +14,6 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.transition.MaterialContainerTransform
 import com.ivanmorgillo.corsoandroid.teamb.R
 import com.ivanmorgillo.corsoandroid.teamb.databinding.FragmentDetailBinding
-import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenActions.FavoriteClicked
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenActions.NavigateToSetting
 import com.ivanmorgillo.corsoandroid.teamb.utils.bindings.viewBinding
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
