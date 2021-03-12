@@ -36,7 +36,7 @@
         android:layout_gravity="center"
         android:contentDescription="Cocktail Image"
         app:civ_border_color="@color/colorAccent"
-        app:civ_border_width="1dp"
+        app:civ_border_width="4dp"
         app:layout_constraintCircleRadius="25dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

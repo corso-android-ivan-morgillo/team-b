@@ -152,7 +152,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             id.nav_contact -> {
                 Timber.d("Contacts")
             }
-            R.id.nav_randomCocktail -> {
+            id.nav_randomCocktail -> {
                 mainActivityViewModel.send(MainScreenEvent.OnRandomClick)
             }
             /*
