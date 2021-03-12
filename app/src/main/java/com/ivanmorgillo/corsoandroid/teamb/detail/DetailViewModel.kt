@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apperol.CocktailRepository
 import com.apperol.Detail
-import com.apperol.DetailLoadCocktailError.NoCocktailFound
 import com.apperol.DetailLoadCocktailError.NoDetailFound
 import com.apperol.DetailLoadCocktailError.NoInternet
 import com.apperol.DetailLoadCocktailError.ServerError
