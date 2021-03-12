@@ -6,11 +6,11 @@
 
     <ImageView
         android:id="@+id/imageViewRandomCocktail"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:layout_marginTop="8dp"
         android:contentDescription="@string/shaker_image"
-        android:src="@drawable/random_cocktail"
+        android:src="@drawable/shaker"
         app:layout_constraintBottom_toTopOf="@id/textViewRandomCocktail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,10 +31,10 @@
 
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/gifImageViewRandomCocktail"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:layout_marginTop="8dp"
-        android:src="@drawable/random_cocktail"
+        android:src="@drawable/shaker"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/textViewRandomCocktail"
         app:layout_constraintEnd_toEndOf="parent"
