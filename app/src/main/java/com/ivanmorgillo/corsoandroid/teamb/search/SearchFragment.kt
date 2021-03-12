@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.transition.MaterialElevationScale
+import com.ivanmorgillo.corsoandroid.teamb.CleanSearchField
 import com.ivanmorgillo.corsoandroid.teamb.R
 import com.ivanmorgillo.corsoandroid.teamb.databinding.FragmentSearchBinding
 import com.ivanmorgillo.corsoandroid.teamb.search.SearchScreenAction.NavigateToDetail
@@ -57,8 +58,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                     }
                 }
                 NavigateToHome -> {
-                    val directions = SearchFragmentDirections.actionSearchFragmentToHomeFragment()
-                    findNavController().navigate(directions)
+                    findNavController().popBackStack()
                 }
             }.exhaustive
         })
@@ -72,7 +72,9 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                     adapter.setSearchList(state.cocktails)
                 }
                 is SearchScreenStates.Error -> {
+                    (activity as CleanSearchField).cleanSearchField()
                     when (state.error) {
+
                         SearchErrorStates.ShowNoInternetMessage -> {
                             errorCustom("No Internet Connection")
                         }
