@@ -215,14 +215,11 @@ class IngredientsListAdapter :
     }
 }
 
-// View Holder è un elemento della lista. Per ogni elemento della lista visibile viene creato un viewHolder
-// l'oggetto view è la rappresentazione in ingredient di un layout XML
 class IngredientsViewHolder(val binding: IngredientBinding) : RecyclerView.ViewHolder(binding.root) {
-    // recupera la textView dell'elemento della lista di ingredienti
     fun bind(item: IngredientUI) {
         val bullet = "• " + item.nomeIngr
-        binding.ingredientItemName.text = bullet // imposta lil text dell'elemento al nome dell'ingrediente
-        binding.ingredientItemQuantity.text = item.ingrQty // imposta la quantità dell'ingrediente
+        binding.ingredientItemName.text = bullet
+        binding.ingredientItemQuantity.text = item.ingrQty
     }
 }
 

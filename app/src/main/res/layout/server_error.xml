@@ -28,8 +28,9 @@
         app:layout_constraintBottom_toTopOf="@id/textViewServerError"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:src="@drawable/server_error"
-        android:visibility="visible" />
+        android:src="@drawable/server_error"
+        android:visibility="visible"
+        android:contentDescription="@string/error_image_no_server" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

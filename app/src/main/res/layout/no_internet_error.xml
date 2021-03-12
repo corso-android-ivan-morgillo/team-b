@@ -27,8 +27,9 @@
         app:layout_constraintBottom_toTopOf="@id/textViewNoInternetError"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:src="@drawable/no_internet"
-        android:visibility="visible" />
+        android:src="@drawable/no_internet"
+        android:visibility="visible"
+        android:contentDescription="@string/error_image_no_internet" />
 
     <Button
         android:id="@+id/buttonNoInternetError"

@@ -1,14 +1,16 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_margin="12dp">
 
     <ImageView
         android:id="@+id/imageViewRandomCocktail"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="8dp"
         android:contentDescription="@string/shaker_image"
-        android:src="@drawable/random_cocktail"
+        android:src="@drawable/shaker"
         app:layout_constraintBottom_toTopOf="@id/textViewRandomCocktail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,18 +26,20 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="150dp" />
 
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/gifImageViewRandomCocktail"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:src="@drawable/random_cocktail"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/shaker"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/textViewRandomCocktail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

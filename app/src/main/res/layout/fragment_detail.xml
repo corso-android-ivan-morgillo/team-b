@@ -24,12 +24,6 @@
         android:visibility="gone" />
 
     <include
-        android:id="@+id/innerLayoutNoCocktailFound"
-        layout="@layout/no_cocktail_found_error"
-        android:visibility="gone" />
-
-
-    <include
         android:id="@+id/innerLayoutNoDetailFound"
         layout="@layout/layout_error_detail"
         android:visibility="gone" />
