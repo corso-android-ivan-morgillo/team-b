@@ -21,34 +21,23 @@ class RandomCocktailViewModel(
     fun send(event: RandomScreenEvents) {
         when (event) {
             is RandomScreenEvents.OnReady -> Timber.d("OnReady in RandomCocktailViewModel")
-            /* GESTIRE SHAKING ACCELEROMETRO --> carica dettaglio */
             is RandomScreenEvents.OnShaking -> {
                 tracking.logEvent("shaking_action_performed")
-                action.postValue(RandomScreenAction.NavigatetoDetail)
+                action.postValue(RandomScreenAction.NavigateToDetail)
             }
         }
     }
 }
 
 sealed class RandomScreenAction {
-    object NavigatetoDetail : RandomScreenAction()
+    object NavigateToDetail : RandomScreenAction()
 }
 
 sealed class RandomScreenStates {
-    object Loading : RandomScreenStates()
-    data class Error(val error: RandomErrorStates) : RandomScreenStates()
     data class Content(val details: List<DetailScreenItems>) : RandomScreenStates()
 }
 
 sealed class RandomScreenEvents {
     data class OnReady(val id: Long) : RandomScreenEvents()
     object OnShaking : RandomScreenEvents()
-}
-
-sealed class RandomErrorStates {
-    object ShowNoInternetMessage : RandomErrorStates()
-    object ShowNoCocktailFound : RandomErrorStates()
-    object ShowServerError : RandomErrorStates()
-    object ShowSlowInternet : RandomErrorStates()
-    object ShowNoDetailFound : RandomErrorStates()
 }

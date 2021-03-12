@@ -29,6 +29,7 @@ import kotlinx.coroutines.launch
 class DetailViewModel(
     private val repository: CocktailRepository,
     private val favoriteRepository: FavoriteRepository
+    private val tracking: Tracking
 ) : ViewModel() {
     val states = MutableLiveData<DetailScreenStates>()
     val actions = SingleLiveEvent<DetailScreenActions>()
@@ -43,6 +44,9 @@ class DetailViewModel(
             is LoadRandomDrink -> loadRandomDrink()
             OnFavoriteClick -> {
                 viewModelScope.launch { saveFavorite() }
+            is OnSettingClick -> {
+                tracking.logEvent("no_internet_on_setting_click")
+                actions.postValue(DetailScreenActions.NavigateToSetting)
             }
         }.exhaustive
     }
@@ -80,7 +84,9 @@ class DetailViewModel(
         this.cocktailDetail = details
         val isFavorite = favoriteRepository.isFavorite(details.id)
         this.isFavorite = isFavorite
-        val ingredientsUI = details.ingredients.map {
+        val ingredientsUI = details.ingredients
+        .filter { it.name.isNotBlank() && it.quantity.isNotBlank() }
+        .map {
             IngredientUI(nomeIngr = it.name, ingrQty = it.quantity)
         }
         val content: List<DetailScreenItems> = listOf(
@@ -89,20 +95,22 @@ class DetailViewModel(
             DetailScreenItems.GlassType(details.glass, details.isAlcoholic),
             DetailScreenItems.IngredientList(ingredientsUI),
             DetailScreenItems.Instructions(details.instructions),
-
-            )
+        )
         states.postValue(Content(content))
     }
 
     private fun onFailure(result: LoadDetailCocktailResult.Failure) {
         when (result.error) {
-            NoCocktailFound -> states.postValue(DetailScreenStates.Error(ShowNoCocktailFound))
             NoInternet -> states.postValue(DetailScreenStates.Error(ShowNoInternetMessage))
             ServerError -> states.postValue(DetailScreenStates.Error(ShowServerError))
             SlowInternet -> states.postValue(DetailScreenStates.Error(ShowSlowInternet))
             NoDetailFound -> states.postValue(DetailScreenStates.Error(ShowNoDetailFound))
         }.exhaustive
     }
+}
+
+sealed class DetailScreenActions {
+    object NavigateToSetting : DetailScreenActions()
 }
 
 sealed class DetailScreenStates {
@@ -113,6 +121,7 @@ sealed class DetailScreenStates {
 
 sealed class DetailScreenEvents {
     object LoadRandomDrink : DetailScreenEvents()
+    object OnSettingClick : DetailScreenEvents()
     data class LoadDrink(val id: Long) : DetailScreenEvents()
     object OnFavoriteClick : DetailScreenEvents()
 }
@@ -123,7 +132,6 @@ sealed class DetailScreenActions {
 
 sealed class DetailErrorStates {
     object ShowNoInternetMessage : DetailErrorStates()
-    object ShowNoCocktailFound : DetailErrorStates()
     object ShowServerError : DetailErrorStates()
     object ShowSlowInternet : DetailErrorStates()
     object ShowNoDetailFound : DetailErrorStates()

@@ -33,8 +33,13 @@ import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+interface CleanSearchField {
+    fun cleanSearchField()
+}
 
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, CleanSearchField {
+
+    private var searchView: SearchView? = null
     private val mainActivityViewModel: MainActivityViewModel by viewModel()
     lateinit var navController: NavController
     lateinit var appBarConfiguration: AppBarConfiguration
@@ -88,15 +93,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val inflater: MenuInflater = menuInflater
         inflater.inflate(R.menu.menu, menu)
         val searchItem = menu.findItem(id.search_name)
-        val searchView = searchItem.actionView as SearchView
-        searchView.queryHint = "Search cocktail by name"
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        searchView = searchItem.actionView as SearchView
+
+        searchView!!.queryHint = "Search cocktail by name"
+        searchView!!.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String?): Boolean {
                 return false
             }
 
             override fun onQueryTextSubmit(query: String?): Boolean {
-                searchView.setQuery(query, false)
+                searchView!!.setQuery(query, false)
                 if (!query.isNullOrEmpty()) {
                     mainActivityViewModel.send(MainScreenEvent.OnSearchClick(query))
                 }
@@ -152,7 +158,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             id.nav_contact -> {
                 Timber.d("Contacts")
             }
-            R.id.nav_randomCocktail -> {
+            id.nav_randomCocktail -> {
                 mainActivityViewModel.send(MainScreenEvent.OnRandomClick)
             }
             /*
@@ -175,5 +181,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         b.putBoolean("new_window", true)
         intents.putExtras(b)
         context.startActivity(intents)
+    }
+
+    override fun cleanSearchField() {
+        searchView?.setQuery("", false)
+        searchView?.isIconified = true
     }
 }

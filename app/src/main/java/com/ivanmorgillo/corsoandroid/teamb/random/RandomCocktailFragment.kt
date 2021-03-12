@@ -6,6 +6,8 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +16,7 @@ import androidx.navigation.fragment.findNavController
 import com.ivanmorgillo.corsoandroid.teamb.R.layout
 import com.ivanmorgillo.corsoandroid.teamb.databinding.FragmentRandomCocktailBinding
 import com.ivanmorgillo.corsoandroid.teamb.random.RandomCocktailFragmentDirections.Companion.actionRandomCocktailFragmentToDetailFragment
-import com.ivanmorgillo.corsoandroid.teamb.random.RandomScreenAction.NavigatetoDetail
+import com.ivanmorgillo.corsoandroid.teamb.random.RandomScreenAction.NavigateToDetail
 import com.ivanmorgillo.corsoandroid.teamb.utils.bindings.viewBinding
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
 import java.util.Objects
@@ -26,6 +28,8 @@ private const val ACCELERATION = 10f
 private const val INDEX = 0.9f
 private const val ACCELERATION_THRESHOLD = 12
 private const val COCKTAIL_RANDOM_ID = -1000L
+private const val DELAYRANDOMDRINKTRANSITION = 1500L
+private var RANDOM_FLAG = false
 
 class RandomCocktailFragment : Fragment(layout.fragment_random_cocktail) {
     private val viewModel: RandomCocktailViewModel by viewModel()
@@ -56,14 +60,17 @@ class RandomCocktailFragment : Fragment(layout.fragment_random_cocktail) {
             currentAcceleration = sqrt((x * x + y * y + z * z).toDouble()).toFloat()
             val delta: Float = currentAcceleration - lastAcceleration
             acceleration = acceleration * INDEX + delta
-            if (acceleration > ACCELERATION_THRESHOLD) {
+            if (acceleration > ACCELERATION_THRESHOLD && RANDOM_FLAG == false) {
+                RANDOM_FLAG = true
                 binding.imageViewRandomCocktail.visibility = View.GONE
                 binding.gifImageViewRandomCocktail.visibility = View.VISIBLE
-                viewModel.send(RandomScreenEvents.OnShaking)
+                Handler(Looper.getMainLooper())
+                    .postDelayed({ viewModel.send(RandomScreenEvents.OnShaking) }, DELAYRANDOMDRINKTRANSITION)
             }
         }
 
         override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {
+            RANDOM_FLAG = false
             Timber.d("OnAccuracyChanged function")
         }
     }
@@ -98,7 +105,7 @@ class RandomCocktailFragment : Fragment(layout.fragment_random_cocktail) {
     private fun observeActions() {
         viewModel.action.observe(viewLifecycleOwner, { action ->
             when (action) {
-                NavigatetoDetail -> {
+                NavigateToDetail -> {
                     val directions =
                         actionRandomCocktailFragmentToDetailFragment(COCKTAIL_RANDOM_ID)
                     findNavController().navigate(directions)

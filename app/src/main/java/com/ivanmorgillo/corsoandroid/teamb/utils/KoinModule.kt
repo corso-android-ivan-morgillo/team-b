@@ -37,7 +37,7 @@ val appModule = module {
 
     // Creiamo un oggetto di tipo MainViewModel
     viewModel { HomeViewModel(repository = get(), tracking = get()) }
-    viewModel { DetailViewModel(repository = get(), favoriteRepository = get()) }
+    viewModel { DetailViewModel(repository = get(), favoriteRepository = get(), tracking = get()) }
     viewModel { SearchViewModel(repository = get(), tracking = get()) }
     viewModel { MainActivityViewModel(settingsrepository = get(), tracking = get()) }
     viewModel { SettingViewModel(settingsRepository = get(), tracking = get()) }
