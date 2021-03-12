@@ -34,20 +34,10 @@ sealed class RandomScreenAction {
 }
 
 sealed class RandomScreenStates {
-    object Loading : RandomScreenStates()
-    data class Error(val error: RandomErrorStates) : RandomScreenStates()
     data class Content(val details: List<DetailScreenItems>) : RandomScreenStates()
 }
 
 sealed class RandomScreenEvents {
     data class OnReady(val id: Long) : RandomScreenEvents()
     object OnShaking : RandomScreenEvents()
-}
-
-sealed class RandomErrorStates {
-    object ShowNoInternetMessage : RandomErrorStates()
-    object ShowNoCocktailFound : RandomErrorStates()
-    object ShowServerError : RandomErrorStates()
-    object ShowSlowInternet : RandomErrorStates()
-    object ShowNoDetailFound : RandomErrorStates()
 }
