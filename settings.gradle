@@ -1,3 +1,5 @@
+include ':domain'
+include ':di'
 include ':di'
 include ':networking'
 include ':app'

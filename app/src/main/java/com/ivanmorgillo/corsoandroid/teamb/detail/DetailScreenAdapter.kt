@@ -30,7 +30,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 
 sealed class DetailScreenItems {
-    data class Image(val image: String, val title: String) : DetailScreenItems()
+    data class Image(val image: String, val title: String, val isFavorite: Boolean) : DetailScreenItems()
     data class GlassType(val glass: String, val isAlcoholic: Boolean) : DetailScreenItems()
     data class IngredientList(val ingredients: List<IngredientUI>) : DetailScreenItems()
     data class Instructions(val instructions: String) : DetailScreenItems()
@@ -44,7 +44,8 @@ private const val INSTRUCTIONS_VIEWTYPE = 4
 private const val VIDEO_VIEWTYPE = 6
 private const val START_SECONDS = 0f
 
-class DetailScreenAdapter : RecyclerView.Adapter<DetailScreenViewHolder>() {
+class DetailScreenAdapter
+    (private val onFavoriteClicked: () -> Unit) : RecyclerView.Adapter<DetailScreenViewHolder>() {
     var items: List<DetailScreenItems> = emptyList()
         set(value) {
             field = value
@@ -111,7 +112,7 @@ class DetailScreenAdapter : RecyclerView.Adapter<DetailScreenViewHolder>() {
     override fun onBindViewHolder(holder: DetailScreenViewHolder, position: Int) {
         when (holder) {
             is GlassTypeViewHolder -> holder.bind(items[position] as GlassType)
-            is ImageViewHolder -> holder.bind(items[position] as Image)
+            is ImageViewHolder -> holder.bind(items[position] as Image, onFavoriteClicked)
             is IngredientListViewHolder -> holder.bind(items[position] as IngredientList)
             is InstructionsViewHolder -> holder.bind(items[position] as Instructions)
             is VideoViewHolder -> holder.bind(items[position] as Video)
@@ -124,9 +125,15 @@ class DetailScreenAdapter : RecyclerView.Adapter<DetailScreenViewHolder>() {
 sealed class DetailScreenViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     class ImageViewHolder(private val binding: DetailScreenImageBinding) :
         DetailScreenViewHolder(binding.root) {
-        fun bind(image: Image) {
-            binding.detailScreenImage.load(image.image)
-            binding.detailScreenTitle.text = image.title
+        fun bind(item: Image, onClick: () -> Unit) {
+            binding.detailScreenImage.load(item.image)
+            binding.detailScreenTitle.text = item.title
+            binding.detailAddFavorite.setOnClickListener { onClick() }
+            if (item.isFavorite) {
+                binding.detailAddFavorite.setImageResource(R.drawable.ic_star)
+            } else {
+                binding.detailAddFavorite.setImageResource(R.drawable.ic_star_border)
+            }
         }
     }
 

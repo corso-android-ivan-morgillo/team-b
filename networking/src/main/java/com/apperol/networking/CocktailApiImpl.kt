@@ -1,11 +1,24 @@
 package com.apperol.networking
 
-import com.apperol.networking.LoadCocktailError.NoCocktailFound
-import com.apperol.networking.LoadCocktailError.NoInternet
-import com.apperol.networking.LoadCocktailError.ServerError
-import com.apperol.networking.LoadCocktailError.SlowInternet
-import com.apperol.networking.LoadCocktailResult.Failure
-import com.apperol.networking.LoadCocktailResult.Success
+import com.apperol.CategoriesError
+import com.apperol.Category
+import com.apperol.Cocktail
+import com.apperol.CocktailAPI
+import com.apperol.Detail
+import com.apperol.DetailLoadCocktailError
+import com.apperol.Ingredient
+import com.apperol.LoadCategoriesResult
+import com.apperol.LoadCocktailError.NoCocktailFound
+import com.apperol.LoadCocktailError.NoInternet
+import com.apperol.LoadCocktailError.ServerError
+import com.apperol.LoadCocktailError.SlowInternet
+import com.apperol.LoadCocktailResult
+import com.apperol.LoadCocktailResult.Failure
+import com.apperol.LoadCocktailResult.Success
+import com.apperol.LoadDetailCocktailResult
+import com.apperol.LoadSearchCocktailResult
+import com.apperol.Search
+import com.apperol.SearchLoadCocktailError
 import java.io.IOException
 import java.net.SocketTimeoutException
 import okhttp3.OkHttpClient
@@ -179,7 +192,7 @@ private fun resolveMeasures(ingredient: String?, measure: String?): String? {
     }
 }
 
-private fun DetailCocktailDTO.Drink.measurementsList() = listOfNotNull(
+private fun DetailCocktailDTO.DrinkDTO.measurementsList() = listOfNotNull(
     resolveMeasures(strIngredient1, strMeasure1),
     resolveMeasures(strIngredient2, strMeasure2),
     resolveMeasures(strIngredient3, strMeasure3),
@@ -197,7 +210,7 @@ private fun DetailCocktailDTO.Drink.measurementsList() = listOfNotNull(
     resolveMeasures(strIngredient15, strMeasure15),
 )
 
-private fun DetailCocktailDTO.Drink.ingredientsList() = listOfNotNull(
+private fun DetailCocktailDTO.DrinkDTO.ingredientsList() = listOfNotNull(
     strIngredient1,
     strIngredient2,
     strIngredient3,
@@ -215,7 +228,7 @@ private fun DetailCocktailDTO.Drink.ingredientsList() = listOfNotNull(
     strIngredient15,
 )
 
-private fun List<DetailCocktailDTO.Drink>.toDomain(): Detail? {
+private fun List<DetailCocktailDTO.DrinkDTO>.toDomain(): Detail? {
     val first = this.firstOrNull() ?: return null
     val id = first.idDrink.toLongOrNull()
     val alcolCat: Boolean = first.strAlcoholic.equals("Alcoholic")
@@ -230,19 +243,20 @@ private fun List<DetailCocktailDTO.Drink>.toDomain(): Detail? {
         Detail(
             name = first.strDrink,
             image = first.strDrinkThumb,
-            idDrink = id,
+            id = id,
             isAlcoholic = alcolCat,
             glass = first.strGlass,
             ingredients = ingredients,
             youtubeLink = video,
             instructions = first.strInstructions,
+            category = first.strCategory
         )
     } else {
         null
     }
 }
 
-private fun DetailCocktailDTO.Drink.toDomainSearch(): Search? {
+private fun DetailCocktailDTO.DrinkDTO.toDomainSearch(): Search? {
     val id = idDrink.toLongOrNull()
     return if (id != null) {
         Search(
@@ -257,79 +271,6 @@ private fun DetailCocktailDTO.Drink.toDomainSearch(): Search? {
     }
 }
 
-private fun CategoryDTO.Category.toDomainCategories(): Category {
+private fun CategoriesDTO.CategoryDTO.toDomainCategories(): Category {
     return Category(categoryName = strCategory)
 }
-
-sealed class LoadCocktailError {
-    object NoCocktailFound : LoadCocktailError()
-    object NoInternet : LoadCocktailError()
-    object SlowInternet : LoadCocktailError()
-    object ServerError : LoadCocktailError()
-}
-
-sealed class DetailLoadCocktailError {
-    object NoInternet : DetailLoadCocktailError()
-    object SlowInternet : DetailLoadCocktailError()
-    object ServerError : DetailLoadCocktailError()
-    object NoDetailFound : DetailLoadCocktailError()
-}
-
-sealed class SearchLoadCocktailError {
-    object NoCocktailFound : SearchLoadCocktailError()
-    object NoInternet : SearchLoadCocktailError()
-    object SlowInternet : SearchLoadCocktailError()
-    object ServerError : SearchLoadCocktailError()
-}
-
-sealed class CategoriesError {
-    object NoCategoriesFound : CategoriesError()
-    object NoInternet : CategoriesError()
-    object SlowInternet : CategoriesError()
-    object ServerError : CategoriesError()
-}
-
-sealed class LoadCocktailResult {
-    data class Success(val cocktails: List<Cocktail>) : LoadCocktailResult()
-    data class Failure(val error: LoadCocktailError) : LoadCocktailResult()
-}
-
-sealed class LoadDetailCocktailResult {
-    data class Success(val details: Detail) : LoadDetailCocktailResult()
-    data class Failure(val error: DetailLoadCocktailError) : LoadDetailCocktailResult()
-}
-
-sealed class LoadSearchCocktailResult {
-    data class Success(val details: List<Search>) : LoadSearchCocktailResult()
-    data class Failure(val error: SearchLoadCocktailError) : LoadSearchCocktailResult()
-}
-
-sealed class LoadCategoriesResult {
-    data class Success(val categories: List<Category>) : LoadCategoriesResult()
-    data class Failure(val error: CategoriesError) : LoadCategoriesResult()
-}
-
-data class Category(val categoryName: String)
-
-data class Ingredient(val name: String, val quantity: String)
-
-data class Cocktail(val name: String, val image: String, val idDrink: Long)
-
-data class Detail(
-    val name: String,
-    val image: String,
-    val idDrink: Long,
-    val isAlcoholic: Boolean,
-    val glass: String,
-    val ingredients: List<Ingredient>,
-    val youtubeLink: String?,
-    val instructions: String,
-)
-
-data class Search(
-    val name: String,
-    val image: String,
-    val idDrink: Long,
-    val alcoholic: String,
-    val category: String
-)

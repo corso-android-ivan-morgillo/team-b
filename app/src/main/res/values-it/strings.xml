@@ -52,6 +52,9 @@
     <string name="internet_settings">Impostazioni Connessione</string>
     <string name="shake_your_phone">SHAKERA IL TUO SMARTPHONE</string>
     <string name="shaker_image">immagine Shaker</string>
+    <string name="background_image">immagine di sfondo</string>
+    <string name="add_favorite">aggiungi ai preferiti</string>
+    <string name="delete_favorite">elimina dai preferiti</string>
     <string name="error_image_no_detail_found">Immagine errore nessun dettaglio trovato</string>
     <string name="error_image_no_cocktail">Immagine errore nessun cocktail trovato</string>
     <string name="error_image_no_server">Immagine errore nessun server trovato</string>

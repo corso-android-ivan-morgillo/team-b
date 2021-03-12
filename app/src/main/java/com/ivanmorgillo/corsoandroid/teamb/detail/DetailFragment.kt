@@ -43,7 +43,9 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = DetailScreenAdapter()
+        val adapter = DetailScreenAdapter {
+            viewModel.send(DetailScreenEvents.OnFavoriteClick)
+        }
         // Mettiamo in comunicazione l'adapter con la recycleview
         binding.detailScreenRecycleview.adapter = adapter
 
@@ -63,7 +65,6 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
             viewModel.send(DetailScreenEvents.OnSettingClick)
         }
     }
-
     private fun observeActions() {
         viewModel.actions.observe(viewLifecycleOwner, { actions ->
             when (actions) {

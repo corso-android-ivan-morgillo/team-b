@@ -61,7 +61,8 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
     // aggiunta modulo networking
-    implementation project(":networking")
+    implementation project(":di")
+    implementation project(":domain")
 
 
     // noinspection GradleDependency
@@ -94,10 +95,6 @@ dependencies {
     //noinspection GradleDependency
     implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
 
-    // Koin AndroidX
-    implementation "org.koin:koin-androidx-scope:$koin_version"
-    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
-    implementation "org.koin:koin-androidx-fragment:$koin_version"
 
     // Kotlin coroutines dependencies
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2'
@@ -116,8 +113,8 @@ dependencies {
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
 
     // Navigation component
-    implementation "androidx.navigation:navigation-fragment-ktx:2.3.3"
-    implementation "androidx.navigation:navigation-ui-ktx:2.3.3"
+    implementation "androidx.navigation:navigation-fragment-ktx:2.3.4"
+    implementation "androidx.navigation:navigation-ui-ktx:2.3.4"
     // implementation "android.legacy:legacy-support-v4:1.0.0"
 
     // Round image
@@ -132,6 +129,9 @@ dependencies {
 
     // Gif image
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
+
+    // Gson
+    implementation 'com.google.code.gson:gson:2.8.6'
 
     // Testing dependencies
     testImplementation 'junit:junit:4.13.1'

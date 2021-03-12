@@ -17,5 +17,5 @@ interface CocktailService {
     suspend fun loadSearchCocktails(@Query("s") s: String): DetailCocktailDTO
 
     @GET("list.php?c=list")
-    suspend fun loadCategories(): CategoryDTO
+    suspend fun loadCategories(): CategoriesDTO
 }
