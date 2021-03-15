@@ -59,6 +59,9 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
+    // authentication
+    implementation 'com.firebaseui:firebase-ui-auth:6.4.0'
+
 
     // aggiunta modulo networking
     implementation project(":di")
