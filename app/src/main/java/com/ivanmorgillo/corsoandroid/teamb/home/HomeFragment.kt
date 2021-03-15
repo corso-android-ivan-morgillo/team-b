@@ -8,9 +8,9 @@ import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
+import com.apperol.R
+import com.apperol.databinding.FragmentHomeBinding
 import com.google.android.material.transition.MaterialElevationScale
-import com.ivanmorgillo.corsoandroid.teamb.R
-import com.ivanmorgillo.corsoandroid.teamb.databinding.FragmentHomeBinding
 import com.ivanmorgillo.corsoandroid.teamb.home.HomeFragmentDirections.Companion.actionHomeFragmentToDetailFragment
 import com.ivanmorgillo.corsoandroid.teamb.home.HomeScreenActions.NavigateToDetail
 import com.ivanmorgillo.corsoandroid.teamb.home.HomeScreenActions.NavigateToSettings

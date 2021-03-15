@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import coil.load
-import com.ivanmorgillo.corsoandroid.teamb.databinding.FavoriteCocktailsItemBinding
+import com.apperol.databinding.FavoriteCocktailsItemBinding
 
 class FavoriteCocktailAdapter
     (private val onClick: (FavoriteCocktailUI, View) -> Unit) : Adapter<FavoriteCocktailViewHolder>() {

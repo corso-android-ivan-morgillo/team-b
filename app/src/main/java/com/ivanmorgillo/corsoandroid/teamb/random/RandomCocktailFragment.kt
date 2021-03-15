@@ -13,10 +13,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.ivanmorgillo.corsoandroid.teamb.R.layout
-import com.ivanmorgillo.corsoandroid.teamb.databinding.FragmentRandomCocktailBinding
+import com.apperol.R
+import com.apperol.databinding.FragmentRandomCocktailBinding
 import com.ivanmorgillo.corsoandroid.teamb.random.RandomCocktailFragmentDirections.Companion.actionRandomCocktailFragmentToDetailFragment
 import com.ivanmorgillo.corsoandroid.teamb.random.RandomScreenAction.NavigateToDetail
+import com.ivanmorgillo.corsoandroid.teamb.random.RandomScreenEvents.OnShaking
 import com.ivanmorgillo.corsoandroid.teamb.utils.bindings.viewBinding
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
 import java.util.Objects
@@ -31,7 +32,7 @@ private const val COCKTAIL_RANDOM_ID = -1000L
 private const val DELAYRANDOMDRINKTRANSITION = 1500L
 private var RANDOM_FLAG = false
 
-class RandomCocktailFragment : Fragment(layout.fragment_random_cocktail) {
+class RandomCocktailFragment : Fragment(R.layout.fragment_random_cocktail) {
     private val viewModel: RandomCocktailViewModel by viewModel()
     private val binding by viewBinding(FragmentRandomCocktailBinding::bind)
     private var sensorManager: SensorManager? = null
@@ -65,7 +66,7 @@ class RandomCocktailFragment : Fragment(layout.fragment_random_cocktail) {
                 binding.imageViewRandomCocktail.visibility = View.GONE
                 binding.gifImageViewRandomCocktail.visibility = View.VISIBLE
                 Handler(Looper.getMainLooper())
-                    .postDelayed({ viewModel.send(RandomScreenEvents.OnShaking) }, DELAYRANDOMDRINKTRANSITION)
+                    .postDelayed({ viewModel.send(OnShaking) }, DELAYRANDOMDRINKTRANSITION)
             }
         }
 
@@ -94,7 +95,7 @@ class RandomCocktailFragment : Fragment(layout.fragment_random_cocktail) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(layout.fragment_random_cocktail, container, false)
+        return inflater.inflate(R.layout.fragment_random_cocktail, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

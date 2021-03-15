@@ -5,10 +5,10 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
+import com.apperol.R
+import com.apperol.databinding.FragmentSearchBinding
 import com.google.android.material.transition.MaterialElevationScale
 import com.ivanmorgillo.corsoandroid.teamb.CleanSearchField
-import com.ivanmorgillo.corsoandroid.teamb.R
-import com.ivanmorgillo.corsoandroid.teamb.databinding.FragmentSearchBinding
 import com.ivanmorgillo.corsoandroid.teamb.search.SearchScreenAction.NavigateToDetail
 import com.ivanmorgillo.corsoandroid.teamb.search.SearchScreenAction.NavigateToHome
 import com.ivanmorgillo.corsoandroid.teamb.utils.bindings.viewBinding

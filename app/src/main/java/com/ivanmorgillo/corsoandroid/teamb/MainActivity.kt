@@ -16,6 +16,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.apperol.R
+import com.apperol.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.DisableDarkMode
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.EnableDarkMode
@@ -26,9 +28,6 @@ import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToRandom
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToSearch
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToSettingMenu
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToTwitter
-import com.ivanmorgillo.corsoandroid.teamb.R.id
-import com.ivanmorgillo.corsoandroid.teamb.R.string
-import com.ivanmorgillo.corsoandroid.teamb.databinding.ActivityMainBinding
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -51,11 +50,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val navHostFragment = supportFragmentManager.findFragmentById(id.nav_host_fragment) as NavHostFragment
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
         val topLevelDestinations = setOf(
-            id.homeFragment,
-            id.settingsFragment
+            R.id.homeFragment,
+            R.id.settingsFragment
         )
 
         appBarConfiguration = AppBarConfiguration.Builder(topLevelDestinations)
@@ -92,7 +91,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater: MenuInflater = menuInflater
         inflater.inflate(R.menu.menu, menu)
-        val searchItem = menu.findItem(id.search_name)
+        val searchItem = menu.findItem(R.id.search_name)
         searchView = searchItem.actionView as SearchView
 
         searchView!!.queryHint = "Search cocktail by name"
@@ -119,46 +118,46 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 is NavigateToSearch -> {
                     val bundle = Bundle()
                     bundle.putString("query", action.query)
-                    navController.navigate(id.searchFragment, bundle)
+                    navController.navigate(R.id.searchFragment, bundle)
                 }
                 NavigateToSettingMenu -> {
-                    navController.navigate(id.settingsFragment)
+                    navController.navigate(R.id.settingsFragment)
                 }
                 NavigateToFacebook -> openNewTabWindow("https://www.facebook.com", this)
                 NavigateToTwitter -> openNewTabWindow("https://twitter.com", this)
-                NavigateToFeedBack -> openNewTabWindow(getString(string.feedback_link), this)
+                NavigateToFeedBack -> openNewTabWindow(getString(R.string.feedback_link), this)
                 DisableDarkMode -> Unit
                 EnableDarkMode -> Unit
-                NavigateToFavorite -> navController.navigate(id.favoritesFragment)
-                NavigateToRandom -> navController.navigate(id.randomCocktailFragment)
+                NavigateToFavorite -> navController.navigate(R.id.favoritesFragment)
+                NavigateToRandom -> navController.navigate(R.id.randomCocktailFragment)
             }.exhaustive
         })
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            id.nav_customCocktail -> {
+            R.id.nav_customCocktail -> {
                 Timber.d("CustomCocktail")
             }
-            id.nav_favorites -> {
+            R.id.nav_favorites -> {
                 mainActivityViewModel.send(MainScreenEvent.OnFavoriteClick)
             }
-            id.nav_settings -> {
+            R.id.nav_settings -> {
                 mainActivityViewModel.send(MainScreenEvent.OnMenuClick)
             }
-            id.nav_facebook -> {
+            R.id.nav_facebook -> {
                 mainActivityViewModel.send(MainScreenEvent.OnFacebookClick)
             }
-            id.nav_twitter -> {
+            R.id.nav_twitter -> {
                 mainActivityViewModel.send(MainScreenEvent.OnTwitterClick)
             }
-            id.nav_feedback -> {
+            R.id.nav_feedback -> {
                 mainActivityViewModel.send(MainScreenEvent.OnFeedBackClick)
             }
-            id.nav_contact -> {
+            R.id.nav_contact -> {
                 Timber.d("Contacts")
             }
-            id.nav_randomCocktail -> {
+            R.id.nav_randomCocktail -> {
                 mainActivityViewModel.send(MainScreenEvent.OnRandomClick)
             }
             /*
