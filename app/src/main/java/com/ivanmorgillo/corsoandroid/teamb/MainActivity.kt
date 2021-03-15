@@ -9,6 +9,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.SearchView
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.navigation.NavController
@@ -167,13 +168,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     AuthUI.IdpConfig.GoogleBuilder().build(),
                 )
                 // Create and launch sign-in intent
-                startActivityForResult(
-                    AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setAvailableProviders(providers)
-                        .build(),
-                    RC_SIGN_IN
-                )
+                val intent = AuthUI.getInstance()
+                    .createSignInIntentBuilder()
+                    .setAvailableProviders(providers)
+                    .build()
+                firebaseAthenticationResultLauncher.launch(intent)
+
                 binding.drawerLayout.closeDrawer(GravityCompat.START)
             }
             R.id.nav_randomCocktail -> {
@@ -193,6 +193,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
+    var firebaseAthenticationResultLauncher = registerForActivityResult(StartActivityForResult()) { result ->
+
+        val response = IdpResponse.fromResultIntent(result.data)
+
+        if (result.resultCode == Activity.RESULT_OK) {
+            // Successfully signed in
+            val user = FirebaseAuth.getInstance().currentUser
+            Timber.d("USER: $user")
+            // ...
+        } else {
+            Timber.e("AUTHENTICATION ERROR: ${response?.error?.errorCode}")
+            // Sign in failed. If response is null the user canceled the
+            // sign-in flow using the back button. Otherwise check
+            // response.getError().getErrorCode() and handle the error.
+            // ...
+        }
+    }
+
     private fun openNewTabWindow(urls: String, context: Context) {
         val uris = Uri.parse(urls)
         val intents = Intent(Intent.ACTION_VIEW, uris)
@@ -205,26 +223,5 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun cleanSearchField() {
         searchView?.setQuery("", false)
         searchView?.isIconified = true
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == RC_SIGN_IN) {
-            val response = IdpResponse.fromResultIntent(data)
-
-            if (resultCode == Activity.RESULT_OK) {
-                // Successfully signed in
-                val user = FirebaseAuth.getInstance().currentUser
-                Timber.d("USER: $user")
-                // ...
-            } else {
-                Timber.e("AUTHENTICATION ERROR: ${response?.error?.errorCode}")
-                // Sign in failed. If response is null the user canceled the
-                // sign-in flow using the back button. Otherwise check
-                // response.getError().getErrorCode() and handle the error.
-                // ...
-            }
-        }
     }
 }
