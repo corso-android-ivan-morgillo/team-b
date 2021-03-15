@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.ivanmorgillo.corsoandroid.teamb.R
-import com.ivanmorgillo.corsoandroid.teamb.databinding.CategoryItemBinding
+import com.apperol.R
+import com.apperol.databinding.CategoryItemBinding
 
 const val BORDER_WIDTH = 8
 

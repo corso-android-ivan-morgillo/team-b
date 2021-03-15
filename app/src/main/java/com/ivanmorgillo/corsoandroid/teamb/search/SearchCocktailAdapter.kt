@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import coil.load
-import com.ivanmorgillo.corsoandroid.teamb.databinding.SearchCocktailsItemBinding
+import com.apperol.databinding.SearchCocktailsItemBinding
 import timber.log.Timber
 
 class SearchCocktailAdapter

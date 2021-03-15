@@ -5,8 +5,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.ivanmorgillo.corsoandroid.teamb.R
-import com.ivanmorgillo.corsoandroid.teamb.databinding.FragmentFavoritesBinding
+import com.apperol.R
+import com.apperol.databinding.FragmentFavoritesBinding
 import com.ivanmorgillo.corsoandroid.teamb.favorites.FavoriteErrorStates.FavoriteListEmpty
 import com.ivanmorgillo.corsoandroid.teamb.favorites.FavoriteErrorStates.ShowNoInternetMessage
 import com.ivanmorgillo.corsoandroid.teamb.favorites.FavoriteErrorStates.ShowServerError

@@ -7,7 +7,7 @@ import android.widget.SectionIndexer
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import coil.load
-import com.ivanmorgillo.corsoandroid.teamb.databinding.DrinkItemBinding
+import com.apperol.databinding.DrinkItemBinding
 import java.util.Locale
 
 const val INITIAL_CAPACITY = 26

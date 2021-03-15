@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ivanmorgillo.corsoandroid.teamb">
+    package="com.apperol">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:allowBackup="true"
         android:icon="@drawable/cocktail"
         android:label="@string/app_name"
-        android:name=".MyApplication"
+        android:name="com.ivanmorgillo.corsoandroid.teamb.MyApplication"
         android:roundIcon="@drawable/cocktail"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:fullBackupContent="true">
         <activity
-            android:name=".MainActivity"
+            android:name="com.ivanmorgillo.corsoandroid.teamb.MainActivity"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

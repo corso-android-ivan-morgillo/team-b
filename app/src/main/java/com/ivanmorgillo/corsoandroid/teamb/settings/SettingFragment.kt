@@ -5,8 +5,8 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import androidx.fragment.app.Fragment
-import com.ivanmorgillo.corsoandroid.teamb.R
-import com.ivanmorgillo.corsoandroid.teamb.databinding.FragmentSettingBinding
+import com.apperol.R
+import com.apperol.databinding.FragmentSettingBinding
 import com.ivanmorgillo.corsoandroid.teamb.utils.bindings.viewBinding
 import com.ivanmorgillo.corsoandroid.teamb.utils.disableDarkMode
 import com.ivanmorgillo.corsoandroid.teamb.utils.enableDarkMode

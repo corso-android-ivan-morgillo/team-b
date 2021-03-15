@@ -11,9 +11,9 @@ import androidx.core.content.res.use
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.apperol.R
+import com.apperol.databinding.FragmentDetailBinding
 import com.google.android.material.transition.MaterialContainerTransform
-import com.ivanmorgillo.corsoandroid.teamb.R
-import com.ivanmorgillo.corsoandroid.teamb.databinding.FragmentDetailBinding
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenActions.NavigateToSetting
 import com.ivanmorgillo.corsoandroid.teamb.utils.bindings.viewBinding
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
@@ -65,6 +65,7 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
             viewModel.send(DetailScreenEvents.OnSettingClick)
         }
     }
+
     private fun observeActions() {
         viewModel.actions.observe(viewLifecycleOwner, { actions ->
             when (actions) {
