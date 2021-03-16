@@ -13,6 +13,7 @@ interface FavoriteRepository {
 
 class FavoriteRepositoryImpl : FavoriteRepository {
     private val firestore by lazy { Firebase.firestore }
+    private val favouritesCollection = firestore.collection("favourites")
 
     override suspend fun save(favorite: Detail, isFavorite: Boolean): Boolean {
         val favouriteMap = hashMapOf(
@@ -21,7 +22,7 @@ class FavoriteRepositoryImpl : FavoriteRepository {
             "image" to favorite.image,
             "category" to favorite.category
         )
-        firestore.collection("favourites").add(favouriteMap).await()
+        favouritesCollection.add(favouriteMap).await()
         return true
     }
 
@@ -29,7 +30,23 @@ class FavoriteRepositoryImpl : FavoriteRepository {
 
     override suspend fun isFavorite(id: Long): Boolean = false
 
-    override suspend fun loadAll(): List<Favorite>? = emptyList()
+    override suspend fun loadAll(): List<Favorite>? {
+        return favouritesCollection.get()
+            .await()
+            .documents
+            .map {
+                val name = it["name"] as String
+                val image = it["image"] as String
+                val category = it["category"] as String
+                val id = it["id"] as Long
+                Favorite(
+                    name = name,
+                    image = image,
+                    id = id,
+                    category = category
+                )
+            }
+    }
 }
 
 data class Favorite(
