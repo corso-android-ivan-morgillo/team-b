@@ -22,13 +22,19 @@ class FavoriteRepositoryImpl : FavoriteRepository {
             "image" to favorite.image,
             "category" to favorite.category
         )
-        favouritesCollection.add(favouriteMap).await()
+        favouritesCollection.document(favorite.id.toString()).set(favouriteMap).await()
         return true
     }
 
-    override suspend fun delete(id: Long) = true
+    override suspend fun delete(id: Long): Boolean {
+        favouritesCollection.document(id.toString()).delete().await()
+        return true
+    }
 
-    override suspend fun isFavorite(id: Long): Boolean = false
+    override suspend fun isFavorite(id: Long): Boolean {
+        val x = favouritesCollection.document(id.toString()).get().await()
+        return x.exists()
+    }
 
     override suspend fun loadAll(): List<Favorite>? {
         return favouritesCollection.get()
