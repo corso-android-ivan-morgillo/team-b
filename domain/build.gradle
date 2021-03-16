@@ -47,7 +47,7 @@ dependencies {
     // Declare the dependency for the Realtime Database library end cloud firestore
     // When using the BoM, you don't specify versions in Firebase library dependencies
     api 'com.google.firebase:firebase-database-ktx'
-    implementation 'com.google.firebase:firebase-firestore-ktx'
+    api 'com.google.firebase:firebase-firestore-ktx'
 
     // authentication
     api 'com.google.firebase:firebase-auth-ktx'

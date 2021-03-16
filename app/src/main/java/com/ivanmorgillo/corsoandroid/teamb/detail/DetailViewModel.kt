@@ -21,8 +21,8 @@ import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenEvents.OnFavoriteC
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenEvents.OnSettingClick
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenStates.Content
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenStates.Loading
-import com.ivanmorgillo.corsoandroid.teamb.utils.Tracking
 import com.ivanmorgillo.corsoandroid.teamb.utils.SingleLiveEvent
+import com.ivanmorgillo.corsoandroid.teamb.utils.Tracking
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
 import kotlinx.coroutines.launch
 
@@ -86,10 +86,10 @@ class DetailViewModel(
         val isFavorite = favoriteRepository.isFavorite(details.id)
         this.isFavorite = isFavorite
         val ingredientsUI = details.ingredients
-        .filter { it.name.isNotBlank() && it.quantity.isNotBlank() }
-        .map {
-            IngredientUI(nomeIngr = it.name, ingrQty = it.quantity)
-        }
+            .filter { it.name.isNotBlank() && it.quantity.isNotBlank() }
+            .map {
+                IngredientUI(nomeIngr = it.name, ingrQty = it.quantity)
+            }
         val content: List<DetailScreenItems> = listOf(
             DetailScreenItems.Image(details.image, details.name, isFavorite),
             DetailScreenItems.Video(details.youtubeLink),

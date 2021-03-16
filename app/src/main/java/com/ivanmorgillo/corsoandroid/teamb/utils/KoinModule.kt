@@ -31,7 +31,7 @@ val appModule = module {
     }
 
     single<FavoriteRepository> {
-        FavoriteRepositoryImpl()
+        FavoriteRepositoryImpl(firestore = get())
     }
 
     // Creiamo un oggetto di tipo MainViewModel

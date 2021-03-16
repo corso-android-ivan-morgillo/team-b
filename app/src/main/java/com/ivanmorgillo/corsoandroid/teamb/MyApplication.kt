@@ -3,6 +3,7 @@ package com.ivanmorgillo.corsoandroid.teamb
 import android.app.Application
 import android.os.StrictMode
 import com.apperol.BuildConfig
+import com.apperol.firebaseFirestoreKoinModule
 import com.apperol.networkingKoinModule
 import com.ivanmorgillo.corsoandroid.teamb.settings.SettingsRepository
 import com.ivanmorgillo.corsoandroid.teamb.utils.CrashReportingTree
@@ -26,7 +27,7 @@ class MyApplication : Application() {
         startKoin {
             androidLogger()
             androidContext(this@MyApplication)
-            modules(appModule, networkingKoinModule)
+            modules(appModule, networkingKoinModule, firebaseFirestoreKoinModule)
         }
         setupTimber()
 
