@@ -50,13 +50,13 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore-ktx'
 
     // authentication
-    implementation 'com.google.firebase:firebase-auth-ktx'
+    api 'com.google.firebase:firebase-auth-ktx'
 
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.1.1'
+    api 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.1.1'
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
 
 
-    implementation 'com.firebaseui:firebase-ui-auth:6.4.0'
+    api 'com.firebaseui:firebase-ui-auth:6.4.0'
 
 
     testImplementation 'junit:junit:4.13.1'

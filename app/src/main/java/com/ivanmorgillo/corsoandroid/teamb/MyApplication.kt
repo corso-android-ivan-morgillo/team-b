@@ -29,6 +29,7 @@ class MyApplication : Application() {
             modules(appModule, networkingKoinModule)
         }
         setupTimber()
+
         val settingRepository: SettingsRepository = get()
 
         GlobalScope.launch {

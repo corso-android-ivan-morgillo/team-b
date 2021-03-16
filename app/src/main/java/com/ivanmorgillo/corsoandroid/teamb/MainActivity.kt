@@ -12,6 +12,7 @@ import android.widget.SearchView
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -24,6 +25,8 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.DisableDarkMode
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.EnableDarkMode
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToFacebook
@@ -34,6 +37,8 @@ import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToSearch
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToSettingMenu
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToTwitter
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
@@ -224,4 +229,23 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         searchView?.setQuery("", false)
         searchView?.isIconified = true
     }
+
+    public override fun onStart() {
+        super.onStart()
+        // Check if user is signed in (non-null) and update UI accordingly.
+        val currentUser = Firebase.auth.currentUser
+        if (currentUser == null) {
+            signinAnonymously()
+        } else {
+            Timber.d("User is logged in")
+        }
+    }
+
+    private fun signinAnonymously() {
+        lifecycleScope.launch {
+            val x = Firebase.auth.signInAnonymously().await()
+            Timber.d("user: ${x.user}")
+        }
+    }
+
 }

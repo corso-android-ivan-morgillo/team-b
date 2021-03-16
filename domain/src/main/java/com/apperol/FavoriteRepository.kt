@@ -1,5 +1,6 @@
 package com.apperol
 
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
@@ -12,8 +13,13 @@ interface FavoriteRepository {
 }
 
 class FavoriteRepositoryImpl : FavoriteRepository {
-    private val firestore by lazy { Firebase.firestore }
-    private val favouritesCollection = firestore.collection("favourites")
+    private val firestore by lazy {
+        Firebase.firestore
+    }
+    private val favouritesCollection by lazy {
+        val uid = Firebase.auth.currentUser.uid
+        firestore.collection("favourites-$uid")
+    }
 
     override suspend fun save(favorite: Detail, isFavorite: Boolean): Boolean {
         val favouriteMap = hashMapOf(
@@ -37,7 +43,7 @@ class FavoriteRepositoryImpl : FavoriteRepository {
     }
 
     override suspend fun loadAll(): List<Favorite>? {
-        return favouritesCollection.get()
+        val favouritesList = favouritesCollection.get()
             .await()
             .documents
             .map {
@@ -52,6 +58,11 @@ class FavoriteRepositoryImpl : FavoriteRepository {
                     category = category
                 )
             }
+        return if (favouritesList.isEmpty()) {
+            null
+        } else {
+            favouritesList
+        }
     }
 }
 
