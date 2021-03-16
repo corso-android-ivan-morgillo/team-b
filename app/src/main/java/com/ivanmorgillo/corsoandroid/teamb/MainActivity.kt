@@ -22,6 +22,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.apperol.R
 import com.apperol.databinding.ActivityMainBinding
 import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -176,6 +177,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 val intent = AuthUI.getInstance()
                     .createSignInIntentBuilder()
                     .setAvailableProviders(providers)
+                    .enableAnonymousUsersAutoUpgrade()
                     .build()
                 firebaseAthenticationResultLauncher.launch(intent)
 
@@ -205,9 +207,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (result.resultCode == Activity.RESULT_OK) {
             // Successfully signed in
             val user = FirebaseAuth.getInstance().currentUser
-            Timber.d("USER: $user")
+            Timber.d("GOOGLE USER PIPPO: ${user.uid}")
             // ...
         } else {
+            if (response?.error?.errorCode == ErrorCodes.ANONYMOUS_UPGRADE_MERGE_CONFLICT) {
+                // Store relevant anonymous user data
+                // Get the non-anoymous credential from the response
+                val nonAnonymousCredential = response.credentialForLinking
+                // Sign in with credential
+                FirebaseAuth.getInstance().signInWithCredential(nonAnonymousCredential)
+                    .addOnSuccessListener {
+                        Timber.d("PIPPO merge conflict utente: ${it.user.uid}")
+                    }
+            }
             Timber.e("AUTHENTICATION ERROR: ${response?.error?.errorCode}")
             // Sign in failed. If response is null the user canceled the
             // sign-in flow using the back button. Otherwise check
@@ -237,15 +249,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (currentUser == null) {
             signinAnonymously()
         } else {
-            Timber.d("User is logged in")
+            Timber.d("Pippo is logged in: ${currentUser.uid}")
         }
     }
 
     private fun signinAnonymously() {
         lifecycleScope.launch {
             val x = Firebase.auth.signInAnonymously().await()
-            Timber.d("user: ${x.user}")
+            Timber.d("anonymous pippo: ${x.user.uid}")
         }
     }
-
 }

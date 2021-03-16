@@ -15,16 +15,18 @@ interface FavoriteRepository {
 class FavoriteRepositoryImpl(private val firestore: FirebaseFirestore) : FavoriteRepository {
 
     private val favouritesCollection by lazy {
-        val uid = Firebase.auth.currentUser.uid
-        firestore.collection("favourites-$uid")
+        firestore.collection("favourites")
     }
 
+    private fun getUid() = Firebase.auth.currentUser.uid
     override suspend fun save(favorite: Detail, isFavorite: Boolean): Boolean {
         val favouriteMap = hashMapOf(
             "id" to favorite.id,
             "name" to favorite.name,
             "image" to favorite.image,
-            "category" to favorite.category
+            "category" to favorite.category,
+            "userID" to getUid()
+
         )
         favouritesCollection.document(favorite.id.toString()).set(favouriteMap).await()
         return true
@@ -41,7 +43,9 @@ class FavoriteRepositoryImpl(private val firestore: FirebaseFirestore) : Favorit
     }
 
     override suspend fun loadAll(): List<Favorite>? {
-        val favouritesList = favouritesCollection.get()
+        val favouritesList = favouritesCollection
+            .whereEqualTo("userID", getUid())
+            .get()
             .await()
             .documents
             .map {
