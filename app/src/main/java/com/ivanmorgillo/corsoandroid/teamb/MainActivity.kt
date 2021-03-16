@@ -1,5 +1,6 @@
 package com.ivanmorgillo.corsoandroid.teamb
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -8,8 +9,10 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.SearchView
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -18,7 +21,13 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.apperol.R
 import com.apperol.databinding.ActivityMainBinding
+import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.auth.ErrorCodes
+import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.DisableDarkMode
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.EnableDarkMode
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToFacebook
@@ -29,12 +38,16 @@ import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToSearch
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToSettingMenu
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToTwitter
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 interface CleanSearchField {
     fun cleanSearchField()
 }
+
+private const val RC_SIGN_IN: Int = 1234
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, CleanSearchField {
 
@@ -154,12 +167,26 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_feedback -> {
                 mainActivityViewModel.send(MainScreenEvent.OnFeedBackClick)
             }
-            R.id.nav_contact -> {
+            R.id.sign_in -> {
                 Timber.d("Contacts")
+                // Choose authentication providers
+                val providers = arrayListOf(
+                    AuthUI.IdpConfig.GoogleBuilder().build(),
+                )
+                // Create and launch sign-in intent
+                val intent = AuthUI.getInstance()
+                    .createSignInIntentBuilder()
+                    .setAvailableProviders(providers)
+                    .enableAnonymousUsersAutoUpgrade()
+                    .build()
+                firebaseAthenticationResultLauncher.launch(intent)
+
+                binding.drawerLayout.closeDrawer(GravityCompat.START)
             }
             R.id.nav_randomCocktail -> {
                 mainActivityViewModel.send(MainScreenEvent.OnRandomClick)
             }
+
             /*
             R.id.nav_share -> {
                 Timber.d("Share")
@@ -171,6 +198,34 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
         binding.drawerLayout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    var firebaseAthenticationResultLauncher = registerForActivityResult(StartActivityForResult()) { result ->
+
+        val response = IdpResponse.fromResultIntent(result.data)
+
+        if (result.resultCode == Activity.RESULT_OK) {
+            // Successfully signed in
+            val user = FirebaseAuth.getInstance().currentUser
+            Timber.d("GOOGLE USER PIPPO: ${user.uid}")
+            // ...
+        } else {
+            if (response?.error?.errorCode == ErrorCodes.ANONYMOUS_UPGRADE_MERGE_CONFLICT) {
+                // Store relevant anonymous user data
+                // Get the non-anoymous credential from the response
+                val nonAnonymousCredential = response.credentialForLinking
+                // Sign in with credential
+                FirebaseAuth.getInstance().signInWithCredential(nonAnonymousCredential)
+                    .addOnSuccessListener {
+                        Timber.d("PIPPO merge conflict utente: ${it.user.uid}")
+                    }
+            }
+            Timber.e("AUTHENTICATION ERROR: ${response?.error?.errorCode}")
+            // Sign in failed. If response is null the user canceled the
+            // sign-in flow using the back button. Otherwise check
+            // response.getError().getErrorCode() and handle the error.
+            // ...
+        }
     }
 
     private fun openNewTabWindow(urls: String, context: Context) {
@@ -185,5 +240,23 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun cleanSearchField() {
         searchView?.setQuery("", false)
         searchView?.isIconified = true
+    }
+
+    public override fun onStart() {
+        super.onStart()
+        // Check if user is signed in (non-null) and update UI accordingly.
+        val currentUser = Firebase.auth.currentUser
+        if (currentUser == null) {
+            signinAnonymously()
+        } else {
+            Timber.d("Pippo is logged in: ${currentUser.uid}")
+        }
+    }
+
+    private fun signinAnonymously() {
+        lifecycleScope.launch {
+            val x = Firebase.auth.signInAnonymously().await()
+            Timber.d("anonymous pippo: ${x.user.uid}")
+        }
     }
 }

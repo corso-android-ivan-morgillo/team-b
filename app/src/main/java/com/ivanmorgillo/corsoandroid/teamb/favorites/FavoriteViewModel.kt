@@ -54,7 +54,7 @@ class FavoriteViewModel(
         viewModelScope.launch {
             val cocktails = repository.loadAll()
             Timber.d("cocktails = $cocktails")
-            if (cocktails.isEmpty()) {
+            if (cocktails == null) {
                 states.postValue(FavoriteScreenStates.Error(FavoriteErrorStates.FavoriteListEmpty))
             } else {
                 cocktailList = cocktails

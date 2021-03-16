@@ -1,83 +1,72 @@
 package com.apperol
 
-import android.annotation.SuppressLint
-import android.content.Context
-import android.content.SharedPreferences
-import com.google.gson.Gson
-import com.google.gson.annotations.SerializedName
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.tasks.await
 
 interface FavoriteRepository {
     suspend fun save(favorite: Detail, isFavorite: Boolean): Boolean
     suspend fun delete(id: Long): Boolean
     suspend fun isFavorite(id: Long): Boolean
-    suspend fun loadAll(): List<Favorite>
+    suspend fun loadAll(): List<Favorite>?
 }
 
-class FavoriteRepositoryImpl(
-    val context: Context,
-    private val gson: Gson
-) : FavoriteRepository {
-    private val storage: SharedPreferences by lazy {
-        context.getSharedPreferences("Favorites", Context.MODE_PRIVATE)
+class FavoriteRepositoryImpl(private val firestore: FirebaseFirestore) : FavoriteRepository {
+
+    private val favouritesCollection by lazy {
+        firestore.collection("favourites")
     }
 
-    @SuppressLint("ApplySharedPref")
-    override suspend fun save(favorite: Detail, isFavorite: Boolean) = withContext(Dispatchers.IO) {
-        if (isFavorite) {
-            val cocktailEntity = CocktailEntity(
-                name = favorite.name,
-                image = favorite.image,
-                id = favorite.id,
-                category = favorite.category
-            )
-            val serializedCocktail = gson.toJson(cocktailEntity)
-            storage.edit().putString(favorite.id.toString(), serializedCocktail).commit()
-        } else {
-            storage.edit().remove(favorite.id.toString()).commit()
-        }
+    private fun getUid() = Firebase.auth.currentUser.uid
+    override suspend fun save(favorite: Detail, isFavorite: Boolean): Boolean {
+        val favouriteMap = hashMapOf(
+            "id" to favorite.id,
+            "name" to favorite.name,
+            "image" to favorite.image,
+            "category" to favorite.category,
+            "userID" to getUid()
+
+        )
+        favouritesCollection.document(favorite.id.toString()).set(favouriteMap).await()
+        return true
     }
 
-    override suspend fun delete(id: Long) = withContext(Dispatchers.IO) {
-        storage.edit().remove(id.toString()).commit()
+    override suspend fun delete(id: Long): Boolean {
+        favouritesCollection.document(id.toString()).delete().await()
+        return true
     }
 
-    override suspend fun isFavorite(id: Long): Boolean = withContext(Dispatchers.IO) {
-        val maybeFavorite = storage.getString(id.toString(), null)
-        maybeFavorite != null
+    override suspend fun isFavorite(id: Long): Boolean {
+        val x = favouritesCollection.document(id.toString()).get().await()
+        return x.exists()
     }
 
-    override suspend fun loadAll(): List<Favorite> = withContext(Dispatchers.IO) {
-        storage.all
-            .values
+    override suspend fun loadAll(): List<Favorite>? {
+        val favouritesList = favouritesCollection
+            .whereEqualTo("userID", getUid())
+            .get()
+            .await()
+            .documents
             .map {
-                it as String
-            }
-            .map {
-                gson.fromJson(it, CocktailEntity::class.java)
-            }
-            .map {
+                val name = it["name"] as String
+                val image = it["image"] as String
+                val category = it["category"] as String
+                val id = it["id"] as Long
                 Favorite(
-                    name = it.name,
-                    image = it.image,
-                    id = it.id,
-                    category = it.category
+                    name = name,
+                    image = image,
+                    id = id,
+                    category = category
                 )
             }
+        return if (favouritesList.isEmpty()) {
+            null
+        } else {
+            favouritesList
+        }
     }
 }
-
-data class CocktailEntity(
-    @SerializedName("name")
-    val name: String,
-    @SerializedName("image")
-    val image: String,
-    @SerializedName("id")
-    val id: Long,
-    @SerializedName("category")
-    val category: String
-)
 
 data class Favorite(
     val name: String,

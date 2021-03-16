@@ -4,7 +4,6 @@ import com.apperol.CocktailRepository
 import com.apperol.CocktailRepositoryImpl
 import com.apperol.FavoriteRepository
 import com.apperol.FavoriteRepositoryImpl
-import com.google.gson.Gson
 import com.ivanmorgillo.corsoandroid.teamb.MainActivityViewModel
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailViewModel
 import com.ivanmorgillo.corsoandroid.teamb.favorites.FavoriteViewModel
@@ -32,7 +31,7 @@ val appModule = module {
     }
 
     single<FavoriteRepository> {
-        FavoriteRepositoryImpl(androidContext(), Gson())
+        FavoriteRepositoryImpl(firestore = get())
     }
 
     // Creiamo un oggetto di tipo MainViewModel
