@@ -60,4 +60,5 @@
     <string name="error_image_no_server">"Error image no server "</string>
     <string name="error_image_no_internet">Error image no internet</string>
     <string name="empty_search_error">HOME</string>
+    <string name="search_cocktail_by_name">Search by name</string>
 </resources>

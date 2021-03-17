@@ -85,11 +85,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onSupportNavigateUp(): Boolean {
         Timber.d("Hamburger CLicked")
-        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+        return if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
-            return false
+            false
         } else {
-            return NavigationUI.navigateUp(navController, appBarConfiguration)
+            if (searchView != null) {
+                searchView!!.onActionViewCollapsed()
+            }
+            NavigationUI.navigateUp(navController, appBarConfiguration)
         }
     }
 
@@ -107,7 +110,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val searchItem = menu.findItem(R.id.search_name)
         searchView = searchItem.actionView as SearchView
 
-        searchView!!.queryHint = "Search cocktail by name"
+        searchView!!.queryHint = getString(R.string.search_cocktail_by_name)
         searchView!!.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String?): Boolean {
                 return false
