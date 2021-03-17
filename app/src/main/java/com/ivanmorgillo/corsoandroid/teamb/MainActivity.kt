@@ -1,5 +1,6 @@
 package com.ivanmorgillo.corsoandroid.teamb
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -189,6 +190,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
         return true
     }
 
+    @SuppressLint("RestrictedApi")
     var firebaseAthenticationResultLauncher = registerForActivityResult(StartActivityForResult()) { result ->
 
         val response = IdpResponse.fromResultIntent(result.data)
@@ -196,13 +198,14 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
         if (result.resultCode == Activity.RESULT_OK) {
             // Successfully signed in
             val user = FirebaseAuth.getInstance().currentUser
-
             //
             // Timber.d("GOOGLE USER PIPPO: ${user.providerData}")
             Toast.makeText(applicationContext, "Benvenuto/a ${user.email}", Toast.LENGTH_SHORT)
                 .show()
             binding.navView.getHeaderView(0).findViewById<TextView>(id.user_email).text = user.email
-            binding.navView.getHeaderView(0).findViewById<ImageView>(id.user_profile_image).load(R.drawable.coffee)
+            if (user.photoUrl != null) {
+                binding.navView.getHeaderView(0).findViewById<ImageView>(id.user_profile_image).load(user.photoUrl)
+            }
 
             // ...
         } else {

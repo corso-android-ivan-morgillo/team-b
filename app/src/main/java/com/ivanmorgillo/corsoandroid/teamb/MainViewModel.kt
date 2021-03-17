@@ -19,6 +19,7 @@ import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnRandomClick
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnSearchClick
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnSignInClick
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnTwitterClick
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.UserLogged
 import com.ivanmorgillo.corsoandroid.teamb.home.ErrorStates
 import com.ivanmorgillo.corsoandroid.teamb.search.SearchCocktailUI
 import com.ivanmorgillo.corsoandroid.teamb.settings.SettingsRepository
@@ -87,6 +88,7 @@ class MainActivityViewModel(
                 tracking.logEvent("sign_in_click_navigation_drawer")
                 actions.postValue(SignIn)
             }
+            UserLogged -> TODO()
         }.exhaustive
     }
 }
@@ -106,6 +108,7 @@ sealed class MainScreenEvent {
     object OnFavoriteClick : MainScreenEvent()
     object OnRandomClick : MainScreenEvent()
     object OnSignInClick : MainScreenEvent()
+    object UserLogged : MainScreenEvent()
 }
 
 sealed class MainScreenAction {
