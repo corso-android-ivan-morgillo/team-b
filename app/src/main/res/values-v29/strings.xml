@@ -12,5 +12,7 @@
     <string name="error_image_no_server">"Error image no server "</string>
     <string name="error_image_no_internet">Error image no internet</string>
     <string name="empty_search_error">HOME</string>
+    <string name="Sign_in">Sign-in!</string>
+    <string name="popup_message">Sign-in to save your favourites and read your cocktails on all your devices</string>
 
 </resources>

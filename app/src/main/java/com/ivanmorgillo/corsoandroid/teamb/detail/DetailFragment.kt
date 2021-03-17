@@ -1,26 +1,32 @@
 package com.ivanmorgillo.corsoandroid.teamb.detail
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
-import android.widget.Toast
 import androidx.annotation.AttrRes
 import androidx.core.content.res.use
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.apperol.R
+import com.apperol.R.string
 import com.apperol.databinding.FragmentDetailBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.transition.MaterialContainerTransform
+import com.ivanmorgillo.corsoandroid.teamb.GoogleSignInRequest
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowNoDetailFound
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowNoInternetMessage
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowNoLoggedUserError
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowServerError
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowSlowInternet
+import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenActions.CancelClick
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenActions.NavigateToSetting
+import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenActions.SignIn
+import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenEvents.OnCancelClick
 import com.ivanmorgillo.corsoandroid.teamb.utils.bindings.viewBinding
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
 import com.ivanmorgillo.corsoandroid.teamb.utils.visible
@@ -30,6 +36,7 @@ import timber.log.Timber
 private const val COCKTAILIDDEFAULT = -666L
 private const val RANDOMCOCKTAIL = -1000L
 
+@Suppress("IMPLICIT_CAST_TO_ANY")
 class DetailFragment : Fragment(R.layout.fragment_detail) {
     private val viewModel: DetailViewModel by viewModel()
     private val args: DetailFragmentArgs by navArgs()
@@ -76,6 +83,10 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
         viewModel.actions.observe(viewLifecycleOwner, { actions ->
             when (actions) {
                 NavigateToSetting -> startActivity(Intent(Settings.ACTION_WIRELESS_SETTINGS))
+                SignIn -> {
+                    (activity as GoogleSignInRequest).signInWithGoogle()
+                }
+                is CancelClick -> actions.dialog.cancel()
             }.exhaustive
         })
     }
@@ -110,7 +121,17 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
                             errorCustom("No Detail Found")
                             binding.innerLayoutNoDetailFound.root.visibility = View.VISIBLE
                         }
-                        ShowNoLoggedUserError -> Toast.makeText(context, "No Logged User", Toast.LENGTH_SHORT).show()
+                        ShowNoLoggedUserError -> MaterialAlertDialogBuilder(requireContext())
+                            .setTitle(getString(string.Sign_in))
+                            .setMessage(getString(string.popup_message))
+                            .setPositiveButton(resources.getString(string.Sign_in)) { dialog, which ->
+                                // Respond to positive button press
+                                viewModel.send(DetailScreenEvents.OnSignInClick)
+                            }
+                            .setNegativeButton(getString(string.cancel)) { dialogInterface: DialogInterface, i: Int ->
+                                viewModel.send(OnCancelClick(dialogInterface))
+                            }
+                            .show()
                     }
                 }
                 // quando l'aopp è in loading mostriamo progress bar

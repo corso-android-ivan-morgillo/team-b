@@ -8,7 +8,10 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.widget.ImageView
 import android.widget.SearchView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -18,12 +21,17 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import coil.load
 import com.apperol.R
+import com.apperol.R.id
+import com.apperol.R.string
 import com.apperol.databinding.ActivityMainBinding
+import com.apperol.databinding.FragmentDrawerNavHeaderBinding
 import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.auth.AuthUI.IdpConfig.GoogleBuilder
 import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.IdpResponse
-import com.google.android.material.navigation.NavigationView
+import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener
 import com.google.firebase.auth.FirebaseAuth
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.DisableDarkMode
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.EnableDarkMode
@@ -34,6 +42,7 @@ import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToRandom
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToSearch
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToSettingMenu
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToTwitter
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.SignIn
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -42,27 +51,30 @@ interface CleanSearchField {
     fun cleanSearchField()
 }
 
-private const val RC_SIGN_IN: Int = 1234
+interface GoogleSignInRequest {
+    fun signInWithGoogle()
+}
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, CleanSearchField {
+class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, CleanSearchField, GoogleSignInRequest {
 
     private var searchView: SearchView? = null
     private val mainActivityViewModel: MainActivityViewModel by viewModel()
     lateinit var navController: NavController
     lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+    lateinit var navViewBinding: FragmentDrawerNavHeaderBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         observeActions()
         binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        setContentView(binding.root)
+        val navHostFragment = supportFragmentManager.findFragmentById(id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
         val topLevelDestinations = setOf(
-            R.id.homeFragment,
-            R.id.settingsFragment
+            id.homeFragment,
+            id.settingsFragment
         )
 
         appBarConfiguration = AppBarConfiguration.Builder(topLevelDestinations)
@@ -99,7 +111,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater: MenuInflater = menuInflater
         inflater.inflate(R.menu.menu, menu)
-        val searchItem = menu.findItem(R.id.search_name)
+        val searchItem = menu.findItem(id.search_name)
         searchView = searchItem.actionView as SearchView
 
         searchView!!.queryHint = "Search cocktail by name"
@@ -126,70 +138,52 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 is NavigateToSearch -> {
                     val bundle = Bundle()
                     bundle.putString("query", action.query)
-                    navController.navigate(R.id.searchFragment, bundle)
+                    navController.navigate(id.searchFragment, bundle)
                 }
                 NavigateToSettingMenu -> {
-                    navController.navigate(R.id.settingsFragment)
+                    navController.navigate(id.settingsFragment)
                 }
                 NavigateToFacebook -> openNewTabWindow("https://www.facebook.com", this)
                 NavigateToTwitter -> openNewTabWindow("https://twitter.com", this)
-                NavigateToFeedBack -> openNewTabWindow(getString(R.string.feedback_link), this)
+                NavigateToFeedBack -> openNewTabWindow(getString(string.feedback_link), this)
                 DisableDarkMode -> Unit
                 EnableDarkMode -> Unit
-                NavigateToFavorite -> navController.navigate(R.id.favoritesFragment)
-                NavigateToRandom -> navController.navigate(R.id.randomCocktailFragment)
+                NavigateToFavorite -> navController.navigate(id.favoritesFragment)
+                NavigateToRandom -> navController.navigate(id.randomCocktailFragment)
+                SignIn -> signInWithGoogle()
             }.exhaustive
         })
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.nav_customCocktail -> {
+            id.nav_customCocktail -> {
                 Timber.d("CustomCocktail")
             }
-            R.id.nav_favorites -> {
+            id.nav_favorites -> {
                 mainActivityViewModel.send(MainScreenEvent.OnFavoriteClick)
             }
-            R.id.nav_settings -> {
+            id.nav_settings -> {
                 mainActivityViewModel.send(MainScreenEvent.OnMenuClick)
             }
-            R.id.nav_facebook -> {
+            id.nav_facebook -> {
                 mainActivityViewModel.send(MainScreenEvent.OnFacebookClick)
             }
-            R.id.nav_twitter -> {
+            id.nav_twitter -> {
                 mainActivityViewModel.send(MainScreenEvent.OnTwitterClick)
             }
-            R.id.nav_feedback -> {
+            id.nav_feedback -> {
                 mainActivityViewModel.send(MainScreenEvent.OnFeedBackClick)
             }
-            R.id.sign_in -> {
+            id.sign_in -> {
                 Timber.d("Contacts")
-                // Choose authentication providers
-                val providers = arrayListOf(
-                    AuthUI.IdpConfig.GoogleBuilder().build(),
-                )
-                // Create and launch sign-in intent
-                val intent = AuthUI.getInstance()
-                    .createSignInIntentBuilder()
-                    .setAvailableProviders(providers)
-                    .enableAnonymousUsersAutoUpgrade()
-                    .build()
-                firebaseAthenticationResultLauncher.launch(intent)
+                mainActivityViewModel.send(MainScreenEvent.OnSignInClick)
 
                 binding.drawerLayout.closeDrawer(GravityCompat.START)
             }
-            R.id.nav_randomCocktail -> {
+            id.nav_randomCocktail -> {
                 mainActivityViewModel.send(MainScreenEvent.OnRandomClick)
             }
-
-            /*
-            R.id.nav_share -> {
-                Timber.d("Share")
-            }
-            R.id.nav_evaluate -> {
-                Timber.d("Evaluate")
-            }
-             */
         }
         binding.drawerLayout.closeDrawer(GravityCompat.START)
         return true
@@ -202,7 +196,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (result.resultCode == Activity.RESULT_OK) {
             // Successfully signed in
             val user = FirebaseAuth.getInstance().currentUser
-            Timber.d("GOOGLE USER PIPPO: ${user.uid}")
+
+            //
+            // Timber.d("GOOGLE USER PIPPO: ${user.providerData}")
+            Toast.makeText(applicationContext, "Benvenuto/a ${user.email}", Toast.LENGTH_SHORT)
+                .show()
+            binding.navView.getHeaderView(0).findViewById<TextView>(id.user_email).text = user.email
+            binding.navView.getHeaderView(0).findViewById<ImageView>(id.user_profile_image).load(R.drawable.coffee)
+
             // ...
         } else {
             if (response?.error?.errorCode == ErrorCodes.ANONYMOUS_UPGRADE_MERGE_CONFLICT) {
@@ -235,5 +236,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun cleanSearchField() {
         searchView?.setQuery("", false)
         searchView?.isIconified = true
+    }
+
+    override fun signInWithGoogle() {
+        // Choose authentication providers
+        val providers = arrayListOf(
+            GoogleBuilder().build(),
+        )
+        // Create and launch sign-in intent
+        val intent = AuthUI.getInstance()
+            .createSignInIntentBuilder()
+            .setAvailableProviders(providers)
+            .enableAnonymousUsersAutoUpgrade()
+            .build()
+        firebaseAthenticationResultLauncher.launch(intent)
     }
 }

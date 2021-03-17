@@ -1,5 +1,6 @@
 package com.ivanmorgillo.corsoandroid.teamb.detail
 
+import android.content.DialogInterface
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,10 +19,15 @@ import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowNoIntern
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowNoLoggedUserError
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowServerError
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowSlowInternet
+import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenActions.CancelClick
+import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenActions.NavigateToSetting
+import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenActions.SignIn
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenEvents.LoadDrink
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenEvents.LoadRandomDrink
+import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenEvents.OnCancelClick
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenEvents.OnFavoriteClick
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenEvents.OnSettingClick
+import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenEvents.OnSignInClick
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenStates.Content
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenStates.Error
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenStates.Loading
@@ -59,7 +65,15 @@ class DetailViewModel(
             }
             OnSettingClick -> {
                 tracking.logEvent("no_internet_on_setting_click")
-                actions.postValue(DetailScreenActions.NavigateToSetting)
+                actions.postValue(NavigateToSetting)
+            }
+            OnSignInClick -> {
+                tracking.logEvent("sign_in_on_dialog_click")
+                actions.postValue(SignIn)
+            }
+            is OnCancelClick -> {
+                tracking.logEvent("cancel_on_dialog_click")
+                actions.postValue(CancelClick(event.dialog))
             }
         }.exhaustive
     }
@@ -140,6 +154,8 @@ class DetailViewModel(
 
 sealed class DetailScreenActions {
     object NavigateToSetting : DetailScreenActions()
+    object SignIn : DetailScreenActions()
+    data class CancelClick(val dialog: DialogInterface) : DetailScreenActions()
 }
 
 sealed class DetailScreenStates {
@@ -153,6 +169,8 @@ sealed class DetailScreenEvents {
     object OnSettingClick : DetailScreenEvents()
     data class LoadDrink(val id: Long) : DetailScreenEvents()
     object OnFavoriteClick : DetailScreenEvents()
+    object OnSignInClick : DetailScreenEvents()
+    data class OnCancelClick(val dialog: DialogInterface) : DetailScreenEvents()
 }
 
 sealed class DetailErrorStates {

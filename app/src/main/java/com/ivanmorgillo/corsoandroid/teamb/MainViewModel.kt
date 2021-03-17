@@ -10,12 +10,14 @@ import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToRandom
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToSearch
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToSettingMenu
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToTwitter
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.SignIn
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnFacebookClick
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnFavoriteClick
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnFeedBackClick
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnMenuClick
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnRandomClick
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnSearchClick
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnSignInClick
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnTwitterClick
 import com.ivanmorgillo.corsoandroid.teamb.home.ErrorStates
 import com.ivanmorgillo.corsoandroid.teamb.search.SearchCocktailUI
@@ -81,6 +83,10 @@ class MainActivityViewModel(
                 tracking.logEvent("random_clicked")
                 actions.postValue(NavigateToRandom)
             }
+            OnSignInClick -> {
+                tracking.logEvent("sign_in_click_navigation_drawer")
+                actions.postValue(SignIn)
+            }
         }.exhaustive
     }
 }
@@ -99,6 +105,7 @@ sealed class MainScreenEvent {
     object OnFeedBackClick : MainScreenEvent()
     object OnFavoriteClick : MainScreenEvent()
     object OnRandomClick : MainScreenEvent()
+    object OnSignInClick : MainScreenEvent()
 }
 
 sealed class MainScreenAction {
@@ -111,4 +118,5 @@ sealed class MainScreenAction {
     object DisableDarkMode : MainScreenAction()
     object NavigateToFavorite : MainScreenAction()
     object NavigateToRandom : MainScreenAction()
+    object SignIn : MainScreenAction()
 }
