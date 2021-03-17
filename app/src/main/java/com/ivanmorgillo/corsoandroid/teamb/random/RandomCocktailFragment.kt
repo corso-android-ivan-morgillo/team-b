@@ -52,6 +52,14 @@ class RandomCocktailFragment : Fragment(R.layout.fragment_random_cocktail) {
         lastAcceleration = SensorManager.GRAVITY_EARTH
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_random_cocktail, container, false)
+    }
+
     private val sensorListener: SensorEventListener = object : SensorEventListener {
         override fun onSensorChanged(event: SensorEvent) {
             val x = event.values[0]
@@ -88,14 +96,6 @@ class RandomCocktailFragment : Fragment(R.layout.fragment_random_cocktail) {
     override fun onPause() {
         sensorManager!!.unregisterListener(sensorListener)
         super.onPause()
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_random_cocktail, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

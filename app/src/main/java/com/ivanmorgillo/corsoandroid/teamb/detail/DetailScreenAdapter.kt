@@ -177,7 +177,7 @@ sealed class DetailScreenViewHolder(itemView: View) : RecyclerView.ViewHolder(it
                         video.video
                             .split("v=")
                             .lastOrNull()
-                            ?.run { youTubePlayer.loadVideo(this, START_SECONDS) }
+                            ?.run { youTubePlayer.cueVideo(this, START_SECONDS) }
                     }
                 })
             }

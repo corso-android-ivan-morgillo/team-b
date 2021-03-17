@@ -52,19 +52,16 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
         }
     }
 
-    // Equivalente alla onCreate di un activity
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val adapter = DetailScreenAdapter {
             viewModel.send(DetailScreenEvents.OnFavoriteClick)
         }
-        // Mettiamo in comunicazione l'adapter con la recycleview
         binding.detailScreenRecycleview.adapter = adapter
 
         val cocktailId = args.cocktailId
         if (cocktailId == COCKTAILIDDEFAULT) {
-            // Torna indietro nella schermata da cui provieni.
             findNavController().popBackStack()
         } else if (cocktailId == RANDOMCOCKTAIL) {
             viewModel.send(DetailScreenEvents.LoadRandomDrink)
@@ -134,9 +131,7 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
                             .show()
                     }
                 }
-                // quando l'aopp è in loading mostriamo progress bar
                 DetailScreenStates.Loading -> {
-
                     Timber.d("STATE LOADING")
                 }
             }.exhaustive
@@ -149,7 +144,7 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
     }
 
     fun Context.themeColor(
-        @AttrRes themeAttrId: Int
+        @AttrRes themeAttrId: Int,
     ): Int {
         return obtainStyledAttributes(
             intArrayOf(themeAttrId)

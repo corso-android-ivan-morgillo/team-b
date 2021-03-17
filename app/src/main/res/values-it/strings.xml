@@ -64,4 +64,6 @@
     <string name="popup_message">Registrati per salvare i tuoi preferiti e leggere i tuoi drinks su tutti i tuoi dispositivi</string>
     <string name="cancel">cancel</string>
     <string name="user_email">User email</string>
+    <string name="search_cocktail_by_name">Cerca per nome</string>
+
 </resources>

@@ -86,7 +86,7 @@ class HomeViewModel(
     private fun loadContent(category: String) {
         states.postValue(Loading)
         viewModelScope.launch {
-            val drinkresult = repository.loadDrinks(category)
+            val drinkResult = repository.loadDrinks(category)
             val resultCategories = repository.loadCategories()
             when (resultCategories) {
                 is LoadCategoriesResult.Failure -> onCategoriesFailure(resultCategories)
@@ -100,10 +100,10 @@ class HomeViewModel(
                         )
                     }
                     categoryList = categories
-                    when (drinkresult) {
-                        is LoadCocktailResult.Failure -> onFailure(drinkresult)
+                    when (drinkResult) {
+                        is LoadCocktailResult.Failure -> onFailure(drinkResult)
                         is LoadCocktailResult.Success -> {
-                            val cocktails = drinkresult.cocktails.map {
+                            val cocktails = drinkResult.cocktails.map {
                                 DrinkUI(drinkName = it.name, image = it.image, id = it.idDrink)
                             }
                             val generalContent = GeneralContent(cocktails, categories)
