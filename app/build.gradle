@@ -125,9 +125,7 @@ dependencies {
 
     // Youtube Player Soffritti
     implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5'
-
-    // alphabet index
-    implementation 'com.github.myinnos:AlphabetIndex-Fast-Scroll-RecyclerView:1.0.95'
+    
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     // Gif image

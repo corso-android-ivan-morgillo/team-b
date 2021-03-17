@@ -3,20 +3,15 @@ package com.ivanmorgillo.corsoandroid.teamb.home
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SectionIndexer
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import coil.load
 import com.apperol.databinding.DrinkItemBinding
-import java.util.Locale
-
-const val INITIAL_CAPACITY = 26
 
 // l'adapter ha bisogno di un viewHolder che creeremo (cocktailViewHolder)
-class DrinkAdapter(private val onClick: (DrinkUI, View) -> Unit) : Adapter<CocktailViewHolder>(), SectionIndexer {
+class DrinkAdapter(private val onClick: (DrinkUI, View) -> Unit) : Adapter<CocktailViewHolder>() {
     // lista di cocktail, inizializzata a empty
     private var drinkList: List<DrinkUI> = emptyList()
-    private var mSectionPositions = mutableListOf<Int>()
 
     // da xml a kotlin per ogni elemento della lista
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CocktailViewHolder {
@@ -39,43 +34,6 @@ class DrinkAdapter(private val onClick: (DrinkUI, View) -> Unit) : Adapter<Cockt
     fun setDrinksList(items: List<DrinkUI>) {
         drinkList = items
         notifyDataSetChanged()
-    }
-
-    override fun getSections(): Array<String> {
-        val sections: MutableList<String> = ArrayList(INITIAL_CAPACITY)
-
-        var i = 0
-        val size: Int = drinkList.size
-        while (i < size) {
-            val section: String = (drinkList[i].drinkName.take(1)).toUpperCase(Locale.getDefault())
-            if (!sections.contains(section)) {
-                existInSectionList(section, sections, i)
-            }
-            i++
-        }
-
-        return sections.toTypedArray()
-    }
-
-    private fun existInSectionList(section: String, sections: MutableList<String>, i: Int) {
-        if (section.first() in '0'..'9') {
-            if (!sections.contains("#")) {
-                println(section)
-                sections.add("#")
-                mSectionPositions.add(i)
-            }
-        } else {
-            sections.add(section)
-            mSectionPositions.add(i)
-        }
-    }
-
-    override fun getPositionForSection(sectionIndex: Int): Int {
-        return mSectionPositions[sectionIndex]
-    }
-
-    override fun getSectionForPosition(position: Int): Int {
-        return 0
     }
 }
 
