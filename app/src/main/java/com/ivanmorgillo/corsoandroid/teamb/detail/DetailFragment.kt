@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
+import android.widget.Toast
 import androidx.annotation.AttrRes
 import androidx.core.content.res.use
 import androidx.fragment.app.Fragment
@@ -14,6 +15,11 @@ import androidx.navigation.fragment.navArgs
 import com.apperol.R
 import com.apperol.databinding.FragmentDetailBinding
 import com.google.android.material.transition.MaterialContainerTransform
+import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowNoDetailFound
+import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowNoInternetMessage
+import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowNoLoggedUserError
+import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowServerError
+import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowSlowInternet
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenActions.NavigateToSetting
 import com.ivanmorgillo.corsoandroid.teamb.utils.bindings.viewBinding
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
@@ -87,23 +93,24 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
                 }
                 is DetailScreenStates.Error -> {
                     when (state.error) {
-                        DetailErrorStates.ShowNoInternetMessage -> {
+                        ShowNoInternetMessage -> {
                             errorCustom("No Internet Connection")
                             binding.innerLayoutNoInternetSlowInternet.root.visibility = View.VISIBLE
                             binding.innerLayoutNoInternetSlowInternet.buttonNoInternetError.visible()
                         }
-                        DetailErrorStates.ShowServerError -> {
+                        ShowServerError -> {
                             errorCustom("Server Error")
                             binding.innerLayoutServerError.root.visibility = View.VISIBLE
                         }
-                        DetailErrorStates.ShowSlowInternet -> {
+                        ShowSlowInternet -> {
                             errorCustom("SlowInternet")
                             binding.innerLayoutNoInternetSlowInternet.root.visibility = View.VISIBLE
                         }
-                        DetailErrorStates.ShowNoDetailFound -> {
+                        ShowNoDetailFound -> {
                             errorCustom("No Detail Found")
                             binding.innerLayoutNoDetailFound.root.visibility = View.VISIBLE
                         }
+                        ShowNoLoggedUserError -> Toast.makeText(context, "No Logged User", Toast.LENGTH_SHORT).show()
                     }
                 }
                 // quando l'aopp è in loading mostriamo progress bar

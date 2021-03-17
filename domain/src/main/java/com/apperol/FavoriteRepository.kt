@@ -6,7 +6,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
 
 interface FavoriteRepository {
-    suspend fun save(favorite: Detail, isFavorite: Boolean): Boolean
+    suspend fun save(favorite: Detail): Boolean
     suspend fun delete(id: Long): Boolean
     suspend fun isFavorite(id: Long): Boolean
     suspend fun loadAll(): List<Favorite>?
@@ -15,17 +15,17 @@ interface FavoriteRepository {
 class FavoriteRepositoryImpl(private val firestore: FirebaseFirestore) : FavoriteRepository {
 
     private val favouritesCollection by lazy {
-        firestore.collection("favourites")
+        firestore.collection("favourites-${getUid()}")
     }
 
     private fun getUid() = Firebase.auth.currentUser.uid
-    override suspend fun save(favorite: Detail, isFavorite: Boolean): Boolean {
+    override suspend fun save(favorite: Detail): Boolean {
         val favouriteMap = hashMapOf(
             "id" to favorite.id,
             "name" to favorite.name,
             "image" to favorite.image,
             "category" to favorite.category,
-            "userID" to getUid()
+            // "userID" to getUid()
 
         )
         favouritesCollection.document(favorite.id.toString()).set(favouriteMap).await()
@@ -44,7 +44,7 @@ class FavoriteRepositoryImpl(private val firestore: FirebaseFirestore) : Favorit
 
     override suspend fun loadAll(): List<Favorite>? {
         val favouritesList = favouritesCollection
-            .whereEqualTo("userID", getUid())
+            // .whereEqualTo("userID", getUid())
             .get()
             .await()
             .documents

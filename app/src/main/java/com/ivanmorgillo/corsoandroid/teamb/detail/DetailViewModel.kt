@@ -11,8 +11,11 @@ import com.apperol.DetailLoadCocktailError.ServerError
 import com.apperol.DetailLoadCocktailError.SlowInternet
 import com.apperol.FavoriteRepository
 import com.apperol.LoadDetailCocktailResult
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowNoDetailFound
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowNoInternetMessage
+import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowNoLoggedUserError
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowServerError
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowSlowInternet
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenEvents.LoadDrink
@@ -20,11 +23,13 @@ import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenEvents.LoadRandomD
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenEvents.OnFavoriteClick
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenEvents.OnSettingClick
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenStates.Content
+import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenStates.Error
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailScreenStates.Loading
 import com.ivanmorgillo.corsoandroid.teamb.utils.SingleLiveEvent
 import com.ivanmorgillo.corsoandroid.teamb.utils.Tracking
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class DetailViewModel(
     private val repository: CocktailRepository,
@@ -34,7 +39,6 @@ class DetailViewModel(
     val states = MutableLiveData<DetailScreenStates>()
     val actions = SingleLiveEvent<DetailScreenActions>()
     private var cocktailDetail: Detail? = null
-    private var cocktailId = 0L
     private var isFavorite: Boolean = false
 
     @Suppress("IMPLICIT_CAST_TO_ANY")
@@ -43,7 +47,15 @@ class DetailViewModel(
             is LoadDrink -> loadDetails(event.id)
             is LoadRandomDrink -> loadRandomDrink()
             OnFavoriteClick -> {
-                viewModelScope.launch { saveFavorite() }
+                if (Firebase.auth.currentUser != null) {
+                    if (isFavorite) {
+                        viewModelScope.launch { removeFavorite() }
+                    } else {
+                        viewModelScope.launch { saveFavorite() }
+                    }
+                } else {
+                    states.postValue(Error(ShowNoLoggedUserError))
+                }
             }
             OnSettingClick -> {
                 tracking.logEvent("no_internet_on_setting_click")
@@ -55,8 +67,18 @@ class DetailViewModel(
     private suspend fun saveFavorite() {
         val cocktail = cocktailDetail ?: return
         val updateFavorite = !isFavorite
-        favoriteRepository.save(cocktail, updateFavorite)
+        favoriteRepository.save(cocktail)
         this.isFavorite = updateFavorite
+        Timber.d(" inserito FAVORITO")
+        createContent(cocktail)
+    }
+
+    private suspend fun removeFavorite() {
+        val cocktail = cocktailDetail ?: return
+        val updateFavorite = !isFavorite
+        favoriteRepository.delete(cocktail.id)
+        this.isFavorite = updateFavorite
+        Timber.d("Eliminato FAVORITO")
         createContent(cocktail)
     }
 
@@ -83,8 +105,14 @@ class DetailViewModel(
 
     private suspend fun createContent(details: Detail) {
         this.cocktailDetail = details
-        val isFavorite = favoriteRepository.isFavorite(details.id)
-        this.isFavorite = isFavorite
+        isFavorite = if (Firebase.auth.currentUser != null) {
+            Timber.d("USER: ${Firebase.auth.currentUser}")
+            favoriteRepository.isFavorite(details.id)
+        } else {
+            Timber.d("USER NULL")
+            false
+        }
+        // this.isFavorite = isFavorite
         val ingredientsUI = details.ingredients
             .filter { it.name.isNotBlank() && it.quantity.isNotBlank() }
             .map {
@@ -102,10 +130,10 @@ class DetailViewModel(
 
     private fun onFailure(result: LoadDetailCocktailResult.Failure) {
         when (result.error) {
-            NoInternet -> states.postValue(DetailScreenStates.Error(ShowNoInternetMessage))
-            ServerError -> states.postValue(DetailScreenStates.Error(ShowServerError))
-            SlowInternet -> states.postValue(DetailScreenStates.Error(ShowSlowInternet))
-            NoDetailFound -> states.postValue(DetailScreenStates.Error(ShowNoDetailFound))
+            NoInternet -> states.postValue(Error(ShowNoInternetMessage))
+            ServerError -> states.postValue(Error(ShowServerError))
+            SlowInternet -> states.postValue(Error(ShowSlowInternet))
+            NoDetailFound -> states.postValue(Error(ShowNoDetailFound))
         }.exhaustive
     }
 }
@@ -132,4 +160,5 @@ sealed class DetailErrorStates {
     object ShowServerError : DetailErrorStates()
     object ShowSlowInternet : DetailErrorStates()
     object ShowNoDetailFound : DetailErrorStates()
+    object ShowNoLoggedUserError : DetailErrorStates()
 }
