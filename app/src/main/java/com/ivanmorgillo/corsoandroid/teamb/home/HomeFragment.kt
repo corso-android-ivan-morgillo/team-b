@@ -23,9 +23,6 @@ import com.ivanmorgillo.corsoandroid.teamb.utils.visible
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
-const val CORNER_RADIUS = 3
-const val BAR_MARGIN = 3f
-
 class HomeFragment : Fragment(R.layout.fragment_home) {
     private val viewModel: HomeViewModel by viewModel()
     private val binding by viewBinding(FragmentHomeBinding::bind)
@@ -57,7 +54,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
 
         binding.cocktailsList.adapter = drinkAdapter
-        indexBarCustom(binding)
 
         val categoryAdapter = CategoryAdapter { item: CategoryUI, _: View ->
             viewModel.send(HomeScreenEvents.OnCategoryClick(item))
@@ -69,15 +65,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         observeStates(drinkAdapter, categoryAdapter, binding)
         observeActions()
-    }
-
-    private fun indexBarCustom(indexBarBinding: FragmentHomeBinding) {
-        indexBarBinding.cocktailsList.setIndexBarTransparentValue(0.0f)
-        indexBarBinding.cocktailsList.setIndexBarTextColor("#7f7f7f")
-        indexBarBinding.cocktailsList.setIndexbarMargin(0.0f)
-        indexBarBinding.cocktailsList.setIndexBarCornerRadius(CORNER_RADIUS)
-        indexBarBinding.cocktailsList.setIndexBarStrokeVisibility(false)
-        indexBarBinding.cocktailsList.setIndexbarMargin(BAR_MARGIN)
     }
 
     private fun observeActions() {
@@ -148,6 +135,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         fragmentHomeBinding.swiperefresh.isRefreshing = false
         adapter.setDrinksList(state.generalContent.drinkList)
         categoryAdapter.setCategoryList(state.generalContent.categoryList)
+        binding.cocktailsList.scrollToPosition(0)
         errorVisibilityGone(fragmentHomeBinding)
         fragmentHomeBinding.innerLayout.visibility = View.VISIBLE
         fragmentHomeBinding.categoryLayout.visibility = View.VISIBLE
@@ -164,7 +152,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.innerLayout.visibility = View.GONE
         binding.categoryLayout.visibility = View.GONE
         binding.swiperefresh.isRefreshing = false
-
         binding.innerLayoutNoInternetSlowInternet.textViewNoInternetError.text = errore
     }
 }
