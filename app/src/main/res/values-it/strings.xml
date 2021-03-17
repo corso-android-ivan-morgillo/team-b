@@ -60,4 +60,5 @@
     <string name="error_image_no_server">Immagine errore nessun server trovato</string>
     <string name="error_image_no_internet">Immagine errore nessuna connessione internet</string>
     <string name="empty_search_error">HOME</string>
+    <string name="search_cocktail_by_name">Cerca per nome</string>
 </resources>
