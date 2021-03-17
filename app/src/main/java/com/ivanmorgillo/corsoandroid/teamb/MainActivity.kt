@@ -89,14 +89,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             binding.drawerLayout.closeDrawer(GravityCompat.START)
             false
         } else {
-            closeSearchBar()
+            if (searchView != null) {
+                searchView!!.onActionViewCollapsed()
+            }
             NavigationUI.navigateUp(navController, appBarConfiguration)
-        }
-    }
-
-    private fun closeSearchBar() {
-        if (searchView != null) {
-            searchView!!.onActionViewCollapsed()
         }
     }
 
