@@ -64,4 +64,5 @@
     <string name="popup_message">Sign-in to save your favourites and read your drinks on all your devices</string>
     <string name="cancel">Cancel</string>
     <string name="user_email">User email</string>
+    <string name="search_cocktail_by_name">Search by name</string>
 </resources>
