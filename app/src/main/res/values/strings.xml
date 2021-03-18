@@ -26,8 +26,8 @@
     <string name="about_us">Social</string>
     <string name="facebook">Facebook</string>
     <string name="twitter">Twitter</string>
-    <string name="feedback">FeedBack</string>
-    <string name="invia_feedback">Send FeedBack</string>
+    <string name="feedback">Feedback</string>
+    <string name="invia_feedback">Send Feedback</string>
     <string name="sign_in">Sign-in</string>
     <string name="social">Social</string>
     <string name="condividi">Share</string>
@@ -60,5 +60,9 @@
     <string name="error_image_no_server">"Error image no server "</string>
     <string name="error_image_no_internet">Error image no internet</string>
     <string name="empty_search_error">HOME</string>
+    <string name="Sign_in">Sign-in!</string>
+    <string name="popup_message">Sign-in to save your favourites and read your drinks on all your devices</string>
+    <string name="cancel">Cancel</string>
+    <string name="user_email">User email</string>
     <string name="search_cocktail_by_name">Search by name</string>
 </resources>

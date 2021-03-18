@@ -26,8 +26,8 @@
     <string name="about_us">Social</string>
     <string name="facebook">Facebook</string>
     <string name="twitter">Twitter</string>
-    <string name="feedback">FeedBack</string>
-    <string name="invia_feedback">Invia FeedBack</string>
+    <string name="feedback">Feedback</string>
+    <string name="invia_feedback">Invia Feedback</string>
     <string name="sign_in">Accedi</string>
     <string name="social">Social</string>
     <string name="condividi">Condividi</string>
@@ -60,5 +60,10 @@
     <string name="error_image_no_server">Immagine errore nessun server trovato</string>
     <string name="error_image_no_internet">Immagine errore nessuna connessione internet</string>
     <string name="empty_search_error">HOME</string>
+    <string name="Sign_in">Registrati!</string>
+    <string name="popup_message">Registrati per salvare i tuoi preferiti e leggere i tuoi drinks su tutti i tuoi dispositivi</string>
+    <string name="cancel">cancel</string>
+    <string name="user_email">User email</string>
     <string name="search_cocktail_by_name">Cerca per nome</string>
+
 </resources>
