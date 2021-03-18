@@ -40,7 +40,14 @@
             <item
                 android:id="@+id/sign_in"
                 android:icon="@drawable/contact"
-                android:title="@string/sign_in" />
+                android:title="@string/sign_in"
+                android:visible="true"/>
+            <item
+                android:id="@+id/sign_out"
+                android:icon="@drawable/contact"
+                android:title="@string/sign_out"
+                android:visible="false"
+                />
         </menu>
     </item>
     <!--
