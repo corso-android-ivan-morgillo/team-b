@@ -63,6 +63,7 @@ interface GoogleSignInRequest {
     fun signInWithGoogle()
 }
 
+@Suppress("TooManyFunctions")
 class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, CleanSearchField, GoogleSignInRequest {
 
     private var searchView: SearchView? = null
@@ -101,7 +102,6 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        Timber.d("Hamburger CLicked")
         return if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
             false
@@ -229,7 +229,8 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
             // Successfully signed in
             //
             // Timber.d("GOOGLE USER PIPPO: ${user.providerData}")
-            Toast.makeText(applicationContext, "Benvenuto/a ${user.email}", Toast.LENGTH_SHORT)
+            val welcomeString = getString(string.welcome)
+            Toast.makeText(applicationContext, "$welcomeString ${user.email}", Toast.LENGTH_SHORT)
                 .show()
             userControl(user)
             // ...
@@ -299,13 +300,12 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
     }
 
     private fun signOutFromGoogle() {
-        Timber.d("SIGNOUTFROMGOOGLE")
         Firebase.auth.signOut()
         binding.navView.menu.findItem(id.sign_out).isVisible = false
         binding.navView.menu.findItem(id.sign_in).isVisible = true
         binding.navView.getHeaderView(0).findViewById<TextView>(id.user_email).setText(string.user_email)
         binding.navView.getHeaderView(0).findViewById<ImageView>(id.user_profile_image).load(R.drawable.profile_icon)
-        Toast.makeText(applicationContext, "Arrivederci", Toast.LENGTH_SHORT)
+        Toast.makeText(applicationContext, string.goodbye, Toast.LENGTH_SHORT)
             .show()
     }
 }

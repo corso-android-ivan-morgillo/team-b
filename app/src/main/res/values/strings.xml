@@ -66,4 +66,6 @@
     <string name="cancel">Cancel</string>
     <string name="user_email">User email</string>
     <string name="search_cocktail_by_name">Search by name</string>
+    <string name="welcome">Welcome</string>
+    <string name="goodbye">Goodbye</string>
 </resources>
