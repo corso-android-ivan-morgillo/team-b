@@ -1,8 +1,12 @@
 package com.ivanmorgillo.corsoandroid.teamb
 
+import android.content.DialogInterface
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.CancelClick
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.DisableDarkMode
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.EnableDarkMode
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToFacebook
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToFavorite
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToFeedBack
@@ -11,6 +15,7 @@ import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToSearch
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToSettingMenu
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToTwitter
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.SignIn
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.SignOut
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnFacebookClick
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnFavoriteClick
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnFeedBackClick
@@ -44,9 +49,9 @@ class MainActivityViewModel(
         viewModelScope.launch {
             val isDarkModeOn = settingsrepository.isThemeSwitchOn()
             if (isDarkModeOn) {
-                actions.postValue(MainScreenAction.EnableDarkMode)
+                actions.postValue(EnableDarkMode)
             } else {
-                actions.postValue(MainScreenAction.DisableDarkMode)
+                actions.postValue(DisableDarkMode)
             }
         }
     }
@@ -89,6 +94,14 @@ class MainActivityViewModel(
                 actions.postValue(SignIn)
             }
             UserLogged -> TODO()
+            MainScreenEvent.OnSignOutClick -> {
+                tracking.logEvent("sign_out_click_navigation_drawer")
+                actions.postValue(SignOut)
+            }
+            is MainScreenEvent.OnCancelClick -> {
+                tracking.logEvent("cancel_click_dialog_alert")
+                actions.postValue(CancelClick(event.dialog))
+            }
         }.exhaustive
     }
 }
@@ -109,6 +122,8 @@ sealed class MainScreenEvent {
     object OnRandomClick : MainScreenEvent()
     object OnSignInClick : MainScreenEvent()
     object UserLogged : MainScreenEvent()
+    object OnSignOutClick : MainScreenEvent()
+    data class OnCancelClick(val dialog: DialogInterface) : MainScreenEvent()
 }
 
 sealed class MainScreenAction {
@@ -122,4 +137,6 @@ sealed class MainScreenAction {
     object NavigateToFavorite : MainScreenAction()
     object NavigateToRandom : MainScreenAction()
     object SignIn : MainScreenAction()
+    object SignOut : MainScreenAction()
+    data class CancelClick(val dialog: DialogInterface) : MainScreenAction()
 }
