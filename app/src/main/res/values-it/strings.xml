@@ -61,10 +61,11 @@
     <string name="error_image_no_server">Immagine errore nessun server trovato</string>
     <string name="error_image_no_internet">Immagine errore nessuna connessione internet</string>
     <string name="empty_search_error">HOME</string>
-    <string name="Sign_in">Registrati!</string>
-    <string name="popup_message">Registrati per salvare i tuoi preferiti e leggere i tuoi drinks su tutti i tuoi dispositivi</string>
-    <string name="cancel">cancel</string>
+    <string name="Sign_in">Accedi!</string>
+    <string name="popup_message">Accedi per salvare i tuoi preferiti e leggere i tuoi drinks su tutti i tuoi dispositivi</string>
+    <string name="cancel">Cancella</string>
     <string name="user_email">User email</string>
     <string name="search_cocktail_by_name">Cerca per nome</string>
-
+    <string name="welcome">Benvenuto/a</string>
+    <string name="goodbye">Arrivederci</string>
 </resources>

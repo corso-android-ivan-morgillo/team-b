@@ -1,8 +1,10 @@
 package com.ivanmorgillo.corsoandroid.teamb
 
+import android.content.DialogInterface
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.CancelClick
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.DisableDarkMode
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.EnableDarkMode
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToFacebook
@@ -96,6 +98,10 @@ class MainActivityViewModel(
                 tracking.logEvent("sign_out_click_navigation_drawer")
                 actions.postValue(SignOut)
             }
+            is MainScreenEvent.OnCancelClick -> {
+                tracking.logEvent("cancel_click_dialog_alert")
+                actions.postValue(CancelClick(event.dialog))
+            }
         }.exhaustive
     }
 }
@@ -117,6 +123,7 @@ sealed class MainScreenEvent {
     object OnSignInClick : MainScreenEvent()
     object UserLogged : MainScreenEvent()
     object OnSignOutClick : MainScreenEvent()
+    data class OnCancelClick(val dialog: DialogInterface) : MainScreenEvent()
 }
 
 sealed class MainScreenAction {
@@ -131,4 +138,5 @@ sealed class MainScreenAction {
     object NavigateToRandom : MainScreenAction()
     object SignIn : MainScreenAction()
     object SignOut : MainScreenAction()
+    data class CancelClick(val dialog: DialogInterface) : MainScreenAction()
 }

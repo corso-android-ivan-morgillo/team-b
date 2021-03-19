@@ -9,7 +9,7 @@
 
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="150dp"
+        android:layout_height="128dp"
         android:src="@drawable/drawer_background"
         android:id="@+id/imageViewNav"
         app:layout_constraintStart_toStartOf="parent"
