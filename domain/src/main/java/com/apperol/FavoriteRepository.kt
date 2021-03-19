@@ -26,7 +26,6 @@ class FavoriteRepositoryImpl(private val firestore: FirebaseFirestore) : Favorit
             "image" to favorite.image,
             "category" to favorite.category,
             // "userID" to getUid()
-
         )
         favouritesCollection.document("favourites-${favorite.id}").set(favouriteMap).await()
         return true
@@ -38,7 +37,7 @@ class FavoriteRepositoryImpl(private val firestore: FirebaseFirestore) : Favorit
     }
 
     override suspend fun isFavorite(id: Long): Boolean {
-        val x = favouritesCollection.document("favourites-${id}").get().await()
+        val x = favouritesCollection.document("favourites-$id").get().await()
         return x.exists()
     }
 
