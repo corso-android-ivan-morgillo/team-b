@@ -1,8 +1,6 @@
 package com.apperol
 
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
 import java.math.BigInteger
 import java.util.UUID
 import kotlinx.coroutines.tasks.await
@@ -13,14 +11,17 @@ interface CustomDrinkRepository {
     suspend fun loadAll(): List<Detail>?
 }
 
-class CustomDrinkRepositoryImpl(private val firestore: FirebaseFirestore) : CustomDrinkRepository {
+class CustomDrinkRepositoryImpl(
+    private val firestore: FirebaseFirestore,
+    private val authenticationManager: AuthenticationManager,
+) : CustomDrinkRepository {
     private val customCollection by lazy {
         firestore.collection("customs")
     }
 
-    private fun getUid() = Firebase.auth.currentUser.uid
     override suspend fun save(customDrink: Detail): Boolean {
         val id = UUID.randomUUID().toString()
+        val uid = authenticationManager.getUId() ?: return false
         val customMap = hashMapOf(
             "id" to id,
             "name" to customDrink.name,
@@ -30,20 +31,22 @@ class CustomDrinkRepositoryImpl(private val firestore: FirebaseFirestore) : Cust
             "alcoholic" to customDrink.isAlcoholic,
             "ingredients" to customDrink.ingredients,
             "instructions" to customDrink.instructions,
-            "userid" to getUid()
+            "userid" to uid
         )
         customCollection.document(id).set(customMap).await()
         return true
     }
 
     override suspend fun delete(id: Long): Boolean {
+        // check if the drink to delete is linked to the user considered
         customCollection.document("$id").delete().await()
         return true
     }
 
     override suspend fun loadAll(): List<Detail>? {
+        val uid = authenticationManager.getUId() ?: return null
         val customList = customCollection
-            .whereEqualTo("userid", getUid())
+            .whereEqualTo("userid", uid)
             .get()
             .await()
             .documents

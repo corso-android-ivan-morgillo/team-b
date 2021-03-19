@@ -1,7 +1,11 @@
 package com.ivanmorgillo.corsoandroid.teamb.utils
 
+import com.apperol.AuthenticationManager
+import com.apperol.AuthenticationManagerImpl
 import com.apperol.CocktailRepository
 import com.apperol.CocktailRepositoryImpl
+import com.apperol.CustomDrinkRepository
+import com.apperol.CustomDrinkRepositoryImpl
 import com.apperol.FavoriteRepository
 import com.apperol.FavoriteRepositoryImpl
 import com.ivanmorgillo.corsoandroid.teamb.MainActivityViewModel
@@ -32,6 +36,14 @@ val appModule = module {
 
     single<FavoriteRepository> {
         FavoriteRepositoryImpl(firestore = get())
+    }
+
+    single<AuthenticationManager> {
+        AuthenticationManagerImpl()
+    }
+
+    single<CustomDrinkRepository> {
+        CustomDrinkRepositoryImpl(firestore = get(), authenticationManager = get())
     }
 
     // Creiamo un oggetto di tipo MainViewModel

@@ -27,7 +27,6 @@ import com.apperol.R
 import com.apperol.R.id
 import com.apperol.R.string
 import com.apperol.databinding.ActivityMainBinding
-import com.apperol.databinding.FragmentDrawerNavHeaderBinding
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.AuthUI.IdpConfig.GoogleBuilder
 import com.firebase.ui.auth.ErrorCodes
@@ -63,7 +62,6 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
     lateinit var navController: NavController
     lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
-    lateinit var navViewBinding: FragmentDrawerNavHeaderBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
