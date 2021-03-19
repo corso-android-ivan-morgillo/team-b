@@ -1,8 +1,6 @@
 package com.apperol
 
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
 
 interface FavoriteRepository {
@@ -12,23 +10,25 @@ interface FavoriteRepository {
     suspend fun loadAll(): List<Favorite>?
 }
 
-class FavoriteRepositoryImpl(private val firestore: FirebaseFirestore) : FavoriteRepository {
+class FavoriteRepositoryImpl(
+    private val firestore: FirebaseFirestore,
+    private val authenticationManager: AuthenticationManager,
+) : FavoriteRepository {
 
     private val favouritesCollection by lazy {
-        firestore.collection("favourites-${getUid()}")
+        firestore.collection("favourites")
     }
 
-    private fun getUid() = Firebase.auth.currentUser.uid
     override suspend fun save(favorite: Detail): Boolean {
+        val uid = authenticationManager.getUId() ?: return false
         val favouriteMap = hashMapOf(
             "id" to favorite.id,
             "name" to favorite.name,
             "image" to favorite.image,
             "category" to favorite.category,
-            // "userID" to getUid()
-
+            "userid" to uid
         )
-        favouritesCollection.document(favorite.id.toString()).set(favouriteMap).await()
+        favouritesCollection.document("${favorite.id}").set(favouriteMap).await()
         return true
     }
 
@@ -38,13 +38,17 @@ class FavoriteRepositoryImpl(private val firestore: FirebaseFirestore) : Favorit
     }
 
     override suspend fun isFavorite(id: Long): Boolean {
-        val x = favouritesCollection.document(id.toString()).get().await()
+        val x = favouritesCollection
+            .document("$id")
+            .get()
+            .await()
         return x.exists()
     }
 
     override suspend fun loadAll(): List<Favorite>? {
+        val uid = authenticationManager.getUId() ?: return null
         val favouritesList = favouritesCollection
-            // .whereEqualTo("userID", getUid())
+            .whereEqualTo("userid", uid)
             .get()
             .await()
             .documents
@@ -72,5 +76,5 @@ data class Favorite(
     val name: String,
     val image: String,
     val id: Long,
-    val category: String
+    val category: String,
 )
