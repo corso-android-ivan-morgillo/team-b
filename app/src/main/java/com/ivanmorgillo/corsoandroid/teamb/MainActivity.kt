@@ -34,6 +34,8 @@ import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.DisableDarkMode
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.EnableDarkMode
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToFacebook
@@ -118,7 +120,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
         val searchItem = menu.findItem(id.search_name)
         searchView = searchItem.actionView as SearchView
 
-        searchView!!.queryHint = getString(R.string.search_cocktail_by_name)
+        searchView!!.queryHint = getString(string.search_cocktail_by_name)
         searchView!!.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String?): Boolean {
                 return false
@@ -155,6 +157,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
                 NavigateToFavorite -> navController.navigate(id.favoritesFragment)
                 NavigateToRandom -> navController.navigate(id.randomCocktailFragment)
                 SignIn -> signInWithGoogle()
+                MainScreenAction.SignOut -> signOutFromGoogle()
             }.exhaustive
         })
     }
@@ -180,10 +183,11 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
                 mainActivityViewModel.send(MainScreenEvent.OnFeedBackClick)
             }
             id.sign_in -> {
-                Timber.d("Contacts")
                 mainActivityViewModel.send(MainScreenEvent.OnSignInClick)
-
                 binding.drawerLayout.closeDrawer(GravityCompat.START)
+            }
+            id.sign_out -> {
+                mainActivityViewModel.send(MainScreenEvent.OnSignOutClick)
             }
             id.nav_randomCocktail -> {
                 mainActivityViewModel.send(MainScreenEvent.OnRandomClick)
@@ -197,10 +201,10 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
     var firebaseAthenticationResultLauncher = registerForActivityResult(StartActivityForResult()) { result ->
 
         val response = IdpResponse.fromResultIntent(result.data)
+        val user = FirebaseAuth.getInstance().currentUser
 
         if (result.resultCode == Activity.RESULT_OK) {
             // Successfully signed in
-            val user = FirebaseAuth.getInstance().currentUser
             //
             // Timber.d("GOOGLE USER PIPPO: ${user.providerData}")
             Toast.makeText(applicationContext, "Benvenuto/a ${user.email}", Toast.LENGTH_SHORT)
@@ -208,6 +212,15 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
             binding.navView.getHeaderView(0).findViewById<TextView>(id.user_email).text = user.email
             if (user.photoUrl != null) {
                 binding.navView.getHeaderView(0).findViewById<ImageView>(id.user_profile_image).load(user.photoUrl)
+            }
+            if (user != null) {
+                // binding.navView.menu.findItem(id.sign_in).setTitle(string.sign_out)
+                binding.navView.menu.findItem(id.sign_out).isVisible = true
+                binding.navView.menu.findItem(id.sign_in).isVisible = false
+            } else {
+                // binding.navView.menu.findItem(id.sign_in).setTitle(string.sign_in)
+                binding.navView.menu.findItem(id.sign_out).isVisible = false
+                binding.navView.menu.findItem(id.sign_in).isVisible = true
             }
 
             // ...
@@ -256,5 +269,16 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
             .enableAnonymousUsersAutoUpgrade()
             .build()
         firebaseAthenticationResultLauncher.launch(intent)
+    }
+
+    private fun signOutFromGoogle() {
+        Timber.d("SIGNOUTFROMGOOGLE")
+        Firebase.auth.signOut()
+        binding.navView.menu.findItem(id.sign_out).isVisible = false
+        binding.navView.menu.findItem(id.sign_in).isVisible = true
+        binding.navView.getHeaderView(0).findViewById<TextView>(id.user_email).setText(string.user_email)
+        binding.navView.getHeaderView(0).findViewById<ImageView>(id.user_profile_image).load(R.drawable.profile_icon)
+        Toast.makeText(applicationContext, "Arrivederci", Toast.LENGTH_SHORT)
+            .show()
     }
 }
