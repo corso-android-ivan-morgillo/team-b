@@ -8,6 +8,10 @@ import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.OnScrollListener
+import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_DRAGGING
+import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import com.apperol.R
 import com.apperol.databinding.FragmentHomeBinding
 import com.google.android.material.transition.MaterialElevationScale
@@ -63,8 +67,21 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
         binding.categoryList.adapter = categoryAdapter
 
+        controlCategorySwipe()
+
         observeStates(drinkAdapter, categoryAdapter, binding)
         observeActions()
+    }
+
+    // Controllo swipe su Category List
+    private fun controlCategorySwipe() {
+        binding.categoryList.addOnScrollListener(object : OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (newState == SCROLL_STATE_DRAGGING) binding.swiperefresh.isEnabled = false
+                if (newState == SCROLL_STATE_IDLE) binding.swiperefresh.isEnabled = true
+            }
+        })
     }
 
     private fun observeActions() {
