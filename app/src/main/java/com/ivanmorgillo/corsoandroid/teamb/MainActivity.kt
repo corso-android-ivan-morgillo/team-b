@@ -3,6 +3,7 @@ package com.ivanmorgillo.corsoandroid.teamb
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -32,8 +33,13 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.AuthUI.IdpConfig.GoogleBuilder
 import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.IdpResponse
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.CancelClick
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.DisableDarkMode
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.EnableDarkMode
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToFacebook
@@ -44,6 +50,7 @@ import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToSearch
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToSettingMenu
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToTwitter
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.SignIn
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.SignOut
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -56,6 +63,7 @@ interface GoogleSignInRequest {
     fun signInWithGoogle()
 }
 
+@Suppress("TooManyFunctions")
 class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, CleanSearchField, GoogleSignInRequest {
 
     private var searchView: SearchView? = null
@@ -89,10 +97,11 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
         // naviga nelle pagine del navigation drawer
         binding.navView.setNavigationItemSelectedListener(this)
         binding.navView.itemIconTintList = null
+        val user = FirebaseAuth.getInstance().currentUser
+        userControl(user)
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        Timber.d("Hamburger CLicked")
         return if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
             false
@@ -118,7 +127,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
         val searchItem = menu.findItem(id.search_name)
         searchView = searchItem.actionView as SearchView
 
-        searchView!!.queryHint = getString(R.string.search_cocktail_by_name)
+        searchView!!.queryHint = getString(string.search_cocktail_by_name)
         searchView!!.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String?): Boolean {
                 return false
@@ -155,6 +164,8 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
                 NavigateToFavorite -> navController.navigate(id.favoritesFragment)
                 NavigateToRandom -> navController.navigate(id.randomCocktailFragment)
                 SignIn -> signInWithGoogle()
+                SignOut -> signOutFromGoogle()
+                is CancelClick -> action.dialog.cancel()
             }.exhaustive
         })
     }
@@ -165,7 +176,21 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
                 Timber.d("CustomCocktail")
             }
             id.nav_favorites -> {
-                mainActivityViewModel.send(MainScreenEvent.OnFavoriteClick)
+                if (FirebaseAuth.getInstance().currentUser == null) {
+                    MaterialAlertDialogBuilder(this)
+                        .setTitle(getString(string.Sign_in))
+                        .setMessage(getString(string.popup_message))
+                        .setPositiveButton(resources.getString(string.Sign_in)) { dialog, which ->
+                            // Respond to positive button press
+                            mainActivityViewModel.send(MainScreenEvent.OnSignInClick)
+                        }
+                        .setNegativeButton(getString(string.cancel)) { dialogInterface: DialogInterface, i: Int ->
+                            mainActivityViewModel.send(MainScreenEvent.OnCancelClick(dialogInterface))
+                        }
+                        .show()
+                } else {
+                    mainActivityViewModel.send(MainScreenEvent.OnFavoriteClick)
+                }
             }
             id.nav_settings -> {
                 mainActivityViewModel.send(MainScreenEvent.OnMenuClick)
@@ -180,10 +205,11 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
                 mainActivityViewModel.send(MainScreenEvent.OnFeedBackClick)
             }
             id.sign_in -> {
-                Timber.d("Contacts")
                 mainActivityViewModel.send(MainScreenEvent.OnSignInClick)
-
                 binding.drawerLayout.closeDrawer(GravityCompat.START)
+            }
+            id.sign_out -> {
+                mainActivityViewModel.send(MainScreenEvent.OnSignOutClick)
             }
             id.nav_randomCocktail -> {
                 mainActivityViewModel.send(MainScreenEvent.OnRandomClick)
@@ -197,19 +223,16 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
     var firebaseAthenticationResultLauncher = registerForActivityResult(StartActivityForResult()) { result ->
 
         val response = IdpResponse.fromResultIntent(result.data)
+        val user = FirebaseAuth.getInstance().currentUser
 
         if (result.resultCode == Activity.RESULT_OK) {
             // Successfully signed in
-            val user = FirebaseAuth.getInstance().currentUser
             //
             // Timber.d("GOOGLE USER PIPPO: ${user.providerData}")
-            Toast.makeText(applicationContext, "Benvenuto/a ${user.email}", Toast.LENGTH_SHORT)
+            val welcomeString = getString(string.welcome)
+            Toast.makeText(applicationContext, "$welcomeString ${user.email}", Toast.LENGTH_SHORT)
                 .show()
-            binding.navView.getHeaderView(0).findViewById<TextView>(id.user_email).text = user.email
-            if (user.photoUrl != null) {
-                binding.navView.getHeaderView(0).findViewById<ImageView>(id.user_profile_image).load(user.photoUrl)
-            }
-
+            userControl(user)
             // ...
         } else {
             if (response?.error?.errorCode == ErrorCodes.ANONYMOUS_UPGRADE_MERGE_CONFLICT) {
@@ -227,6 +250,24 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
             // sign-in flow using the back button. Otherwise check
             // response.getError().getErrorCode() and handle the error.
             // ...
+        }
+    }
+
+    private fun userControl(user: FirebaseUser?) {
+        if (user?.email != null) {
+            binding.navView.getHeaderView(0).findViewById<TextView>(id.user_email).text = user.email
+        }
+        if (user?.photoUrl != null) {
+            binding.navView.getHeaderView(0).findViewById<ImageView>(id.user_profile_image).load(user.photoUrl)
+        }
+        if (user != null) {
+            // binding.navView.menu.findItem(id.sign_in).setTitle(string.sign_out)
+            binding.navView.menu.findItem(id.sign_out).isVisible = true
+            binding.navView.menu.findItem(id.sign_in).isVisible = false
+        } else {
+            // binding.navView.menu.findItem(id.sign_in).setTitle(string.sign_in)
+            binding.navView.menu.findItem(id.sign_out).isVisible = false
+            binding.navView.menu.findItem(id.sign_in).isVisible = true
         }
     }
 
@@ -256,5 +297,15 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
             .enableAnonymousUsersAutoUpgrade()
             .build()
         firebaseAthenticationResultLauncher.launch(intent)
+    }
+
+    private fun signOutFromGoogle() {
+        Firebase.auth.signOut()
+        binding.navView.menu.findItem(id.sign_out).isVisible = false
+        binding.navView.menu.findItem(id.sign_in).isVisible = true
+        binding.navView.getHeaderView(0).findViewById<TextView>(id.user_email).setText(string.user_email)
+        binding.navView.getHeaderView(0).findViewById<ImageView>(id.user_profile_image).load(R.drawable.profile_icon)
+        Toast.makeText(applicationContext, string.goodbye, Toast.LENGTH_SHORT)
+            .show()
     }
 }
