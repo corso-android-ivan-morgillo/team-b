@@ -35,7 +35,7 @@ val appModule = module {
     }
 
     single<FavoriteRepository> {
-        FavoriteRepositoryImpl(firestore = get())
+        FavoriteRepositoryImpl(firestore = get(), authenticationManager = get())
     }
 
     single<AuthenticationManager> {
