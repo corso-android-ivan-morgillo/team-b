@@ -21,6 +21,7 @@ import com.apperol.Search
 import com.apperol.SearchLoadCocktailError
 import java.io.IOException
 import java.net.SocketTimeoutException
+import java.util.Locale
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -231,8 +232,9 @@ private fun DetailCocktailDTO.DrinkDTO.ingredientsList() = listOfNotNull(
 private fun List<DetailCocktailDTO.DrinkDTO>.toDomain(): Detail? {
     val first = this.firstOrNull() ?: return null
     val id = first.idDrink.toLongOrNull()
-    val alcolCat: Boolean = first.strAlcoholic.equals("Alcoholic")
+    val alcolCat: Boolean = first.strAlcoholic == "Alcoholic"
     val video: String? = first.strVideo
+    val instructions = instructionsLanguage(first)
     val ingredientsList = first.ingredientsList()
     val measurementsList = first.measurementsList()
     val ingredients = ingredientsList
@@ -248,11 +250,20 @@ private fun List<DetailCocktailDTO.DrinkDTO>.toDomain(): Detail? {
             glass = first.strGlass,
             ingredients = ingredients,
             youtubeLink = video,
-            instructions = first.strInstructions,
+            instructions = instructions,
             category = first.strCategory
         )
     } else {
         null
+    }
+}
+
+fun instructionsLanguage(first: DetailCocktailDTO.DrinkDTO): String {
+    val language = Locale.getDefault().displayLanguage
+    return if (language == "italiano" && first.strInstructionsIT != null) {
+        first.strInstructionsIT
+    } else {
+        first.strInstructions
     }
 }
 

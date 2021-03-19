@@ -84,6 +84,8 @@ data class DetailCocktailDTO(
         val strInstructionsES: String?,
         @SerializedName("strInstructionsFR")
         val strInstructionsFR: String?,
+        @SerializedName("strInstructionsIT")
+        val strInstructionsIT: String?,
         @SerializedName("strInstructionsZH-HANS")
         val strInstructionsZHHANS: String?,
         @SerializedName("strInstructionsZH-HANT")
