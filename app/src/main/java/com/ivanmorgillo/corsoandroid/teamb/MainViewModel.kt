@@ -7,9 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.CancelClick
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.DisableDarkMode
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.EnableDarkMode
-import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToFacebook
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToFavorite
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToFeedBack
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToInstagram
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToRandom
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToSearch
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToSettingMenu
@@ -18,9 +18,9 @@ import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.SignIn
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.SignOut
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.AfterSignOut
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnCancelClick
-import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnFacebookClick
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnFavoriteClick
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnFeedBackClick
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnInstagramClick
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnMenuClick
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnRandomClick
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnSearchClick
@@ -70,9 +70,9 @@ class MainActivityViewModel(
                 tracking.logEvent("settings_clicked")
                 actions.postValue(NavigateToSettingMenu)
             }
-            OnFacebookClick -> {
-                tracking.logEvent("facebook_clicked")
-                actions.postValue(NavigateToFacebook)
+            OnInstagramClick -> {
+                tracking.logEvent("instagram_clicked")
+                actions.postValue(NavigateToInstagram)
             }
             OnTwitterClick -> {
                 tracking.logEvent("twitter_clicked")
@@ -116,7 +116,7 @@ sealed class MainScreenStates {
 sealed class MainScreenEvent {
     data class OnSearchClick(val query: String) : MainScreenEvent()
     object OnMenuClick : MainScreenEvent()
-    object OnFacebookClick : MainScreenEvent()
+    object OnInstagramClick : MainScreenEvent()
     object OnTwitterClick : MainScreenEvent()
     object OnFeedBackClick : MainScreenEvent()
     object OnFavoriteClick : MainScreenEvent()
@@ -130,7 +130,7 @@ sealed class MainScreenEvent {
 sealed class MainScreenAction {
     data class NavigateToSearch(val query: String) : MainScreenAction()
     object NavigateToSettingMenu : MainScreenAction()
-    object NavigateToFacebook : MainScreenAction()
+    object NavigateToInstagram : MainScreenAction()
     object NavigateToTwitter : MainScreenAction()
     object NavigateToFeedBack : MainScreenAction()
     object EnableDarkMode : MainScreenAction()

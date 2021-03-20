@@ -40,10 +40,10 @@ import com.google.firebase.auth.FirebaseUser
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.CancelClick
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.DisableDarkMode
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.EnableDarkMode
-import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToFacebook
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToFavorite
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToFeedBack
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToHome
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToInstagram
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToRandom
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToSearch
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToSettingMenu
@@ -154,8 +154,8 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
                 NavigateToSettingMenu -> {
                     navController.navigate(id.settingsFragment)
                 }
-                NavigateToFacebook -> openNewTabWindow("https://www.facebook.com", this)
-                NavigateToTwitter -> openNewTabWindow("https://twitter.com", this)
+                NavigateToInstagram -> openNewTabWindow("https://www.instagram.com/apperolteam/", this)
+                NavigateToTwitter -> openNewTabWindow("https://twitter.com/Apperol2", this)
                 NavigateToFeedBack -> openNewTabWindow(getString(string.feedback_link), this)
                 DisableDarkMode -> Unit
                 EnableDarkMode -> Unit
@@ -173,6 +173,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
         when (item.itemId) {
             id.nav_customCocktail -> {
                 Timber.d("CustomCocktail")
+                Toast.makeText(this, getString(string.work_in_progress), Toast.LENGTH_LONG)
             }
             id.nav_favorites -> {
                 if (FirebaseAuth.getInstance().currentUser == null) {
@@ -194,8 +195,8 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
             id.nav_settings -> {
                 mainActivityViewModel.send(MainScreenEvent.OnMenuClick)
             }
-            id.nav_facebook -> {
-                mainActivityViewModel.send(MainScreenEvent.OnFacebookClick)
+            id.nav_instagram -> {
+                mainActivityViewModel.send(MainScreenEvent.OnInstagramClick)
             }
             id.nav_twitter -> {
                 mainActivityViewModel.send(MainScreenEvent.OnTwitterClick)
@@ -296,16 +297,18 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
             .enableAnonymousUsersAutoUpgrade()
             .build()
         firebaseAthenticationResultLauncher.launch(intent)
+        binding.navView.menu.findItem(id.sign_in).isVisible = false
+        binding.navView.menu.findItem(id.sign_out).isVisible = true
     }
 
     private fun signOutFromGoogle() {
         AuthUI.getInstance()
             .signOut(this)
             .addOnCompleteListener {
-                Toast.makeText(this, "Logout Effettuato!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(string.logout_effettuato), Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener {
-                Toast.makeText(this, "Logout Fallito!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(string.logout_fallito), Toast.LENGTH_SHORT).show()
             }
         Credentials.getClient(this).disableAutoSignIn()
         binding.navView.menu.findItem(id.sign_out).isVisible = false

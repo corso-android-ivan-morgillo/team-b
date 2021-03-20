@@ -14,5 +14,9 @@
     <string name="empty_search_error">HOME</string>
     <string name="Sign_in">Sign-in!</string>
     <string name="popup_message">Sign-in to save your favourites and read your cocktails on all your devices</string>
+    <string name="instagram">instagram</string>
+    <string name="work_in_progress">Work in progress</string>
+    <string name="logout_effettuato">Logout Effettuato!</string>
+    <string name="logout_fallito">Logout Fallito!</string>
 
 </resources>

@@ -23,7 +23,6 @@
     <string name="componi_il_tuo_cocktail">Componi il tuo Cocktail</string>
     <string name="preferiti">Preferiti</string>
     <string name="settings">Impostazioni</string>
-    <string name="about_us">Social</string>
     <string name="facebook">Facebook</string>
     <string name="twitter">Twitter</string>
     <string name="feedback">Feedback</string>
@@ -68,4 +67,8 @@
     <string name="search_cocktail_by_name">Cerca per nome</string>
     <string name="welcome">Benvenuto/a</string>
     <string name="goodbye">Arrivederci</string>
+    <string name="instagram">instagram</string>
+    <string name="work_in_progress">Presto disponibile</string>
+    <string name="logout_effettuato">Logout Effettuato!</string>
+    <string name="logout_fallito">Logout Fallito!</string>
 </resources>
