@@ -227,13 +227,11 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
 
         if (result.resultCode == Activity.RESULT_OK) {
             // Successfully signed in
-            //
             // Timber.d("GOOGLE USER PIPPO: ${user.providerData}")
             val welcomeString = getString(string.welcome)
-            Toast.makeText(applicationContext, "$welcomeString ${user.email}", Toast.LENGTH_SHORT)
+            Toast.makeText(applicationContext, "$welcomeString ${user.displayName}", Toast.LENGTH_SHORT)
                 .show()
             userControl(user)
-            // ...
         } else {
             if (response?.error?.errorCode == ErrorCodes.ANONYMOUS_UPGRADE_MERGE_CONFLICT) {
                 // Store relevant anonymous user data
@@ -248,14 +246,13 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
             Timber.e("AUTHENTICATION ERROR: ${response?.error?.errorCode}")
             // Sign in failed. If response is null the user canceled the
             // sign-in flow using the back button. Otherwise check
-            // response.getError().getErrorCode() and handle the error.
-            // ...
+            // response.getError().getErrorCode() and handle the error
         }
     }
 
     private fun userControl(user: FirebaseUser?) {
         if (user?.email != null) {
-            binding.navView.getHeaderView(0).findViewById<TextView>(id.user_email).text = user.email
+            binding.navView.getHeaderView(0).findViewById<TextView>(id.user_email).text = user.displayName
         }
         if (user?.photoUrl != null) {
             binding.navView.getHeaderView(0).findViewById<ImageView>(id.user_profile_image).load(user.photoUrl)
