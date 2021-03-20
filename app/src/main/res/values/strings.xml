@@ -23,7 +23,6 @@
     <string name="componi_il_tuo_cocktail">Componi il tuo Cocktail</string>
     <string name="preferiti">Preferiti</string>
     <string name="settings">Settings</string>
-    <string name="about_us">Social</string>
     <string name="facebook">Facebook</string>
     <string name="twitter">Twitter</string>
     <string name="feedback">Feedback</string>
@@ -37,7 +36,7 @@
     <string name="se_non_selezionato_sar_usato_il_sistema_imperiale_us">If not selected, the Imperial (US) system will be used "</string>
     <string name="mantieni_lo_schermo_attivo">Keep the screen active</string>
     <string name="impedisci_al_telefono_di_andare_in_sospensione_quando_vengono_visualizzati_i_dettagli_di_un_cocktail">
-        Prevent the phone from going to sleep when the details of a cocktail are displayed</string>
+        Prevent the phone from going to sleep when the details of a drink are displayed</string>
     <string name="lingua">Languages</string>
     <string name="scegli_la_tua_lingua">Choose your language</string>
     <string name="scegli_il_tema">Choose your theme</string>
@@ -68,4 +67,8 @@
     <string name="search_cocktail_by_name">Search by name</string>
     <string name="welcome">Welcome</string>
     <string name="goodbye">Goodbye</string>
+    <string name="instagram">instagram</string>
+    <string name="work_in_progress">Work in progress</string>
+    <string name="logout_effettuato">Logout Successful!</string>
+    <string name="logout_fallito">Logout Failed!</string>
 </resources>

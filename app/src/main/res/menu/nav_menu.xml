@@ -3,27 +3,27 @@
 
     <item android:title="@string/miscellaneous">
         <menu>
-        <item
-            android:id="@+id/nav_customCocktail"
-            android:icon="@drawable/maithai"
-            android:title="@string/componi_il_tuo_cocktail" />
-        <item
-            android:id="@+id/nav_favorites"
-            android:icon="@drawable/star"
-            android:title="@string/preferiti" />
-        <item
-            android:id="@+id/nav_randomCocktail"
-            android:icon="@drawable/dice"
-            android:title="@string/random_cocktail" />
+            <item
+                android:id="@+id/nav_customCocktail"
+                android:icon="@drawable/maithai"
+                android:title="@string/componi_il_tuo_cocktail" />
+            <item
+                android:id="@+id/nav_favorites"
+                android:icon="@drawable/star"
+                android:title="@string/preferiti" />
+            <item
+                android:id="@+id/nav_randomCocktail"
+                android:icon="@drawable/dice"
+                android:title="@string/random_cocktail" />
         </menu>
     </item>
 
-    <item android:title="@string/about_us">
+    <item android:title="@string/social">
         <menu>
             <item
-                android:id="@+id/nav_facebook"
-                android:icon="@drawable/facebook"
-                android:title="@string/facebook" />
+                android:id="@+id/nav_instagram"
+                android:icon="@drawable/instagram"
+                android:title="@string/instagram" />
             <item
                 android:id="@+id/nav_twitter"
                 android:icon="@drawable/twitter"
@@ -39,15 +39,14 @@
                 android:title="@string/invia_feedback" />
             <item
                 android:id="@+id/sign_in"
-                android:icon="@drawable/contact"
+                android:icon="@drawable/login"
                 android:title="@string/sign_in"
-                android:visible="true"/>
+                android:visible="true" />
             <item
                 android:id="@+id/sign_out"
-                android:icon="@drawable/contact"
+                android:icon="@drawable/logout"
                 android:title="@string/sign_out"
-                android:visible="false"
-                />
+                android:visible="false" />
         </menu>
     </item>
     <!--

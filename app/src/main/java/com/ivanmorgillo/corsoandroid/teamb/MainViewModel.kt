@@ -7,24 +7,26 @@ import androidx.lifecycle.viewModelScope
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.CancelClick
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.DisableDarkMode
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.EnableDarkMode
-import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToFacebook
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToFavorite
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToFeedBack
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToInstagram
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToRandom
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToSearch
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToSettingMenu
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToTwitter
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.SignIn
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.SignOut
-import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnFacebookClick
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.AfterSignOut
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnCancelClick
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnFavoriteClick
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnFeedBackClick
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnInstagramClick
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnMenuClick
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnRandomClick
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnSearchClick
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnSignInClick
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnSignOutClick
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnTwitterClick
-import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.UserLogged
 import com.ivanmorgillo.corsoandroid.teamb.home.ErrorStates
 import com.ivanmorgillo.corsoandroid.teamb.search.SearchCocktailUI
 import com.ivanmorgillo.corsoandroid.teamb.settings.SettingsRepository
@@ -36,8 +38,7 @@ import timber.log.Timber
 
 class MainActivityViewModel(
     private val settingsrepository: SettingsRepository,
-    private val tracking: Tracking
-
+    private val tracking: Tracking,
 ) : ViewModel() {
     // mutable live data: tipo contenitore di T, dove T è il nostro stato
     // states è una variabile che la nostra activity può osservare.
@@ -69,9 +70,9 @@ class MainActivityViewModel(
                 tracking.logEvent("settings_clicked")
                 actions.postValue(NavigateToSettingMenu)
             }
-            OnFacebookClick -> {
-                tracking.logEvent("facebook_clicked")
-                actions.postValue(NavigateToFacebook)
+            OnInstagramClick -> {
+                tracking.logEvent("instagram_clicked")
+                actions.postValue(NavigateToInstagram)
             }
             OnTwitterClick -> {
                 tracking.logEvent("twitter_clicked")
@@ -93,15 +94,15 @@ class MainActivityViewModel(
                 tracking.logEvent("sign_in_click_navigation_drawer")
                 actions.postValue(SignIn)
             }
-            UserLogged -> TODO()
-            MainScreenEvent.OnSignOutClick -> {
+            OnSignOutClick -> {
                 tracking.logEvent("sign_out_click_navigation_drawer")
                 actions.postValue(SignOut)
             }
-            is MainScreenEvent.OnCancelClick -> {
+            is OnCancelClick -> {
                 tracking.logEvent("cancel_click_dialog_alert")
                 actions.postValue(CancelClick(event.dialog))
             }
+            AfterSignOut -> actions.postValue(MainScreenAction.NavigateToHome)
         }.exhaustive
     }
 }
@@ -115,21 +116,21 @@ sealed class MainScreenStates {
 sealed class MainScreenEvent {
     data class OnSearchClick(val query: String) : MainScreenEvent()
     object OnMenuClick : MainScreenEvent()
-    object OnFacebookClick : MainScreenEvent()
+    object OnInstagramClick : MainScreenEvent()
     object OnTwitterClick : MainScreenEvent()
     object OnFeedBackClick : MainScreenEvent()
     object OnFavoriteClick : MainScreenEvent()
     object OnRandomClick : MainScreenEvent()
     object OnSignInClick : MainScreenEvent()
-    object UserLogged : MainScreenEvent()
     object OnSignOutClick : MainScreenEvent()
+    object AfterSignOut : MainScreenEvent()
     data class OnCancelClick(val dialog: DialogInterface) : MainScreenEvent()
 }
 
 sealed class MainScreenAction {
     data class NavigateToSearch(val query: String) : MainScreenAction()
     object NavigateToSettingMenu : MainScreenAction()
-    object NavigateToFacebook : MainScreenAction()
+    object NavigateToInstagram : MainScreenAction()
     object NavigateToTwitter : MainScreenAction()
     object NavigateToFeedBack : MainScreenAction()
     object EnableDarkMode : MainScreenAction()
@@ -138,5 +139,6 @@ sealed class MainScreenAction {
     object NavigateToRandom : MainScreenAction()
     object SignIn : MainScreenAction()
     object SignOut : MainScreenAction()
+    object NavigateToHome : MainScreenAction()
     data class CancelClick(val dialog: DialogInterface) : MainScreenAction()
 }

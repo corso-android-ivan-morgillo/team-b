@@ -32,18 +32,18 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.AuthUI.IdpConfig.GoogleBuilder
 import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.IdpResponse
+import com.google.android.gms.auth.api.credentials.Credentials
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.CancelClick
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.DisableDarkMode
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.EnableDarkMode
-import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToFacebook
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToFavorite
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToFeedBack
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToHome
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToInstagram
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToRandom
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToSearch
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToSettingMenu
@@ -154,8 +154,8 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
                 NavigateToSettingMenu -> {
                     navController.navigate(id.settingsFragment)
                 }
-                NavigateToFacebook -> openNewTabWindow("https://www.facebook.com", this)
-                NavigateToTwitter -> openNewTabWindow("https://twitter.com", this)
+                NavigateToInstagram -> openNewTabWindow("https://www.instagram.com/apperolteam/", this)
+                NavigateToTwitter -> openNewTabWindow("https://twitter.com/Apperol2", this)
                 NavigateToFeedBack -> openNewTabWindow(getString(string.feedback_link), this)
                 DisableDarkMode -> Unit
                 EnableDarkMode -> Unit
@@ -164,6 +164,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
                 SignIn -> signInWithGoogle()
                 SignOut -> signOutFromGoogle()
                 is CancelClick -> action.dialog.cancel()
+                NavigateToHome -> navController.navigate(id.homeFragment)
             }.exhaustive
         })
     }
@@ -172,6 +173,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
         when (item.itemId) {
             id.nav_customCocktail -> {
                 Timber.d("CustomCocktail")
+                Toast.makeText(this, getString(string.work_in_progress), Toast.LENGTH_LONG).show()
             }
             id.nav_favorites -> {
                 if (FirebaseAuth.getInstance().currentUser == null) {
@@ -193,8 +195,8 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
             id.nav_settings -> {
                 mainActivityViewModel.send(MainScreenEvent.OnMenuClick)
             }
-            id.nav_facebook -> {
-                mainActivityViewModel.send(MainScreenEvent.OnFacebookClick)
+            id.nav_instagram -> {
+                mainActivityViewModel.send(MainScreenEvent.OnInstagramClick)
             }
             id.nav_twitter -> {
                 mainActivityViewModel.send(MainScreenEvent.OnTwitterClick)
@@ -225,13 +227,11 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
 
         if (result.resultCode == Activity.RESULT_OK) {
             // Successfully signed in
-            //
             // Timber.d("GOOGLE USER PIPPO: ${user.providerData}")
             val welcomeString = getString(string.welcome)
-            Toast.makeText(applicationContext, "$welcomeString ${user.email}", Toast.LENGTH_SHORT)
+            Toast.makeText(applicationContext, "$welcomeString ${user.displayName}", Toast.LENGTH_SHORT)
                 .show()
             userControl(user)
-            // ...
         } else {
             if (response?.error?.errorCode == ErrorCodes.ANONYMOUS_UPGRADE_MERGE_CONFLICT) {
                 // Store relevant anonymous user data
@@ -246,14 +246,13 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
             Timber.e("AUTHENTICATION ERROR: ${response?.error?.errorCode}")
             // Sign in failed. If response is null the user canceled the
             // sign-in flow using the back button. Otherwise check
-            // response.getError().getErrorCode() and handle the error.
-            // ...
+            // response.getError().getErrorCode() and handle the error
         }
     }
 
     private fun userControl(user: FirebaseUser?) {
         if (user?.email != null) {
-            binding.navView.getHeaderView(0).findViewById<TextView>(id.user_email).text = user.email
+            binding.navView.getHeaderView(0).findViewById<TextView>(id.user_email).text = user.displayName
         }
         if (user?.photoUrl != null) {
             binding.navView.getHeaderView(0).findViewById<ImageView>(id.user_profile_image).load(user.photoUrl)
@@ -295,15 +294,26 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
             .enableAnonymousUsersAutoUpgrade()
             .build()
         firebaseAthenticationResultLauncher.launch(intent)
+        binding.navView.menu.findItem(id.sign_in).isVisible = false
+        binding.navView.menu.findItem(id.sign_out).isVisible = true
     }
 
     private fun signOutFromGoogle() {
-        Firebase.auth.signOut()
+        AuthUI.getInstance()
+            .signOut(this)
+            .addOnCompleteListener {
+                Toast.makeText(this, getString(string.logout_effettuato), Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, getString(string.logout_fallito), Toast.LENGTH_SHORT).show()
+            }
+        Credentials.getClient(this).disableAutoSignIn()
         binding.navView.menu.findItem(id.sign_out).isVisible = false
         binding.navView.menu.findItem(id.sign_in).isVisible = true
         binding.navView.getHeaderView(0).findViewById<TextView>(id.user_email).setText(string.user_email)
         binding.navView.getHeaderView(0).findViewById<ImageView>(id.user_profile_image).load(R.drawable.profile_icon)
         Toast.makeText(applicationContext, string.goodbye, Toast.LENGTH_SHORT)
             .show()
+        mainActivityViewModel.send(MainScreenEvent.AfterSignOut)
     }
 }

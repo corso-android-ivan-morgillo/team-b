@@ -58,7 +58,8 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                     }
                 }
                 NavigateToHome -> {
-                    findNavController().popBackStack()
+                    val directions = SearchFragmentDirections.actionSearchFragmentToHomeFragment()
+                    findNavController().navigate(directions)
                 }
             }.exhaustive
         })
