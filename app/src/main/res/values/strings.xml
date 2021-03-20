@@ -36,7 +36,7 @@
     <string name="se_non_selezionato_sar_usato_il_sistema_imperiale_us">If not selected, the Imperial (US) system will be used "</string>
     <string name="mantieni_lo_schermo_attivo">Keep the screen active</string>
     <string name="impedisci_al_telefono_di_andare_in_sospensione_quando_vengono_visualizzati_i_dettagli_di_un_cocktail">
-        Prevent the phone from going to sleep when the details of a cocktail are displayed</string>
+        Prevent the phone from going to sleep when the details of a drink are displayed</string>
     <string name="lingua">Languages</string>
     <string name="scegli_la_tua_lingua">Choose your language</string>
     <string name="scegli_il_tema">Choose your theme</string>
