@@ -173,7 +173,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
         when (item.itemId) {
             id.nav_customCocktail -> {
                 Timber.d("CustomCocktail")
-                Toast.makeText(this, getString(string.work_in_progress), Toast.LENGTH_LONG)
+                Toast.makeText(this, getString(string.work_in_progress), Toast.LENGTH_LONG).show()
             }
             id.nav_favorites -> {
                 if (FirebaseAuth.getInstance().currentUser == null) {
