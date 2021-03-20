@@ -32,18 +32,18 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.AuthUI.IdpConfig.GoogleBuilder
 import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.IdpResponse
+import com.google.android.gms.auth.api.credentials.Credentials
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.CancelClick
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.DisableDarkMode
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.EnableDarkMode
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToFacebook
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToFavorite
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToFeedBack
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToHome
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToRandom
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToSearch
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToSettingMenu
@@ -164,6 +164,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
                 SignIn -> signInWithGoogle()
                 SignOut -> signOutFromGoogle()
                 is CancelClick -> action.dialog.cancel()
+                NavigateToHome -> navController.navigate(id.homeFragment)
             }.exhaustive
         })
     }
@@ -298,12 +299,21 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
     }
 
     private fun signOutFromGoogle() {
-        Firebase.auth.signOut()
+        AuthUI.getInstance()
+            .signOut(this)
+            .addOnCompleteListener {
+                Toast.makeText(this, "Logout Effettuato!", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Logout Fallito!", Toast.LENGTH_SHORT).show()
+            }
+        Credentials.getClient(this).disableAutoSignIn()
         binding.navView.menu.findItem(id.sign_out).isVisible = false
         binding.navView.menu.findItem(id.sign_in).isVisible = true
         binding.navView.getHeaderView(0).findViewById<TextView>(id.user_email).setText(string.user_email)
         binding.navView.getHeaderView(0).findViewById<ImageView>(id.user_profile_image).load(R.drawable.profile_icon)
         Toast.makeText(applicationContext, string.goodbye, Toast.LENGTH_SHORT)
             .show()
+        mainActivityViewModel.send(MainScreenEvent.AfterSignOut)
     }
 }
