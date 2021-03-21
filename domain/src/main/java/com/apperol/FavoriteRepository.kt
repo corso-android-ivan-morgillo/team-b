@@ -28,18 +28,23 @@ class FavoriteRepositoryImpl(
             "category" to favorite.category,
             "userid" to uid
         )
-        favouritesCollection.document("${favorite.id}").set(favouriteMap).await()
+        favouritesCollection.document("$uid-${favorite.id}").set(favouriteMap).await()
         return true
     }
 
     override suspend fun delete(id: Long): Boolean {
-        favouritesCollection.document(id.toString()).delete().await()
+        val uid = authenticationManager.getUId() ?: return false
+        favouritesCollection
+            .document("$uid-$id")
+            .delete()
+            .await()
         return true
     }
 
     override suspend fun isFavorite(id: Long): Boolean {
+        val uid = authenticationManager.getUId() ?: return false
         val x = favouritesCollection
-            .document("$id")
+            .document("$uid-$id")
             .get()
             .await()
         return x.exists()
