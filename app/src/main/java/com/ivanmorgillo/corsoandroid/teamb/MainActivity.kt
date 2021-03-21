@@ -184,7 +184,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
                             // Respond to positive button press
                             mainActivityViewModel.send(MainScreenEvent.OnSignInClick)
                         }
-                        .setNegativeButton(getString(string.cancel)) { dialogInterface: DialogInterface, i: Int ->
+                        .setNegativeButton(getString(string.annulla)) { dialogInterface: DialogInterface, i: Int ->
                             mainActivityViewModel.send(MainScreenEvent.OnCancelClick(dialogInterface))
                         }
                         .show()
@@ -251,7 +251,10 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
     }
 
     private fun userControl(user: FirebaseUser?) {
-        if (user?.email != null) {
+        if (user?.displayName == null && user?.email != null) {
+            binding.navView.getHeaderView(0).findViewById<TextView>(id.user_email).text = user.email
+        }
+        if (user?.displayName != null) {
             binding.navView.getHeaderView(0).findViewById<TextView>(id.user_email).text = user.displayName
         }
         if (user?.photoUrl != null) {

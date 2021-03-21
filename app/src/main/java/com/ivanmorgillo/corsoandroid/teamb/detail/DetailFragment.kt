@@ -125,7 +125,7 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
                                 // Respond to positive button press
                                 viewModel.send(DetailScreenEvents.OnSignInClick)
                             }
-                            .setNegativeButton(getString(string.cancel)) { dialogInterface: DialogInterface, i: Int ->
+                            .setNegativeButton(getString(string.annulla)) { dialogInterface: DialogInterface, i: Int ->
                                 viewModel.send(OnCancelClick(dialogInterface))
                             }
                             .show()
