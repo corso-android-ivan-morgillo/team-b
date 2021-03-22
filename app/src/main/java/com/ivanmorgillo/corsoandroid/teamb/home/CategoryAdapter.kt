@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.apperol.R
 import com.apperol.databinding.CategoryItemBinding
 
 const val BORDER_WIDTH = 8
@@ -35,19 +34,8 @@ class CategoryAdapter(private val onClick: (CategoryUI, View) -> Unit) : Recycle
 class CategoryViewHolder(private val binding: CategoryItemBinding) : RecyclerView.ViewHolder(binding.root) {
     fun bind(item: CategoryUI, onClick: (CategoryUI, View) -> Unit) {
         binding.categoryText.text = item.nameCategory
-        when (item.nameCategory) {
-            "Ordinary Drink" -> binding.categoryImage.load(R.drawable.ordinary_drink)
-            "Cocktail" -> binding.categoryImage.load(R.drawable.cocktails)
-            "Milk / Float / Shake" -> binding.categoryImage.load(R.drawable.milk)
-            "Other/Unknown" -> binding.categoryImage.load(R.drawable.other)
-            "Cocoa" -> binding.categoryImage.load(R.drawable.cocoa)
-            "Shot" -> binding.categoryImage.load(R.drawable.shot)
-            "Coffee / Tea" -> binding.categoryImage.load(R.drawable.coffee)
-            "Homemade Liqueur" -> binding.categoryImage.load(R.drawable.homemade)
-            "Punch / Party Drink" -> binding.categoryImage.load(R.drawable.punch)
-            "Beer" -> binding.categoryImage.load(R.drawable.beer)
-            "Soft Drink / Soda" -> binding.categoryImage.load(R.drawable.soda)
-        }
+        binding.categoryImage.load(item.imageCategory)
+       
         binding.categoryItem.setOnClickListener {
             onClick(item, itemView)
         }

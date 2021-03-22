@@ -9,6 +9,7 @@ import com.apperol.CocktailRepository
 import com.apperol.LoadCategoriesResult
 import com.apperol.LoadCocktailError
 import com.apperol.LoadCocktailResult
+import com.apperol.R
 import com.ivanmorgillo.corsoandroid.teamb.home.ErrorStates.ShowNoCategoriesFound
 import com.ivanmorgillo.corsoandroid.teamb.home.ErrorStates.ShowNoCocktailFound
 import com.ivanmorgillo.corsoandroid.teamb.home.ErrorStates.ShowNoInternetMessage
@@ -27,9 +28,9 @@ import timber.log.Timber
 /* spostiamo la generazione statica della lista all'implementazione della interfaccia */
 class HomeViewModel(
     private val repository: CocktailRepository,
-    private val tracking: Tracking
+    private val tracking: Tracking,
 
-) : ViewModel() {
+    ) : ViewModel() {
     // mutable live data: tipo contenitore di T, dove T è il nostro stato
     // states è una variabile che la nostra activity può osservare.
     // Quando si cambia stato questa variabile viene settata
@@ -37,6 +38,7 @@ class HomeViewModel(
     val actions = SingleLiveEvent<HomeScreenActions>()
     private var selectedCategory = 0
     private var categoryList: List<CategoryUI>? = null
+    private var currentCategory = "Ordinary Drink"
 
     init {
         tracking.logScreen(Screens.Home)
@@ -49,7 +51,7 @@ class HomeViewModel(
         when (event) {
             // l'activity è pronta
             HomeScreenEvents.OnReady -> {
-                loadContent("Ordinary Drink")
+                loadContent()
             }
             is HomeScreenEvents.OnCocktailClick -> {
                 tracking.logEvent("home_cocktail_clicked")
@@ -57,7 +59,7 @@ class HomeViewModel(
             }
             is HomeScreenEvents.OnRefreshClicked -> {
                 tracking.logEvent("home_refresh_clicked")
-                loadContent(event.category.nameCategory)
+                loadContent()
             }
             HomeScreenEvents.OnSettingClick -> {
                 tracking.logEvent("home_settings_clicked")
@@ -69,7 +71,8 @@ class HomeViewModel(
                 tracking.logEvent("home_category_clicked", param)
                 val categoryPosition = categoryList?.indexOf(event.category) ?: 0
                 selectedCategory = categoryPosition
-                loadContent(event.category.nameCategory)
+                currentCategory = event.category.nameCategory
+                loadContent()
             }
         }.exhaustive
     }
@@ -83,10 +86,10 @@ class HomeViewModel(
         }.exhaustive
     }
 
-    private fun loadContent(category: String) {
+    private fun loadContent() {
         states.postValue(Loading)
         viewModelScope.launch {
-            val drinkResult = repository.loadDrinks(category)
+            val drinkResult = repository.loadDrinks(currentCategory)
             val resultCategories = repository.loadCategories()
             when (resultCategories) {
                 is LoadCategoriesResult.Failure -> onCategoriesFailure(resultCategories)
@@ -94,9 +97,8 @@ class HomeViewModel(
                     val categories = resultCategories.categories.mapIndexed { index, category ->
                         CategoryUI(
                             nameCategory = category.categoryName,
-                            imageCategory = "https://www.thecocktaildb.com/images/media/drink/ruxuvp1472669600.jpg",
+                            imageCategory = getCategoryImage(category.categoryName),
                             isSelected = index == selectedCategory
-
                         )
                     }
                     categoryList = categories
@@ -112,6 +114,23 @@ class HomeViewModel(
                     }.exhaustive
                 }
             }.exhaustive
+        }
+    }
+
+    private fun getCategoryImage(categoryName: String): Int {
+        return when (categoryName) {
+            "Ordinary Drink" -> R.drawable.ordinary_drink
+            "Cocktail" -> R.drawable.cocktails
+            "Milk / Float / Shake" -> R.drawable.milk
+            "Other/Unknown" -> R.drawable.other
+            "Cocoa" -> R.drawable.cocoa
+            "Shot" -> R.drawable.shot
+            "Coffee / Tea" -> R.drawable.coffee
+            "Homemade Liqueur" -> R.drawable.homemade
+            "Punch / Party Drink" -> R.drawable.punch
+            "Beer" -> R.drawable.beer
+            "Soft Drink / Soda" -> R.drawable.soda
+            else -> R.drawable.ordinary_drink
         }
     }
 
@@ -140,7 +159,7 @@ sealed class HomeScreenEvents {
     data class OnCocktailClick(val drink: DrinkUI) : HomeScreenEvents()
     data class OnCategoryClick(val category: CategoryUI) : HomeScreenEvents()
     object OnReady : HomeScreenEvents()
-    data class OnRefreshClicked(val category: CategoryUI) : HomeScreenEvents()
+    object OnRefreshClicked : HomeScreenEvents()
     object OnSettingClick : HomeScreenEvents()
 }
 
@@ -162,11 +181,11 @@ class GeneralContent(val drinkList: List<DrinkUI>, val categoryList: List<Catego
 data class DrinkUI(
     val drinkName: String,
     val image: String,
-    val id: Long
+    val id: Long,
 )
 
 data class CategoryUI(
     val nameCategory: String,
-    val imageCategory: String,
-    val isSelected: Boolean
+    val imageCategory: Int,
+    val isSelected: Boolean,
 )
