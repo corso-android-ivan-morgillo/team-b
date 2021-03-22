@@ -125,7 +125,7 @@ dependencies {
 
     // Youtube Player Soffritti
     implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5'
-    
+
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     // Gif image
@@ -145,9 +145,11 @@ dependencies {
     // When using the BoM, you don't specify versions in Firebase library dependencies
     // implementation 'com.google.firebase:firebase-database-ktx'
 
+    //Google ads
+    implementation 'com.google.android.gms:play-services-ads:19.8.0'
 
     // Testing dependencies
-    testImplementation 'junit:junit:4.13.1'
+    testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
