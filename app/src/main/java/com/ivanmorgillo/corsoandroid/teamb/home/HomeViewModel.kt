@@ -9,6 +9,7 @@ import com.apperol.CocktailRepository
 import com.apperol.LoadCategoriesResult
 import com.apperol.LoadCocktailError
 import com.apperol.LoadCocktailResult
+import com.apperol.R
 import com.ivanmorgillo.corsoandroid.teamb.home.ErrorStates.ShowNoCategoriesFound
 import com.ivanmorgillo.corsoandroid.teamb.home.ErrorStates.ShowNoCocktailFound
 import com.ivanmorgillo.corsoandroid.teamb.home.ErrorStates.ShowNoInternetMessage
@@ -27,9 +28,9 @@ import timber.log.Timber
 /* spostiamo la generazione statica della lista all'implementazione della interfaccia */
 class HomeViewModel(
     private val repository: CocktailRepository,
-    private val tracking: Tracking
+    private val tracking: Tracking,
 
-) : ViewModel() {
+    ) : ViewModel() {
     // mutable live data: tipo contenitore di T, dove T è il nostro stato
     // states è una variabile che la nostra activity può osservare.
     // Quando si cambia stato questa variabile viene settata
@@ -94,9 +95,8 @@ class HomeViewModel(
                     val categories = resultCategories.categories.mapIndexed { index, category ->
                         CategoryUI(
                             nameCategory = category.categoryName,
-                            imageCategory = "https://www.thecocktaildb.com/images/media/drink/ruxuvp1472669600.jpg",
+                            imageCategory = getCategoryImage(category.categoryName),
                             isSelected = index == selectedCategory
-
                         )
                     }
                     categoryList = categories
@@ -112,6 +112,23 @@ class HomeViewModel(
                     }.exhaustive
                 }
             }.exhaustive
+        }
+    }
+
+    private fun getCategoryImage(categoryName: String): Int {
+        return when (categoryName) {
+            "Ordinary Drink" -> R.drawable.ordinary_drink
+            "Cocktail" -> R.drawable.cocktails
+            "Milk / Float / Shake" -> R.drawable.milk
+            "Other/Unknown" -> R.drawable.other
+            "Cocoa" -> R.drawable.cocoa
+            "Shot" -> R.drawable.shot
+            "Coffee / Tea" -> R.drawable.coffee
+            "Homemade Liqueur" -> R.drawable.homemade
+            "Punch / Party Drink" -> R.drawable.punch
+            "Beer" -> R.drawable.beer
+            "Soft Drink / Soda" -> R.drawable.soda
+            else -> R.drawable.ordinary_drink
         }
     }
 
@@ -162,11 +179,11 @@ class GeneralContent(val drinkList: List<DrinkUI>, val categoryList: List<Catego
 data class DrinkUI(
     val drinkName: String,
     val image: String,
-    val id: Long
+    val id: Long,
 )
 
 data class CategoryUI(
     val nameCategory: String,
-    val imageCategory: String,
-    val isSelected: Boolean
+    val imageCategory: Int,
+    val isSelected: Boolean,
 )
