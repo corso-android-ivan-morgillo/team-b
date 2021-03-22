@@ -57,14 +57,16 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             viewModel.send(HomeScreenEvents.OnSettingClick)
         }
 
+        binding.swiperefresh.setOnRefreshListener {
+            viewModel.send(HomeScreenEvents.OnRefreshClicked)
+        }
+
         binding.cocktailsList.adapter = drinkAdapter
 
         val categoryAdapter = CategoryAdapter { item: CategoryUI, _: View ->
             viewModel.send(HomeScreenEvents.OnCategoryClick(item))
-            binding.swiperefresh.setOnRefreshListener {
-                viewModel.send(HomeScreenEvents.OnRefreshClicked(item))
-            }
         }
+
         binding.categoryList.adapter = categoryAdapter
 
         controlCategorySwipe()
@@ -105,7 +107,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun observeStates(
         adapter: DrinkAdapter,
         categoryAdapter: CategoryAdapter,
-        fragmentHomeBinding: FragmentHomeBinding
+        fragmentHomeBinding: FragmentHomeBinding,
     ) {
         viewModel.states.observe(viewLifecycleOwner, { state ->
             Timber.d(state.toString())
@@ -147,7 +149,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         fragmentHomeBinding: FragmentHomeBinding,
         adapter: DrinkAdapter,
         state: Content,
-        categoryAdapter: CategoryAdapter
+        categoryAdapter: CategoryAdapter,
     ) {
         fragmentHomeBinding.swiperefresh.isRefreshing = false
         adapter.setDrinksList(state.generalContent.drinkList)

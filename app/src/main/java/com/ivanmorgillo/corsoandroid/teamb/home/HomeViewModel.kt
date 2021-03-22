@@ -38,6 +38,7 @@ class HomeViewModel(
     val actions = SingleLiveEvent<HomeScreenActions>()
     private var selectedCategory = 0
     private var categoryList: List<CategoryUI>? = null
+    private var currentCategory = "Ordinary Drink"
 
     init {
         tracking.logScreen(Screens.Home)
@@ -50,7 +51,7 @@ class HomeViewModel(
         when (event) {
             // l'activity è pronta
             HomeScreenEvents.OnReady -> {
-                loadContent("Ordinary Drink")
+                loadContent()
             }
             is HomeScreenEvents.OnCocktailClick -> {
                 tracking.logEvent("home_cocktail_clicked")
@@ -58,7 +59,7 @@ class HomeViewModel(
             }
             is HomeScreenEvents.OnRefreshClicked -> {
                 tracking.logEvent("home_refresh_clicked")
-                loadContent(event.category.nameCategory)
+                loadContent()
             }
             HomeScreenEvents.OnSettingClick -> {
                 tracking.logEvent("home_settings_clicked")
@@ -70,7 +71,8 @@ class HomeViewModel(
                 tracking.logEvent("home_category_clicked", param)
                 val categoryPosition = categoryList?.indexOf(event.category) ?: 0
                 selectedCategory = categoryPosition
-                loadContent(event.category.nameCategory)
+                currentCategory = event.category.nameCategory
+                loadContent()
             }
         }.exhaustive
     }
@@ -84,10 +86,10 @@ class HomeViewModel(
         }.exhaustive
     }
 
-    private fun loadContent(category: String) {
+    private fun loadContent() {
         states.postValue(Loading)
         viewModelScope.launch {
-            val drinkResult = repository.loadDrinks(category)
+            val drinkResult = repository.loadDrinks(currentCategory)
             val resultCategories = repository.loadCategories()
             when (resultCategories) {
                 is LoadCategoriesResult.Failure -> onCategoriesFailure(resultCategories)
@@ -157,7 +159,7 @@ sealed class HomeScreenEvents {
     data class OnCocktailClick(val drink: DrinkUI) : HomeScreenEvents()
     data class OnCategoryClick(val category: CategoryUI) : HomeScreenEvents()
     object OnReady : HomeScreenEvents()
-    data class OnRefreshClicked(val category: CategoryUI) : HomeScreenEvents()
+    object OnRefreshClicked : HomeScreenEvents()
     object OnSettingClick : HomeScreenEvents()
 }
 
