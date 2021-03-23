@@ -59,9 +59,9 @@ import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToTwitter
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.SignIn
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.SignOut
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
+import java.util.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
-import java.util.*
 
 interface CleanSearchField {
     fun cleanSearchField()
@@ -149,7 +149,12 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
 
             override fun onAdClosed() = Unit
         }
-        adView.adUnitId = "ca-app-pub-4984877505456457/4180942455"
+
+        // Production Banner
+        adView.adUnitId = "ca-app-pub-2501808310626326/8252119211"
+
+        // Test Banner
+        // adView.adUnitId = "ca-app-pub-3940256099942544/6300978111"
 
         adView.adSize = adSize
 
@@ -158,7 +163,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
         // "Use AdRequest.Builder.addTestDevice("ABCDE0123") to get test ads on this device."
         val requestConfiguration = RequestConfiguration
             .Builder()
-            .setTestDeviceIds(listOf("1DBF4DCCF4D941F406A3311829733E08"))
+            .setTestDeviceIds(listOf("1DBF4DCCF4D941F406A3311829733E08", "A7969E15EC27924D9FA3DA32773B3E68"))
             .build()
         MobileAds.setRequestConfiguration(requestConfiguration)
         val adRequest = AdRequest.Builder().build()
