@@ -71,4 +71,6 @@
     <string name="work_in_progress">Work in progress</string>
     <string name="logout_effettuato">Logout Successful!</string>
     <string name="logout_fallito">Logout Failed!</string>
+    <string name="delete_custom">delete_custom_drink</string>
+    <string name="Mydrinks">My Drinks</string>
 </resources>

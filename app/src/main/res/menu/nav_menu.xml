@@ -8,6 +8,10 @@
                 android:icon="@drawable/maithai"
                 android:title="@string/componi_il_tuo_cocktail" />
             <item
+                android:id="@+id/nav_customListDrink"
+                android:icon="@drawable/customdrinklist"
+                android:title="@string/Mydrinks" />
+            <item
                 android:id="@+id/nav_favorites"
                 android:icon="@drawable/star"
                 android:title="@string/preferiti" />

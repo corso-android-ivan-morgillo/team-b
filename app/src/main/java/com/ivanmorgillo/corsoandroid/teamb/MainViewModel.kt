@@ -103,6 +103,13 @@ class MainActivityViewModel(
                 actions.postValue(CancelClick(event.dialog))
             }
             AfterSignOut -> actions.postValue(MainScreenAction.NavigateToHome)
+            MainScreenEvent.OnCustomClick -> {
+                Timber.d("OnCustomClick Clicked")
+            }
+            MainScreenEvent.OnCustomListClick -> {
+                tracking.logEvent("custom_drink_list")
+                actions.postValue(MainScreenAction.NavigateToCustomList)
+            }
         }.exhaustive
     }
 }
@@ -125,6 +132,8 @@ sealed class MainScreenEvent {
     object OnSignOutClick : MainScreenEvent()
     object AfterSignOut : MainScreenEvent()
     data class OnCancelClick(val dialog: DialogInterface) : MainScreenEvent()
+    object OnCustomListClick : MainScreenEvent()
+    object OnCustomClick : MainScreenEvent()
 }
 
 sealed class MainScreenAction {
@@ -141,4 +150,6 @@ sealed class MainScreenAction {
     object SignOut : MainScreenAction()
     object NavigateToHome : MainScreenAction()
     data class CancelClick(val dialog: DialogInterface) : MainScreenAction()
+    object NavigateToCustomList : MainScreenAction()
+    object NavigateToCustom : MainScreenAction()
 }

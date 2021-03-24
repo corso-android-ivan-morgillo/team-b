@@ -2,12 +2,8 @@ package com.ivanmorgillo.corsoandroid.teamb
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Context
 import android.content.DialogInterface
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -33,13 +29,6 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.AuthUI.IdpConfig.GoogleBuilder
 import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.IdpResponse
-import com.google.android.gms.ads.AdListener
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdSize
-import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.LoadAdError
-import com.google.android.gms.ads.MobileAds
-import com.google.android.gms.ads.RequestConfiguration
 import com.google.android.gms.auth.api.credentials.Credentials
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener
@@ -59,7 +48,8 @@ import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToTwitter
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.SignIn
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.SignOut
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
-import java.util.*
+import com.ivanmorgillo.corsoandroid.teamb.utils.openNewTabWindow
+import com.ivanmorgillo.corsoandroid.teamb.utils.setupAds
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
@@ -71,7 +61,6 @@ interface GoogleSignInRequest {
     fun signInWithGoogle()
 }
 
-@Suppress("TooManyFunctions")
 class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, CleanSearchField, GoogleSignInRequest {
 
     private var searchView: SearchView? = null
@@ -108,67 +97,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
         userControl(user)
         // Google ads Sdk Initialization
 
-        setupAds()
-    }
-
-    // Determine the screen width (less decorations) to use for the ad width.
-    // If the ad hasn't been laid out, default to the full screen width.
-    private val adSize: AdSize
-        get() {
-            val display = windowManager.defaultDisplay
-            val outMetrics = DisplayMetrics()
-            display.getMetrics(outMetrics)
-
-            val density = outMetrics.density
-
-            var adWidthPixels = binding.adViewContainer.width.toFloat()
-            if (adWidthPixels == 0f) {
-                adWidthPixels = outMetrics.widthPixels.toFloat()
-            }
-
-            val adWidth = (adWidthPixels / density).toInt()
-            return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth)
-        }
-
-    private fun setupAds() {
-        MobileAds.initialize(this@MainActivity) {}
-        val adView = AdView(this)
-        binding.adViewContainer.addView(adView)
-        adView.adListener = object : AdListener() {
-            override fun onAdLoaded() = Unit
-
-            override fun onAdFailedToLoad(adError: LoadAdError) {
-                Timber.e(Throwable("Cannot Load Ad: ${adError.code}"))
-            }
-
-            override fun onAdOpened() = Unit
-
-            override fun onAdClicked() = Unit
-
-            override fun onAdLeftApplication() = Unit
-
-            override fun onAdClosed() = Unit
-        }
-
-        // Production Banner
-        adView.adUnitId = "ca-app-pub-2501808310626326/8252119211"
-
-        // Test Banner
-        // adView.adUnitId = "ca-app-pub-3940256099942544/6300978111"
-
-        adView.adSize = adSize
-
-        // Create an ad request. Check your logcat output for the hashed device ID to
-        // get test ads on a physical device, e.g.,
-        // "Use AdRequest.Builder.addTestDevice("ABCDE0123") to get test ads on this device."
-        val requestConfiguration = RequestConfiguration
-            .Builder()
-            .setTestDeviceIds(listOf("1DBF4DCCF4D941F406A3311829733E08", "A7969E15EC27924D9FA3DA32773B3E68"))
-            .build()
-        MobileAds.setRequestConfiguration(requestConfiguration)
-        val adRequest = AdRequest.Builder().build()
-        // Start loading the ad in the background.
-        adView.loadAd(adRequest)
+        setupAds(this, binding.adViewContainer)
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -214,6 +143,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
         return true
     }
 
+    @Suppress("ComplexMethod")
     private fun observeActions() {
         mainActivityViewModel.actions.observe(this, { action ->
             Timber.d(action.toString())
@@ -223,9 +153,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
                     bundle.putString("query", action.query)
                     navController.navigate(id.searchFragment, bundle)
                 }
-                NavigateToSettingMenu -> {
-                    navController.navigate(id.settingsFragment)
-                }
+                NavigateToSettingMenu -> navController.navigate(id.settingsFragment)
                 NavigateToInstagram -> openNewTabWindow("https://www.instagram.com/apperolteam/", this)
                 NavigateToTwitter -> openNewTabWindow("https://twitter.com/Apperol2", this)
                 NavigateToFeedBack -> openNewTabWindow(getString(string.feedback_link), this)
@@ -237,6 +165,8 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
                 SignOut -> signOutFromGoogle()
                 is CancelClick -> action.dialog.cancel()
                 NavigateToHome -> navController.navigate(id.homeFragment)
+                MainScreenAction.NavigateToCustom -> Unit
+                MainScreenAction.NavigateToCustomList -> navController.navigate(id.customListFragment)
             }.exhaustive
         })
     }
@@ -246,6 +176,9 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
             id.nav_customCocktail -> {
                 Timber.d("CustomCocktail")
                 Toast.makeText(this, getString(string.work_in_progress), Toast.LENGTH_LONG).show()
+            }
+            id.nav_customListDrink -> {
+                mainActivityViewModel.send(MainScreenEvent.OnCustomListClick)
             }
             id.nav_favorites -> {
                 if (FirebaseAuth.getInstance().currentUser == null) {
@@ -343,14 +276,6 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
         }
     }
 
-    private fun openNewTabWindow(urls: String, context: Context) {
-        val uris = Uri.parse(urls)
-        val intents = Intent(Intent.ACTION_VIEW, uris)
-        val b = Bundle()
-        b.putBoolean("new_window", true)
-        intents.putExtras(b)
-        context.startActivity(intents)
-    }
 
     override fun cleanSearchField() {
         searchView?.setQuery("", false)

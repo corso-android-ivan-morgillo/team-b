@@ -24,6 +24,9 @@
         <action
             android:id="@+id/action_homeFragment_to_randomCocktailFragment"
             app:destination="@id/randomCocktailFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_customListFragment"
+            app:destination="@id/customListFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
@@ -75,6 +78,13 @@
         <action
             android:id="@+id/action_randomCocktailFragment_to_detailFragment"
             app:destination="@id/detailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/customListFragment"
+        android:name="com.ivanmorgillo.corsoandroid.teamb.CustomListFragment"
+        tools:layout="@layout/fragment_custom_drink_list">
+
     </fragment>
 
 </navigation>
