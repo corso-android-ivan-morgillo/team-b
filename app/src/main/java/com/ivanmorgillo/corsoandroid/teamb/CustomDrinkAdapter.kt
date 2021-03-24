@@ -9,7 +9,7 @@ import com.apperol.databinding.FragmentCustomDrinkItemBinding
 
 class CustomDrinkAdapter(
     private val onDeleteClick: (CustomDrinkUI) -> Unit,
-    private val onDrinkClick: (CustomDrinkUI) -> Unit
+    private val onDrinkClick: (CustomDrinkUI) -> Unit,
 ) : Adapter<CustomDrinkViewHolder>() {
     var customDrinkList: List<CustomDrinkUI> = emptyList()
     override fun onCreateViewHolder(
@@ -43,7 +43,11 @@ class CustomDrinkViewHolder(private val binding: FragmentCustomDrinkItemBinding)
         binding.customDrinkName.text = item.drinkName
         binding.customDrinkImage.load(item.drinkImage)
         binding.customDrinkType.text = item.drinkType
-        binding.customDrinkRoot.setOnClickListener { onDrinkClick(item) }
-        binding.customDrinkDelete.setOnClickListener { onDeleteClick(item) }
+        binding.customDrinkRoot.setOnClickListener {
+            onDrinkClick(item)
+        }
+        binding.customDrinkDelete.setOnClickListener {
+            onDeleteClick(item)
+        }
     }
 }
