@@ -62,7 +62,6 @@ import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
-
 interface CleanSearchField {
     fun cleanSearchField()
 }

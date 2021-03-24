@@ -83,6 +83,8 @@
     <fragment
         android:id="@+id/customListFragment"
         android:name="com.ivanmorgillo.corsoandroid.teamb.CustomListFragment"
-        tools:layout="@layout/fragment_custom_drink_list"></fragment>
+        tools:layout="@layout/fragment_custom_drink_list">
+
+    </fragment>
 
 </navigation>

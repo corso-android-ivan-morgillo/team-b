@@ -11,19 +11,20 @@ import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
-class CustomListFragment : Fragment(R.layout.fragment_favorites) {
+class CustomListFragment : Fragment(R.layout.fragment_custom_drink_list) {
     private val binding by viewBinding(FragmentCustomDrinkListBinding::bind)
     private val customViewModel: CustomListViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val customAdapter = CustomDrinkAdapter { item, v ->
-            when (v.id) {
-                R.id.custom_drink_root -> customViewModel.send(CustomScreenEvent.OnCustomClick(item))
-                R.id.custom_drink_delete -> customViewModel.send(CustomScreenEvent.OnDeleteClick(item))
-            }
-        }
+        val customAdapter = CustomDrinkAdapter(
+            onDeleteClick = {
+                customViewModel.send(CustomScreenEvent.OnDeleteClick(it))
+            },
+            onDrinkClick = { item ->
+                customViewModel.send(CustomScreenEvent.OnCustomClick(item))
+            })
         binding.customDrinkList.adapter = customAdapter
         observeStates(customAdapter)
         observeActions()
