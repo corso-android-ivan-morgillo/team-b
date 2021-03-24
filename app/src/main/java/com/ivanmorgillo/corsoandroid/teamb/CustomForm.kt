@@ -2,7 +2,6 @@ package com.ivanmorgillo.corsoandroid.teamb
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import com.apperol.R
 import com.apperol.databinding.CustomFormBinding
@@ -19,10 +18,8 @@ class CustomForm : Fragment(R.layout.custom_form) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val inputText = binding.outlinedTextField.editText?.text.toString()
+        val inputText = binding.customDrinkName.editText?.text.toString()
 
-        binding.outlinedTextField.editText?.doOnTextChanged { inputText, _, _, _ ->
-            // Respond to input text change
-        }
+
     }
 }

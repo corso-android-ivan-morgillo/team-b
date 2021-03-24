@@ -24,6 +24,9 @@
         <action
             android:id="@+id/action_homeFragment_to_randomCocktailFragment"
             app:destination="@id/randomCocktailFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_customForm"
+            app:destination="@id/customForm" />
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
@@ -76,5 +79,9 @@
             android:id="@+id/action_randomCocktailFragment_to_detailFragment"
             app:destination="@id/detailFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/customForm"
+        android:name="com.ivanmorgillo.corsoandroid.teamb.CustomForm"
+        android:label="CustomForm" />
 
 </navigation>

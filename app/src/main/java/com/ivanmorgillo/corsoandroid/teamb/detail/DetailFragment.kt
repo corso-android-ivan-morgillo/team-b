@@ -60,7 +60,7 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
         }
         binding.detailScreenRecycleview.adapter = adapter
 
-        val cocktailId = args.drinkId
+        val cocktailId = args.cocktailId
         if (cocktailId == COCKTAILIDDEFAULT) {
             findNavController().popBackStack()
         } else if (cocktailId == RANDOMCOCKTAIL) {

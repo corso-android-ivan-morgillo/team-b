@@ -46,6 +46,7 @@ import com.google.android.material.navigation.NavigationView.OnNavigationItemSel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.CancelClick
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.CustomClick
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.DisableDarkMode
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.EnableDarkMode
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToFavorite
@@ -61,7 +62,6 @@ import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.SignOut
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
-import java.util.*
 
 interface CleanSearchField {
     fun cleanSearchField()
@@ -232,6 +232,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
                 SignOut -> signOutFromGoogle()
                 is CancelClick -> action.dialog.cancel()
                 NavigateToHome -> navController.navigate(id.homeFragment)
+                CustomClick -> navController.navigate(id.customForm)
             }.exhaustive
         })
     }
@@ -240,6 +241,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
         when (item.itemId) {
             id.nav_customCocktail -> {
                 Timber.d("CustomCocktail")
+                mainActivityViewModel.send(MainScreenEvent.OnCustomClick)
                 Toast.makeText(this, getString(string.work_in_progress), Toast.LENGTH_LONG).show()
             }
             id.nav_favorites -> {
