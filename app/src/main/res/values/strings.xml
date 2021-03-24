@@ -71,4 +71,11 @@
     <string name="work_in_progress">Work in progress</string>
     <string name="logout_effettuato">Logout Successful!</string>
     <string name="logout_fallito">Logout Failed!</string>
+    <string name="name">Name</string>
+    <string name="type">Type</string>
+    <string name="glass">Glass</string>
+    <string name="custom_ingredients">Ingredients:</string>
+    <string name="custom_name_ingredient">Name Ingredient</string>
+    <string name="custom_quantity">Quantity</string>
+    <string name="create_your_drink">Create your drink!</string>
 </resources>

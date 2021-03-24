@@ -71,4 +71,11 @@
     <string name="work_in_progress">Presto disponibile</string>
     <string name="logout_effettuato">Logout Effettuato!</string>
     <string name="logout_fallito">Logout Fallito!</string>
+    <string name="name">Nome</string>
+    <string name="type">Tipo</string>
+    <string name="glass">Bicchiere</string>
+    <string name="custom_ingredients">Ingredienti:</string>
+    <string name="custom_name_ingredient">Nome Ingrediente</string>
+    <string name="custom_quantity">Quantità</string>
+    <string name="create_your_drink">Componi il tuo drink!</string>
 </resources>
