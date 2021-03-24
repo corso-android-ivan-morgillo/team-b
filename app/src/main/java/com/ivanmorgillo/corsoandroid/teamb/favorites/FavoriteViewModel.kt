@@ -64,7 +64,6 @@ class FavoriteViewModel(
                         image = it.image,
                         id = it.id,
                         category = it.category
-
                     )
                 }
                 val content = FavoriteScreenStates.Content(favoriteUI)

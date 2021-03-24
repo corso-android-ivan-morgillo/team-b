@@ -39,6 +39,11 @@ sealed class Screens {
         override val className: String = "Favorite Fragment"
         override val name: String = "Favorite"
     }
+
+    object Custom : Screens() {
+        override val className: String = "Custom Fragment"
+        override val name: String = "Custom"
+    }
 }
 
 interface Tracking {

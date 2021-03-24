@@ -61,7 +61,7 @@ import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.SignOut
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
-import java.util.*
+
 
 interface CleanSearchField {
     fun cleanSearchField()
@@ -232,6 +232,8 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
                 SignOut -> signOutFromGoogle()
                 is CancelClick -> action.dialog.cancel()
                 NavigateToHome -> navController.navigate(id.homeFragment)
+                MainScreenAction.NavigateToCustom -> Unit
+                MainScreenAction.NavigateToCustomList -> navController.navigate(id.customListFragment)
             }.exhaustive
         })
     }
@@ -241,6 +243,9 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
             id.nav_customCocktail -> {
                 Timber.d("CustomCocktail")
                 Toast.makeText(this, getString(string.work_in_progress), Toast.LENGTH_LONG).show()
+            }
+            id.nav_customListDrink -> {
+                mainActivityViewModel.send(MainScreenEvent.OnCustomListClick)
             }
             id.nav_favorites -> {
                 if (FirebaseAuth.getInstance().currentUser == null) {
