@@ -9,6 +9,7 @@ import com.apperol.CustomDrinkRepositoryImpl
 import com.apperol.FavoriteRepository
 import com.apperol.FavoriteRepositoryImpl
 import com.ivanmorgillo.corsoandroid.teamb.CustomFormViewModel
+import com.ivanmorgillo.corsoandroid.teamb.CustomListViewModel
 import com.ivanmorgillo.corsoandroid.teamb.MainActivityViewModel
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailViewModel
 import com.ivanmorgillo.corsoandroid.teamb.favorites.FavoriteViewModel
@@ -56,4 +57,5 @@ val appModule = module {
     viewModel { RandomCocktailViewModel(tracking = get()) }
     viewModel { FavoriteViewModel(tracking = get(), repository = get()) }
     viewModel { CustomFormViewModel(customDrinkRepository = get(), tracking = get()) }
+    viewModel { CustomListViewModel(tracking = get(), repository = get()) }
 }

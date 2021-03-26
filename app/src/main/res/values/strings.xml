@@ -82,4 +82,6 @@
     <string name="add_ingredient">Add ingredient</string>
     <string name="save">Save</string>
     <string name="is_alcoholic">Is alcoholic?</string>
+    <string name="delete_custom">delete_custom_drink</string>
+    <string name="Mydrinks">My Drinks</string>
 </resources>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/custom_drink_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:backgroundTint="@android:color/white"
+    android:elevation="50dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="12dp"
+    android:layout_margin="10dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:id="@+id/custom_drink_delete"
+            tools:src="@mipmap/ic_launcher"
+            android:src="@drawable/cestino"
+            android:padding="12dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:contentDescription="@string/delete_custom" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/custom_drink_image"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="8dp"
+            app:civ_border_color="@color/colorAccent"
+            app:civ_border_width="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@mipmap/ic_launcher" />
+
+        <TextView
+            android:id="@+id/custom_drink_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:gravity="start"
+            android:padding="4dp"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toStartOf="@id/custom_drink_delete"
+            app:layout_constraintStart_toEndOf="@+id/custom_drink_image"
+            app:layout_constraintTop_toTopOf="@+id/custom_drink_image" />
+
+        <TextView
+            android:id="@+id/custom_drink_type"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tools:text="CUSTOM DRINK TYPE"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:textSize="12sp"
+            android:textColor="@android:color/black"
+            app:layout_constraintTop_toBottomOf="@id/custom_drink_name"
+            app:layout_constraintStart_toEndOf="@+id/custom_drink_image"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="8dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

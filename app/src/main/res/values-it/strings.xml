@@ -82,4 +82,6 @@
     <string name="add_ingredient">Aggiungi ingrediente</string>
     <string name="save">Salva</string>
     <string name="is_alcoholic">È alcolico?</string>
+    <string name="delete_custom">delete_custom_drink</string>
+    <string name="Mydrinks">I miei Drinks</string>
 </resources>
