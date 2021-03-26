@@ -78,4 +78,8 @@
     <string name="custom_name_ingredient">Nome Ingrediente</string>
     <string name="custom_quantity">Quantità</string>
     <string name="create_your_drink">Componi il tuo drink!</string>
+    <string name="instructions">Istruzioni</string>
+    <string name="add_ingredient">Aggiungi ingrediente</string>
+    <string name="save">Salva</string>
+    <string name="is_alcoholic">È alcolico?</string>
 </resources>

@@ -5,11 +5,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools">
+        android:layout_height="match_parent">
 
         <TextView
             android:layout_width="wrap_content"
@@ -70,7 +68,7 @@
             app:layout_constraintTop_toBottomOf="@id/custom_drink_category_label"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_margin="8dp"
-            android:text="È alcolico?" />
+            android:text="@string/is_alcoholic" />
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/custom_drink_is_alcoholic"
@@ -122,15 +120,13 @@
             app:layout_constraintTop_toBottomOf="@id/custom_drink_ingredients_text"
             android:layout_margin="8dp" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:id="@+id/ingredients_add_form"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/custom_drink_ingredients_list"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools">
+            app:layout_constraintTop_toBottomOf="@id/custom_drink_ingredients_list">
 
 
             <EditText
@@ -172,18 +168,39 @@
             android:layout_height="wrap_content"
             android:id="@+id/custom_drink_add_ingredient"
             android:layout_margin="8dp"
-            android:text="aggiungi ingrediente"
+            android:text="@string/add_ingredient"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ingredients_add_form" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/custom_drink_instructions_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/custom_drink_add_ingredient"
+            android:hint="@string/instructions"
+            app:boxStrokeColor="@color/colorAccent"
+            app:boxStrokeWidth="1dp"
+            android:layout_margin="8dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/custom_drink_instructions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimary"
+                android:inputType="text" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/custom_drink_save"
             android:layout_margin="8dp"
-            android:text="Salva"
+            android:text="@string/save"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/custom_drink_add_ingredient" />
+            app:layout_constraintTop_toBottomOf="@id/custom_drink_instructions_label" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

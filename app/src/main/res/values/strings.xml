@@ -78,4 +78,8 @@
     <string name="custom_name_ingredient">Name Ingredient</string>
     <string name="custom_quantity">Quantity</string>
     <string name="create_your_drink">Create your drink!</string>
+    <string name="instructions">instructions</string>
+    <string name="add_ingredient">Add ingredient</string>
+    <string name="save">Save</string>
+    <string name="is_alcoholic">Is alcoholic?</string>
 </resources>
