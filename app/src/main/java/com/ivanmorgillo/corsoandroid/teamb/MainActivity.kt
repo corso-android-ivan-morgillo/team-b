@@ -19,8 +19,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
-import coil.load
 import com.apperol.R
 import com.apperol.R.id
 import com.apperol.R.string
@@ -175,7 +173,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
         when (item.itemId) {
             id.nav_customCocktail -> {
                 Timber.d("CustomCocktail")
-                Toast.makeText(this, getString(string.work_in_progress), Toast.LENGTH_LONG).show()
+                navController.navigate(R.id.customForm)
             }
             id.nav_customListDrink -> {
                 mainActivityViewModel.send(MainScreenEvent.OnCustomListClick)

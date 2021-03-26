@@ -107,7 +107,7 @@ class MainActivityViewModel(
             AfterSignOut -> actions.postValue(NavigateToHome)
             OnCustomClick -> {
                 tracking.logEvent("custom_drink_clicked")
-                actions.postValue(MainScreenAction.CustomClick)
+                actions.postValue(MainScreenAction.NavigateToCustom)
             }
             MainScreenEvent.OnCustomListClick -> {
                 tracking.logEvent("custom_drink_list")
