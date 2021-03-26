@@ -138,7 +138,8 @@
                 android:layout_margin="8dp"
                 android:hint="@string/custom_name_ingredient"
                 android:inputType="text"
-                android:importantForAutofill="no" />
+                android:importantForAutofill="no"
+                android:textColor="@color/colorPrimary" />
 
             <EditText
                 android:layout_width="0dp"
@@ -149,7 +150,8 @@
                 android:layout_margin="8dp"
                 android:hint="@string/custom_quantity"
                 android:inputType="number"
-                android:importantForAutofill="no" />
+                android:importantForAutofill="no"
+                android:textColor="@color/colorPrimary" />
 
             <TextView
                 android:id="@+id/custom_drink_unit_measure"

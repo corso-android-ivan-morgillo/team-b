@@ -5,65 +5,116 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apperol.CustomDrinkRepository
 import com.apperol.Detail
+import com.apperol.Ingredient
 import com.ivanmorgillo.corsoandroid.teamb.CustomFormEvents.AddIngredient
 import com.ivanmorgillo.corsoandroid.teamb.CustomFormEvents.IsAlcoholicClicked
 import com.ivanmorgillo.corsoandroid.teamb.CustomFormEvents.OnGlassClicked
 import com.ivanmorgillo.corsoandroid.teamb.CustomFormEvents.OnReady
 import com.ivanmorgillo.corsoandroid.teamb.CustomFormEvents.OnSaveClick
+import com.ivanmorgillo.corsoandroid.teamb.CustomFormStates.Content
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates
 import com.ivanmorgillo.corsoandroid.teamb.utils.Tracking
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 class CustomFormViewModel(
     val customDrinkRepository: CustomDrinkRepository,
     val tracking: Tracking
 ) : ViewModel() {
     val states = MutableLiveData<CustomFormStates>()
-
-    private var drinkCustom: Detail? = null
+    private val ingredientsList = emptyList<String>().toMutableList()
+    private var content = CustomFormUI(
+        name = "",
+        type = "",
+        isAlcoholic = true,
+        glass = "",
+        ingredients = listOf(),
+        ingredientName = "",
+        ingredientQty = "",
+        instructions = ""
+    )
 
     fun send(event: CustomFormEvents) {
         when (event) {
-            OnSaveClick -> viewModelScope.launch { saveContent() }
+            is OnSaveClick -> viewModelScope.launch { saveContent(event) }
             OnGlassClicked -> TODO()
             is IsAlcoholicClicked -> TODO()
-            AddIngredient -> TODO()
-            OnReady -> {
-                val content = CustomFormUI(
-                    name = "PippoDrink",
-                    type = "Ordinary Drink",
-                    isAlcoholic = true,
-                    glass = "flute",
-                    ingredients = listOf("sugar", "vodka", "gin"),
+            is AddIngredient -> {
+                val ingredients = content.ingredients
+                    .plus("${event.ingredientName} -- ${event.ingredientQty}")
+                    .distinct()
+                val updatedContent = content.copy(
+                    name = event.name,
+                    type = event.type,
+                    isAlcoholic = event.isAlcoholic,
+                    glass = event.glass,
+                    ingredients = ingredients,
                     ingredientName = "",
                     ingredientQty = "",
-                    instructions = "mirko la fa poi"
+                    instructions = event.instructions
                 )
-                states.postValue(CustomFormStates.Success(content))
+                content = updatedContent
+                states.postValue(Content(content))
+
+            }
+            OnReady -> {
+
+                states.postValue(CustomFormStates.Content(content))
             }
         }.exhaustive
     }
 
-    private suspend fun saveContent() {
+    private suspend fun saveContent(event: OnSaveClick) {
         states.postValue(CustomFormStates.Loading)
-        val custom = drinkCustom ?: return
-        customDrinkRepository.save(custom)
-        Timber.d("Inserito Drink Custom")
+        val ingredients = content.ingredients.plus("${event.ingredientName} ${event.ingredientQty}").map {
+            val list = it.split(" -- ")
+            val ingredientName = list.first()
+            val ingredientQty = list.last()
+            Ingredient(name = ingredientName, quantity = ingredientQty)
+        }
+        val dettaglio = Detail(
+            name = event.name,
+            image = "",
+            id = 0,
+            isAlcoholic = event.alcoholic,
+            glass = "",
+            ingredients = ingredients,
+            youtubeLink = null,
+            instructions = event.instructions,
+            category = ""
+        )
+        customDrinkRepository.save(dettaglio)
     }
 }
 
 sealed class CustomFormStates {
     object Loading : CustomFormStates()
     data class Error(val error: DetailErrorStates) : CustomFormStates()
-    data class Success(val content: CustomFormUI) : CustomFormStates()
+    data class Content(val content: CustomFormUI) : CustomFormStates()
 }
 
 sealed class CustomFormEvents {
-    class IsAlcoholicClicked(checked: Boolean) : CustomFormEvents()
-    object OnSaveClick : CustomFormEvents()
+    data class IsAlcoholicClicked(val checked: Boolean) : CustomFormEvents()
     object OnGlassClicked : CustomFormEvents()
-    object AddIngredient : CustomFormEvents()
+    data class AddIngredient(
+        val name: String,
+        val type: String,
+        val isAlcoholic: Boolean,
+        val glass: String,
+        val ingredientName: String,
+        val ingredientQty: String,
+        val instructions: String
+    ) : CustomFormEvents()
+
+    data class OnSaveClick(
+        val name: String,
+        val type: String,
+        val alcoholic: Boolean,
+        val glass: String,
+        val ingredientName: String,
+        val ingredientQty: String,
+        val instructions: String
+    ) : CustomFormEvents()
+
     object OnReady : CustomFormEvents()
 }
