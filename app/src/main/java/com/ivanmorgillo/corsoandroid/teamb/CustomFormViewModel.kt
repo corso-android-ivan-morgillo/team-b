@@ -12,6 +12,8 @@ import com.ivanmorgillo.corsoandroid.teamb.CustomFormEvents.OnGlassClicked
 import com.ivanmorgillo.corsoandroid.teamb.CustomFormEvents.OnReady
 import com.ivanmorgillo.corsoandroid.teamb.CustomFormEvents.OnSaveClick
 import com.ivanmorgillo.corsoandroid.teamb.CustomFormStates.Content
+import com.ivanmorgillo.corsoandroid.teamb.NameField.Invalid
+import com.ivanmorgillo.corsoandroid.teamb.NameField.Valid
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates
 import com.ivanmorgillo.corsoandroid.teamb.utils.SingleLiveEvent
 import com.ivanmorgillo.corsoandroid.teamb.utils.Tracking
@@ -27,7 +29,7 @@ class CustomFormViewModel(
     val action = SingleLiveEvent<CustomFormAction>()
     private val ingredientsList = emptyList<String>().toMutableList()
     private var content = CustomFormUI(
-        name = "",
+        name = Valid(""),
         type = "",
         isAlcoholic = true,
         glass = "",
@@ -47,7 +49,7 @@ class CustomFormViewModel(
                     .plus("${event.ingredientName} -- ${event.ingredientQty}")
                     .distinct()
                 val updatedContent = content.copy(
-                    name = event.name,
+                    name = Valid(event.name),
                     type = event.type,
                     isAlcoholic = event.isAlcoholic,
                     glass = event.glass,
@@ -69,6 +71,11 @@ class CustomFormViewModel(
 
     private suspend fun saveContent(event: OnSaveClick) {
         val drinkName = event.name
+        if (drinkName.isBlank()) {
+            val nameErrorContent = content.copy(name = Invalid("Drink name cannot be empty"))
+            states.postValue(CustomFormStates.Content(nameErrorContent))
+            return
+        }
         val drinkType = event.type
         val drinkAlcoholic = event.alcoholic
         val drinkGlass = event.glass

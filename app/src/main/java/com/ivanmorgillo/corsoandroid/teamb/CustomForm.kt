@@ -11,6 +11,8 @@ import com.ivanmorgillo.corsoandroid.teamb.CustomFormAction.NavigateToCustoms
 import com.ivanmorgillo.corsoandroid.teamb.CustomFormStates.Content
 import com.ivanmorgillo.corsoandroid.teamb.CustomFormStates.Error
 import com.ivanmorgillo.corsoandroid.teamb.CustomFormStates.Loading
+import com.ivanmorgillo.corsoandroid.teamb.NameField.Invalid
+import com.ivanmorgillo.corsoandroid.teamb.NameField.Valid
 import com.ivanmorgillo.corsoandroid.teamb.utils.bindings.viewBinding
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
 import com.ivanmorgillo.corsoandroid.teamb.utils.gone
@@ -33,7 +35,13 @@ class CustomForm : Fragment(R.layout.custom_form) {
                 Loading -> binding.customDrinkProgressBar.visible()
                 is Content -> {
                     binding.customDrinkProgressBar.gone()
-                    binding.customDrinkName.setText(it.content.name)
+                    when (it.content.name) {
+                        is Invalid -> {
+                            binding.customDrinkNameLabel.setError(it.content.name.error)
+                        }
+                        is Valid -> binding.customDrinkName.setText(it.content.name.value)
+                    }.exhaustive
+
                     binding.customDrinkCategory.setText(it.content.type)
                     binding.customDrinkGlass.setText(it.content.glass)
                     binding.customDrinkIsAlcoholic.isChecked = it.content.isAlcoholic
@@ -107,7 +115,7 @@ class CustomForm : Fragment(R.layout.custom_form) {
 }
 
 data class CustomFormUI(
-    val name: String,
+    val name: NameField,
     val type: String,
     val isAlcoholic: Boolean,
     val glass: String,
@@ -117,3 +125,8 @@ data class CustomFormUI(
     val instructions: String
 
 )
+
+sealed class NameField {
+    data class Valid(val value: String) : NameField()
+    data class Invalid(val error: String) : NameField()
+}
