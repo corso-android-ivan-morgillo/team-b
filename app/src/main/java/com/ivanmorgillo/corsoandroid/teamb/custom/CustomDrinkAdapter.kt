@@ -1,4 +1,4 @@
-package com.ivanmorgillo.corsoandroid.teamb
+package com.ivanmorgillo.corsoandroid.teamb.custom
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

@@ -175,7 +175,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
         when (item.itemId) {
             id.nav_customCocktail -> {
                 Timber.d("CustomCocktail")
-                Toast.makeText(this, getString(string.work_in_progress), Toast.LENGTH_LONG).show()
+                navController.navigate(R.id.customForm)
             }
             id.nav_customListDrink -> {
                 mainActivityViewModel.send(MainScreenEvent.OnCustomListClick)
@@ -275,7 +275,6 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
             binding.navView.menu.findItem(id.sign_in).isVisible = true
         }
     }
-
 
     override fun cleanSearchField() {
         searchView?.setQuery("", false)

@@ -9,6 +9,7 @@ import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.DisableDarkMode
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.EnableDarkMode
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToFavorite
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToFeedBack
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToHome
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToInstagram
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToRandom
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToSearch
@@ -18,6 +19,7 @@ import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.SignIn
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.SignOut
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.AfterSignOut
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnCancelClick
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnCustomClick
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnFavoriteClick
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnFeedBackClick
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnInstagramClick
@@ -102,9 +104,10 @@ class MainActivityViewModel(
                 tracking.logEvent("cancel_click_dialog_alert")
                 actions.postValue(CancelClick(event.dialog))
             }
-            AfterSignOut -> actions.postValue(MainScreenAction.NavigateToHome)
-            MainScreenEvent.OnCustomClick -> {
-                Timber.d("OnCustomClick Clicked")
+            AfterSignOut -> actions.postValue(NavigateToHome)
+            OnCustomClick -> {
+                tracking.logEvent("custom_drink_clicked")
+                actions.postValue(MainScreenAction.NavigateToCustom)
             }
             MainScreenEvent.OnCustomListClick -> {
                 tracking.logEvent("custom_drink_list")

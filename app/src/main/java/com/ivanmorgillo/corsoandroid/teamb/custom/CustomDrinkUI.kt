@@ -1,4 +1,4 @@
-package com.ivanmorgillo.corsoandroid.teamb
+package com.ivanmorgillo.corsoandroid.teamb.custom
 
 class CustomDrinkUI(
     val drinkName: String,
