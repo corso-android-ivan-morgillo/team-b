@@ -33,7 +33,8 @@ import com.google.android.gms.auth.api.credentials.Credentials
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.CancelClick
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.DisableDarkMode
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.EnableDarkMode
@@ -75,6 +76,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
         super.onCreate(savedInstanceState)
         observeActions()
         binding = ActivityMainBinding.inflate(layoutInflater)
+        userControl()
 
         setContentView(binding.root)
         val navHostFragment = supportFragmentManager.findFragmentById(id.nav_host_fragment) as NavHostFragment
@@ -95,9 +97,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
         // naviga nelle pagine del navigation drawer
         binding.navView.setNavigationItemSelectedListener(this)
         binding.navView.itemIconTintList = null
-        val user = FirebaseAuth.getInstance().currentUser
-        userControl(user)
-        // Google ads Sdk Initialization
+        userControl()
 
         setupAds(this, binding.adViewContainer)
     }
@@ -254,7 +254,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
                 Toast.makeText(applicationContext, "$welcomeString ${user.displayName}", Toast.LENGTH_SHORT)
                     .show()
             }
-            userControl(user)
+            userControl()
         } else {
             if (response?.error?.errorCode == ErrorCodes.ANONYMOUS_UPGRADE_MERGE_CONFLICT) {
                 // Store relevant anonymous user data
@@ -273,8 +273,11 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
         }
     }
 
-    private fun userControl(user: FirebaseUser?) {
-        if (user?.displayName == null && user?.email != null) {
+    private fun userControl() {
+        val user = Firebase.auth.currentUser ?: null
+        Timber.d("USER: ${user?.displayName}")
+
+        if (user?.displayName.isNullOrBlank() && user?.email != null) {
             binding.navView.getHeaderView(0).findViewById<TextView>(id.user_email).text = user.email
         } else if (user?.displayName != null) {
             binding.navView.getHeaderView(0).findViewById<TextView>(id.user_email).text = user.displayName
@@ -283,11 +286,9 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
             binding.navView.getHeaderView(0).findViewById<ImageView>(id.user_profile_image).load(user.photoUrl)
         }
         if (user != null) {
-            // binding.navView.menu.findItem(id.sign_in).setTitle(string.sign_out)
             binding.navView.menu.findItem(id.sign_out).isVisible = true
             binding.navView.menu.findItem(id.sign_in).isVisible = false
         } else {
-            // binding.navView.menu.findItem(id.sign_in).setTitle(string.sign_in)
             binding.navView.menu.findItem(id.sign_out).isVisible = false
             binding.navView.menu.findItem(id.sign_in).isVisible = true
         }
