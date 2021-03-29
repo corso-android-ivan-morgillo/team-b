@@ -1,4 +1,4 @@
-package com.ivanmorgillo.corsoandroid.teamb
+package com.ivanmorgillo.corsoandroid.teamb.custom
 
 import android.os.Bundle
 import android.view.View
@@ -7,13 +7,15 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.apperol.R
 import com.apperol.databinding.CustomFormBinding
-import com.ivanmorgillo.corsoandroid.teamb.CustomFormAction.NavigateToCustoms
-import com.ivanmorgillo.corsoandroid.teamb.CustomFormEvents.AddIngredient
-import com.ivanmorgillo.corsoandroid.teamb.CustomFormStates.Content
-import com.ivanmorgillo.corsoandroid.teamb.CustomFormStates.Error
-import com.ivanmorgillo.corsoandroid.teamb.CustomFormStates.Loading
-import com.ivanmorgillo.corsoandroid.teamb.NameField.Invalid
-import com.ivanmorgillo.corsoandroid.teamb.NameField.Valid
+import com.ivanmorgillo.corsoandroid.teamb.custom.CustomFormAction.NavigateToCustoms
+import com.ivanmorgillo.corsoandroid.teamb.custom.CustomFormEvents.AddIngredient
+import com.ivanmorgillo.corsoandroid.teamb.custom.CustomFormEvents.OnReady
+import com.ivanmorgillo.corsoandroid.teamb.custom.CustomFormEvents.OnSaveClick
+import com.ivanmorgillo.corsoandroid.teamb.custom.CustomFormStates.Content
+import com.ivanmorgillo.corsoandroid.teamb.custom.CustomFormStates.Error
+import com.ivanmorgillo.corsoandroid.teamb.custom.CustomFormStates.Loading
+import com.ivanmorgillo.corsoandroid.teamb.custom.NameField.Invalid
+import com.ivanmorgillo.corsoandroid.teamb.custom.NameField.Valid
 import com.ivanmorgillo.corsoandroid.teamb.utils.bindings.viewBinding
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
 import com.ivanmorgillo.corsoandroid.teamb.utils.gone
@@ -55,7 +57,7 @@ class CustomForm : Fragment(R.layout.custom_form) {
             val instructions = binding.customDrinkInstructions.text.toString()
 
             viewModel.send(
-                CustomFormEvents.OnSaveClick(
+                OnSaveClick(
                     name,
                     type,
                     isAlcoholic,
@@ -66,7 +68,7 @@ class CustomForm : Fragment(R.layout.custom_form) {
                 )
             )
         }
-        viewModel.send(CustomFormEvents.OnReady)
+        viewModel.send(OnReady)
     }
 
     private fun onAddClick() {

@@ -1,4 +1,4 @@
-package com.ivanmorgillo.corsoandroid.teamb
+package com.ivanmorgillo.corsoandroid.teamb.custom
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -6,14 +6,16 @@ import androidx.lifecycle.viewModelScope
 import com.apperol.CustomDrinkRepository
 import com.apperol.Detail
 import com.apperol.Ingredient
-import com.ivanmorgillo.corsoandroid.teamb.CustomFormEvents.AddIngredient
-import com.ivanmorgillo.corsoandroid.teamb.CustomFormEvents.IsAlcoholicClicked
-import com.ivanmorgillo.corsoandroid.teamb.CustomFormEvents.OnGlassClicked
-import com.ivanmorgillo.corsoandroid.teamb.CustomFormEvents.OnReady
-import com.ivanmorgillo.corsoandroid.teamb.CustomFormEvents.OnSaveClick
-import com.ivanmorgillo.corsoandroid.teamb.CustomFormStates.Content
-import com.ivanmorgillo.corsoandroid.teamb.NameField.Invalid
-import com.ivanmorgillo.corsoandroid.teamb.NameField.Valid
+import com.ivanmorgillo.corsoandroid.teamb.custom.CustomFormAction.NavigateToCustoms
+import com.ivanmorgillo.corsoandroid.teamb.custom.CustomFormEvents.AddIngredient
+import com.ivanmorgillo.corsoandroid.teamb.custom.CustomFormEvents.IsAlcoholicClicked
+import com.ivanmorgillo.corsoandroid.teamb.custom.CustomFormEvents.OnGlassClicked
+import com.ivanmorgillo.corsoandroid.teamb.custom.CustomFormEvents.OnReady
+import com.ivanmorgillo.corsoandroid.teamb.custom.CustomFormEvents.OnSaveClick
+import com.ivanmorgillo.corsoandroid.teamb.custom.CustomFormStates.Content
+import com.ivanmorgillo.corsoandroid.teamb.custom.CustomFormStates.Loading
+import com.ivanmorgillo.corsoandroid.teamb.custom.NameField.Invalid
+import com.ivanmorgillo.corsoandroid.teamb.custom.NameField.Valid
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates
 import com.ivanmorgillo.corsoandroid.teamb.utils.SingleLiveEvent
 import com.ivanmorgillo.corsoandroid.teamb.utils.Tracking
@@ -60,11 +62,10 @@ class CustomFormViewModel(
                 )
                 content = updatedContent
                 states.postValue(Content(content))
-
             }
             OnReady -> {
 
-                states.postValue(CustomFormStates.Content(content))
+                states.postValue(Content(content))
             }
         }.exhaustive
     }
@@ -73,7 +74,7 @@ class CustomFormViewModel(
         val drinkName = event.name
         if (drinkName.isBlank()) {
             val nameErrorContent = content.copy(name = Invalid("Drink name cannot be empty"))
-            states.postValue(CustomFormStates.Content(nameErrorContent))
+            states.postValue(Content(nameErrorContent))
             return
         }
         val drinkType = event.type
@@ -84,7 +85,7 @@ class CustomFormViewModel(
         val instructions = event.instructions
         Timber.d("EVENTO: $event")
 
-        states.postValue(CustomFormStates.Loading)
+        states.postValue(Loading)
 
         val ingredients = content.ingredients
             .plus("$ingredientName $ingredientQty")
@@ -108,7 +109,7 @@ class CustomFormViewModel(
         )
         Timber.d("SALVA IL DETTAGLIO $dettaglio")
         customDrinkRepository.save(dettaglio)
-        action.postValue(CustomFormAction.NavigateToCustoms)
+        action.postValue(NavigateToCustoms)
     }
 }
 

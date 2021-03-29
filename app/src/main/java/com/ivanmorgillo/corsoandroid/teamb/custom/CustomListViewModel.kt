@@ -1,9 +1,17 @@
-package com.ivanmorgillo.corsoandroid.teamb
+package com.ivanmorgillo.corsoandroid.teamb.custom
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apperol.CustomDrinkRepository
+import com.ivanmorgillo.corsoandroid.teamb.custom.CustomErrorStates.CustomListEmpty
+import com.ivanmorgillo.corsoandroid.teamb.custom.CustomScreenAction.NavigateToDetail
+import com.ivanmorgillo.corsoandroid.teamb.custom.CustomScreenEvent.OnCustomClick
+import com.ivanmorgillo.corsoandroid.teamb.custom.CustomScreenEvent.OnDeleteClick
+import com.ivanmorgillo.corsoandroid.teamb.custom.CustomScreenEvent.OnReady
+import com.ivanmorgillo.corsoandroid.teamb.custom.CustomScreenStates.Content
+import com.ivanmorgillo.corsoandroid.teamb.custom.CustomScreenStates.Error
+import com.ivanmorgillo.corsoandroid.teamb.custom.CustomScreenStates.Loading
 import com.ivanmorgillo.corsoandroid.teamb.utils.Screens
 import com.ivanmorgillo.corsoandroid.teamb.utils.SingleLiveEvent
 import com.ivanmorgillo.corsoandroid.teamb.utils.Tracking
@@ -25,23 +33,23 @@ class CustomListViewModel(
 
     fun send(event: CustomScreenEvent) {
         when (event) {
-            is CustomScreenEvent.OnCustomClick -> {
+            is OnCustomClick -> {
                 tracking.logEvent("favorite_clicked")
-                actions.postValue(CustomScreenAction.NavigateToDetail(event.cocktail))
+                actions.postValue(NavigateToDetail(event.cocktail))
             }
-            is CustomScreenEvent.OnDeleteClick -> {
+            is OnDeleteClick -> {
                 onDeleteClick(event.cocktail) //
             }
-            CustomScreenEvent.OnReady -> loadContent()
+            OnReady -> loadContent()
         }.exhaustive
     }
 
     private fun loadContent() {
-        states.postValue(CustomScreenStates.Loading)
+        states.postValue(Loading)
         viewModelScope.launch {
             val customs = repository.loadAll()
             if (customs == null) {
-                states.postValue(CustomScreenStates.Error(CustomErrorStates.CustomListEmpty))
+                states.postValue(Error(CustomListEmpty))
             } else {
                 customList = customs.map {
                     CustomDrinkUI(
@@ -51,7 +59,7 @@ class CustomListViewModel(
                         drinkType = it.category
                     )
                 }
-                val content = CustomScreenStates.Content(customList!!)
+                val content = Content(customList!!)
                 states.postValue(content)
             }
         }

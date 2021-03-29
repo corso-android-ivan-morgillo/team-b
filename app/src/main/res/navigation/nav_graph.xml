@@ -84,12 +84,12 @@
     </fragment>
     <fragment
         android:id="@+id/customForm"
-        android:name="com.ivanmorgillo.corsoandroid.teamb.CustomForm"
+        android:name="com.ivanmorgillo.corsoandroid.teamb.custom.CustomForm"
         android:label="CustomForm" />
 
     <fragment
         android:id="@+id/customListFragment"
-        android:name="com.ivanmorgillo.corsoandroid.teamb.CustomListFragment"
+        android:name="com.ivanmorgillo.corsoandroid.teamb.custom.CustomListFragment"
         tools:layout="@layout/fragment_custom_drink_list">
 
     </fragment>
