@@ -276,7 +276,6 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
         }
     }
 
-
     override fun cleanSearchField() {
         searchView?.setQuery("", false)
         searchView?.isIconified = true

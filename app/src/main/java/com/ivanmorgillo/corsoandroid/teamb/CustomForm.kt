@@ -4,13 +4,17 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.apperol.R
 import com.apperol.databinding.CustomFormBinding
+import com.ivanmorgillo.corsoandroid.teamb.CustomFormAction.NavigateToCustoms
 import com.ivanmorgillo.corsoandroid.teamb.CustomFormStates.Content
 import com.ivanmorgillo.corsoandroid.teamb.CustomFormStates.Error
 import com.ivanmorgillo.corsoandroid.teamb.CustomFormStates.Loading
 import com.ivanmorgillo.corsoandroid.teamb.utils.bindings.viewBinding
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
+import com.ivanmorgillo.corsoandroid.teamb.utils.gone
+import com.ivanmorgillo.corsoandroid.teamb.utils.visible
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CustomForm : Fragment(R.layout.custom_form) {
@@ -26,8 +30,9 @@ class CustomForm : Fragment(R.layout.custom_form) {
         viewModel.states.observe(viewLifecycleOwner) {
             when (it) {
                 is Error -> TODO()
-                Loading -> TODO()
+                Loading -> binding.customDrinkProgressBar.visible()
                 is Content -> {
+                    binding.customDrinkProgressBar.gone()
                     binding.customDrinkName.setText(it.content.name)
                     binding.customDrinkCategory.setText(it.content.type)
                     binding.customDrinkGlass.setText(it.content.glass)
@@ -41,6 +46,12 @@ class CustomForm : Fragment(R.layout.custom_form) {
                     binding.customIngredientQuantity.setText(it.content.ingredientQty)
                     // INSTRUCTIONS
                 }
+            }.exhaustive
+        }
+
+        viewModel.action.observe(viewLifecycleOwner) {
+            when (it) {
+                NavigateToCustoms -> findNavController().navigate(R.id.customListFragment)
             }.exhaustive
         }
         binding.customDrinkAddIngredient.setOnClickListener {
@@ -68,22 +79,16 @@ class CustomForm : Fragment(R.layout.custom_form) {
         binding.customDrinkSave.setOnClickListener {
 
             val name = binding.customDrinkName.text.toString()
-            if (name.isBlank()) return@setOnClickListener
-
             val type = binding.customDrinkCategory.text.toString()
-            if (type.isBlank()) return@setOnClickListener
 
             val glass = binding.customDrinkGlass.text.toString()
-            if (glass.isBlank()) return@setOnClickListener
 
             val isAlcoholic = binding.customDrinkIsAlcoholic.isChecked
 
             val ingredientName = binding.customIngredientName.text.toString()
             val ingredientQty = binding.customIngredientQuantity.text.toString()
-            if (ingredientName.isBlank() && ingredientQty.isBlank()) return@setOnClickListener
             // Mandare unità di misura presa dal dialog
             val instructions = binding.customDrinkInstructions.text.toString()
-            if (instructions.isBlank()) return@setOnClickListener
 
             viewModel.send(
                 CustomFormEvents.OnSaveClick(
