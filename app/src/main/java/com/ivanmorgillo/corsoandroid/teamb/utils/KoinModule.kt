@@ -26,7 +26,7 @@ import org.koin.dsl.module
 val appModule = module {
     /* creiamo un repository Singleton Pattern */
     single<CocktailRepository> {
-        CocktailRepositoryImpl(api = get())
+        CocktailRepositoryImpl(api = get(), customDrinkRepository = get())
     }
     single<Tracking> {
         TrackingImpl()
@@ -57,5 +57,5 @@ val appModule = module {
     viewModel { RandomCocktailViewModel(tracking = get()) }
     viewModel { FavoriteViewModel(tracking = get(), repository = get()) }
     viewModel { CustomFormViewModel(customDrinkRepository = get(), tracking = get()) }
-    viewModel { CustomListViewModel(tracking = get(), repository = get()) }
+    viewModel { CustomListViewModel(tracking = get(), customRepository = get()) }
 }

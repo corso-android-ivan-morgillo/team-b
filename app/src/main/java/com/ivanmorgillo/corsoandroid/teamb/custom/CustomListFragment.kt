@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.apperol.R
 import com.apperol.databinding.FragmentCustomDrinkListBinding
 import com.ivanmorgillo.corsoandroid.teamb.custom.CustomErrorStates.CustomListEmpty
@@ -46,13 +47,10 @@ class CustomListFragment : Fragment(R.layout.fragment_custom_drink_list) {
         customViewModel.actions.observe(viewLifecycleOwner, { action ->
             when (action) {
                 is NavigateToDetail -> {
-                    Timber.d("NavigateToDetail Custom ")
-                    /*
-                    DA IMPLEMENTARE L'AZIONE NEL NAV_GRAPH
+                    Timber.d("NavigateToDetailCustom ${action.cocktail.drinkId.toString()} ")
                     val directions = CustomListFragmentDirections
-                        .actionCustomListFragmentToCustomFormFragment(action.cocktail.drinkId)
+                        .actionCustomDrinkFragmentToDetailFragment(action.cocktail.drinkId, true)
                     findNavController().navigate(directions)
-                     */
                 }
             }.exhaustive
         })

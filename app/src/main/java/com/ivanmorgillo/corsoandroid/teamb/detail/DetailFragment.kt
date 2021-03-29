@@ -61,13 +61,14 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
         binding.detailScreenRecycleview.adapter = adapter
 
         val cocktailId = args.cocktailId
-        if (cocktailId == COCKTAILIDDEFAULT) {
-            findNavController().popBackStack()
-        } else if (cocktailId == RANDOMCOCKTAIL) {
-            viewModel.send(DetailScreenEvents.LoadRandomDrink)
-        } else {
-            Timber.d("CocktailId= $cocktailId")
-            viewModel.send(DetailScreenEvents.LoadDrink(cocktailId))
+        val isCustom = args.isCustom
+        when (cocktailId) {
+            COCKTAILIDDEFAULT -> findNavController().popBackStack()
+            RANDOMCOCKTAIL -> viewModel.send(DetailScreenEvents.LoadRandomDrink)
+            else -> {
+                Timber.d("CocktailId= $cocktailId")
+                viewModel.send(DetailScreenEvents.LoadDrink(cocktailId, isCustom))
+            }
         }
         observeStates(adapter)
         observeActions()

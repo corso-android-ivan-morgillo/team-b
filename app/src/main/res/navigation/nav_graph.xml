@@ -40,6 +40,10 @@
             android:name="cocktail_id"
             app:argType="long"
             android:defaultValue="-666L" />
+        <argument
+            android:name="is_custom"
+            app:argType="boolean"
+            android:defaultValue="false" />
         <action
             android:id="@+id/action_detailFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
@@ -91,6 +95,9 @@
         android:id="@+id/customListFragment"
         android:name="com.ivanmorgillo.corsoandroid.teamb.custom.CustomListFragment"
         tools:layout="@layout/fragment_custom_drink_list">
+        <action
+            android:id="@+id/action_customDrinkFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
 
     </fragment>
 

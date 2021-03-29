@@ -50,7 +50,7 @@ class DetailViewModel(
     @Suppress("IMPLICIT_CAST_TO_ANY")
     fun send(event: DetailScreenEvents) {
         when (event) {
-            is LoadDrink -> loadDetails(event.id)
+            is LoadDrink -> loadDetails(event.id, event.isCustom)
             is LoadRandomDrink -> loadRandomDrink()
             OnFavoriteClick -> {
                 if (Firebase.auth.currentUser != null) {
@@ -106,10 +106,10 @@ class DetailViewModel(
         }
     }
 
-    private fun loadDetails(id: Long) {
+    private fun loadDetails(id: Long, isCustom: Boolean) {
         states.postValue(Loading)
         viewModelScope.launch {
-            val result = repository.loadDetailCocktails(cocktailId = id)
+            val result = repository.loadDetailCocktails(cocktailId = id, isCustom)
             when (result) {
                 is LoadDetailCocktailResult.Failure -> onFailure(result)
                 is LoadDetailCocktailResult.Success -> createContent(result.details)
@@ -167,7 +167,7 @@ sealed class DetailScreenStates {
 sealed class DetailScreenEvents {
     object LoadRandomDrink : DetailScreenEvents()
     object OnSettingClick : DetailScreenEvents()
-    data class LoadDrink(val id: Long) : DetailScreenEvents()
+    data class LoadDrink(val id: Long, val isCustom: Boolean) : DetailScreenEvents()
     object OnFavoriteClick : DetailScreenEvents()
     object OnSignInClick : DetailScreenEvents()
     data class OnCancelClick(val dialog: DialogInterface) : DetailScreenEvents()

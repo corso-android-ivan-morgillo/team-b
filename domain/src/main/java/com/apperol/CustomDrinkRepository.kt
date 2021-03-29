@@ -1,15 +1,17 @@
 package com.apperol
 
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import java.math.BigInteger
-import java.util.UUID
 import kotlinx.coroutines.tasks.await
 import timber.log.Timber
+import kotlin.math.absoluteValue
+import kotlin.random.Random
 
 interface CustomDrinkRepository {
     suspend fun save(customDrink: Detail): Boolean
     suspend fun delete(id: Long): Boolean
     suspend fun loadAll(): List<Detail>?
+    suspend fun loadById(cocktailId: Long): Detail?
 }
 
 class CustomDrinkRepositoryImpl(
@@ -22,7 +24,7 @@ class CustomDrinkRepositoryImpl(
 
     override suspend fun save(customDrink: Detail): Boolean {
         if (authenticationManager.isUserLoggedIn()) {
-            val id = UUID.randomUUID().toString()
+            val id = Random.nextLong().absoluteValue
             val uid = authenticationManager.getUId() ?: return false
             val customMap = hashMapOf(
                 "id" to id,
@@ -35,7 +37,7 @@ class CustomDrinkRepositoryImpl(
                 "instructions" to customDrink.instructions,
                 "userid" to uid
             )
-            customCollection.document(id).set(customMap).await()
+            customCollection.document(id.toString()).set(customMap).await()
             Timber.d("INSERITO DETTAGLIO: $customMap")
             return true
         } else {
@@ -62,25 +64,7 @@ class CustomDrinkRepositoryImpl(
                 .await()
                 .documents
                 .map {
-                    val name = it["name"] as String
-                    val image = it["image"] as String
-                    val category = it["category"] as String
-                    val id = it["id"] as String
-                    val glass = it["glass"] as String
-                    val alcoholic = it["alcoholic"] as Boolean
-                    val ingredients = it["ingredients"] as List<Ingredient>
-                    val instructions = it["instructions"] as String
-                    Detail(
-                        name = name,
-                        image = image,
-                        id = BigInteger(id.toByteArray()).toLong(),
-                        isAlcoholic = alcoholic,
-                        glass = glass,
-                        ingredients = ingredients,
-                        youtubeLink = null,
-                        instructions = instructions,
-                        category = category
-                    )
+                    it.toDetail()
                 }
             return if (customList.isEmpty()) {
                 null
@@ -89,6 +73,41 @@ class CustomDrinkRepositoryImpl(
             }
         } else {
             return null
+        }
+    }
+
+    private fun DocumentSnapshot.toDetail(): Detail {
+        val name = this["name"] as String
+        val image = this["image"] as String
+        val category = this["category"] as String
+        val id = this["id"] as Long
+        val glass = this["glass"] as String
+        val alcoholic = this["alcoholic"] as Boolean
+        val ingredients = this["ingredients"] as List<Map<String, String>>
+        val instructions = this["instructions"] as String
+        return Detail(
+            name = name,
+            image = image,
+            id = id,
+            isAlcoholic = alcoholic,
+            glass = glass,
+            ingredients = ingredients.map {
+                Ingredient(
+                    name = it["name"]!!,
+                    quantity = it["quantity"]!!
+                )
+            },
+            youtubeLink = null,
+            instructions = instructions,
+            category = category
+        )
+    }
+
+    override suspend fun loadById(cocktailId: Long): Detail? {
+        return if (authenticationManager.isUserLoggedIn()) {
+            customCollection.document("$cocktailId").get().await().toDetail()
+        } else {
+            null
         }
     }
 }
