@@ -47,6 +47,8 @@ import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToSettingMen
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.NavigateToTwitter
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.SignIn
 import com.ivanmorgillo.corsoandroid.teamb.MainScreenAction.SignOut
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnCancelClick
+import com.ivanmorgillo.corsoandroid.teamb.MainScreenEvent.OnSignInClick
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
 import com.ivanmorgillo.corsoandroid.teamb.utils.openNewTabWindow
 import com.ivanmorgillo.corsoandroid.teamb.utils.setupAds
@@ -174,25 +176,22 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             id.nav_customCocktail -> {
-                Timber.d("CustomCocktail")
-                navController.navigate(R.id.customForm)
+                if (FirebaseAuth.getInstance().currentUser == null) {
+                    showDialog(getString(string.Sign_in_create_drinks))
+                } else {
+                    navController.navigate(id.customForm)
+                }
             }
             id.nav_customListDrink -> {
-                mainActivityViewModel.send(MainScreenEvent.OnCustomListClick)
+                if (FirebaseAuth.getInstance().currentUser == null) {
+                    showDialog(getString(string.show_own_drinks))
+                } else {
+                    mainActivityViewModel.send(MainScreenEvent.OnCustomListClick)
+                }
             }
             id.nav_favorites -> {
                 if (FirebaseAuth.getInstance().currentUser == null) {
-                    MaterialAlertDialogBuilder(this)
-                        .setTitle(getString(string.Sign_in))
-                        .setMessage(getString(string.popup_message))
-                        .setPositiveButton(resources.getString(string.Sign_in)) { dialog, which ->
-                            // Respond to positive button press
-                            mainActivityViewModel.send(MainScreenEvent.OnSignInClick)
-                        }
-                        .setNegativeButton(getString(string.annulla)) { dialogInterface: DialogInterface, i: Int ->
-                            mainActivityViewModel.send(MainScreenEvent.OnCancelClick(dialogInterface))
-                        }
-                        .show()
+                    showDialog(getString(string.popup_message))
                 } else {
                     mainActivityViewModel.send(MainScreenEvent.OnFavoriteClick)
                 }
@@ -210,7 +209,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
                 mainActivityViewModel.send(MainScreenEvent.OnFeedBackClick)
             }
             id.sign_in -> {
-                mainActivityViewModel.send(MainScreenEvent.OnSignInClick)
+                mainActivityViewModel.send(OnSignInClick)
                 binding.drawerLayout.closeDrawer(GravityCompat.START)
             }
             id.sign_out -> {
@@ -224,6 +223,20 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
         return true
     }
 
+    private fun showDialog(message: String) {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(getString(string.Sign_in))
+            .setMessage(message)
+            .setPositiveButton(resources.getString(string.Sign_in)) { dialog, which ->
+                // Respond to positive button press
+                mainActivityViewModel.send(OnSignInClick)
+            }
+            .setNegativeButton(getString(string.annulla)) { dialogInterface: DialogInterface, i: Int ->
+                mainActivityViewModel.send(OnCancelClick(dialogInterface))
+            }
+            .show()
+    }
+
     @SuppressLint("RestrictedApi")
     var firebaseAthenticationResultLauncher = registerForActivityResult(StartActivityForResult()) { result ->
 
@@ -232,10 +245,15 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
 
         if (result.resultCode == Activity.RESULT_OK) {
             // Successfully signed in
-            // Timber.d("GOOGLE USER PIPPO: ${user.providerData}")
+
             val welcomeString = getString(string.welcome)
-            Toast.makeText(applicationContext, "$welcomeString ${user.displayName}", Toast.LENGTH_SHORT)
-                .show()
+            if (user.displayName == null) {
+                Toast.makeText(applicationContext, "$welcomeString ${user.email}", Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+                Toast.makeText(applicationContext, "$welcomeString ${user.displayName}", Toast.LENGTH_SHORT)
+                    .show()
+            }
             userControl(user)
         } else {
             if (response?.error?.errorCode == ErrorCodes.ANONYMOUS_UPGRADE_MERGE_CONFLICT) {
@@ -258,8 +276,7 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
     private fun userControl(user: FirebaseUser?) {
         if (user?.displayName == null && user?.email != null) {
             binding.navView.getHeaderView(0).findViewById<TextView>(id.user_email).text = user.email
-        }
-        if (user?.displayName != null) {
+        } else if (user?.displayName != null) {
             binding.navView.getHeaderView(0).findViewById<TextView>(id.user_email).text = user.displayName
         }
         if (user?.photoUrl != null) {

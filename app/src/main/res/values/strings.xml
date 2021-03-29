@@ -84,4 +84,6 @@
     <string name="is_alcoholic">Is alcoholic?</string>
     <string name="delete_custom">delete_custom_drink</string>
     <string name="Mydrinks">My Drinks</string>
+    <string name="Sign_in_create_drinks">Sign-in to create your own drinks!</string>
+    <string name="show_own_drinks">You must be logged to see your own drinks</string>
 </resources>
