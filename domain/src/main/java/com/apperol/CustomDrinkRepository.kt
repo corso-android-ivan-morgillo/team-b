@@ -39,7 +39,6 @@ class CustomDrinkRepositoryImpl(
             Timber.d("INSERITO DETTAGLIO: $customMap")
             return true
         } else {
-            Timber.e(Throwable("User was logged out"))
             return false
         }
     }
@@ -50,7 +49,6 @@ class CustomDrinkRepositoryImpl(
             customCollection.document("$id").delete().await()
             true
         } else {
-            Timber.e(Throwable("User was logged out"))
             false
         }
     }
@@ -90,7 +88,6 @@ class CustomDrinkRepositoryImpl(
                 customList
             }
         } else {
-            Timber.e(Throwable("User was logged out"))
             return null
         }
     }

@@ -21,7 +21,6 @@ import com.ivanmorgillo.corsoandroid.teamb.utils.SingleLiveEvent
 import com.ivanmorgillo.corsoandroid.teamb.utils.Tracking
 import com.ivanmorgillo.corsoandroid.teamb.utils.exhaustive
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 class CustomFormViewModel(
     val customDrinkRepository: CustomDrinkRepository,
@@ -83,7 +82,6 @@ class CustomFormViewModel(
         val ingredientName = event.ingredientName
         val ingredientQty = event.ingredientQty
         val instructions = event.instructions
-        Timber.d("EVENTO: $event")
 
         states.postValue(Loading)
 
@@ -107,7 +105,6 @@ class CustomFormViewModel(
             instructions = instructions,
             category = drinkType
         )
-        Timber.d("SALVA IL DETTAGLIO $dettaglio")
         customDrinkRepository.save(dettaglio)
         action.postValue(NavigateToCustoms)
     }
