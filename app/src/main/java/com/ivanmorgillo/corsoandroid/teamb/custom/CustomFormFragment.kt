@@ -3,6 +3,7 @@ package com.ivanmorgillo.corsoandroid.teamb.custom
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.apperol.R
@@ -42,6 +43,9 @@ class CustomForm : Fragment(R.layout.custom_form) {
         binding.customDrinkAddIngredient.setOnClickListener {
             onAddClick()
         }
+        binding.customDrinkUnitMeasure.setOnClickListener {
+            withItems()
+        }
         binding.customDrinkSave.setOnClickListener {
 
             val name = binding.customDrinkName.text.toString()
@@ -54,6 +58,7 @@ class CustomForm : Fragment(R.layout.custom_form) {
             val ingredientName = binding.customIngredientName.text.toString()
             val ingredientQty = binding.customIngredientQuantity.text.toString()
             // Mandare unità di misura presa dal dialog
+            val ingredientUM = binding.customDrinkUnitMeasure.text.toString()
             val instructions = binding.customDrinkInstructions.text.toString()
 
             viewModel.send(
@@ -64,6 +69,7 @@ class CustomForm : Fragment(R.layout.custom_form) {
                     glass,
                     ingredientName,
                     ingredientQty,
+                    ingredientUM,
                     instructions
                 )
             )
@@ -74,6 +80,7 @@ class CustomForm : Fragment(R.layout.custom_form) {
     private fun onAddClick() {
         val ingredientName = binding.customIngredientName.text.toString()
         val ingredientQty = binding.customIngredientQuantity.text.toString()
+        val ingredientUM = binding.customDrinkUnitMeasure.text.toString()
         if (ingredientName.isBlank() && ingredientQty.isBlank()) return
         // Mandare unità di misura presa dal dialog
         val name = binding.customDrinkName.text.toString()
@@ -89,6 +96,7 @@ class CustomForm : Fragment(R.layout.custom_form) {
                 glass,
                 ingredientName,
                 ingredientQty,
+                ingredientUM,
                 instructions
             )
         )
@@ -111,9 +119,10 @@ class CustomForm : Fragment(R.layout.custom_form) {
                     binding.customDrinkCategory.setText(it.content.type)
                     binding.customDrinkGlass.setText(it.content.glass)
                     binding.customDrinkIsAlcoholic.isChecked = it.content.isAlcoholic
-                    it.content.ingredients.forEach {
+                    if (it.content.ingredients.isNotEmpty()) {
+                        val ingredient = it.content.ingredients.last()
                         val textView = TextView(view.context)
-                        textView.text = it
+                        textView.text = ingredient
                         binding.customDrinkIngredientsList.addView(textView)
                     }
                     binding.customIngredientName.setText(it.content.ingredientName)
@@ -122,6 +131,17 @@ class CustomForm : Fragment(R.layout.custom_form) {
                 }
             }.exhaustive
         }
+    }
+
+    private fun withItems() {
+        val items = arrayOf("ml", "cl", "oz", "g", "q.b")
+        val builder = AlertDialog.Builder(context!!)
+        with(builder, {
+            setItems(items) { dialog, which ->
+                binding.customDrinkUnitMeasure.text = items[which]
+            }
+            show()
+        })
     }
 }
 
@@ -133,8 +153,8 @@ data class CustomFormUI(
     val ingredients: List<String>,
     val ingredientName: String,
     val ingredientQty: String,
-    val instructions: String
-
+    val ingredientUM: String,
+    val instructions: String,
 )
 
 sealed class NameField {
