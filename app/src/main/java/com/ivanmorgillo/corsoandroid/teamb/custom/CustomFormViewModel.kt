@@ -44,7 +44,13 @@ class CustomFormViewModel(
     fun send(event: CustomFormEvents) {
         when (event) {
             is OnSaveClick -> viewModelScope.launch { saveContent(event) }
-            OnGlassClicked -> TODO()
+            is OnGlassClicked -> {
+                val updatedContent = content.copy(
+                    glass = event.glass
+                )
+                content = updatedContent
+                states.postValue(Content(content))
+            }
             is IsAlcoholicClicked -> TODO()
             is AddIngredient -> {
                 val ingredients = content.ingredients
@@ -54,7 +60,7 @@ class CustomFormViewModel(
                     name = Valid(event.name),
                     type = event.type,
                     isAlcoholic = event.isAlcoholic,
-                    glass = event.glass,
+                    glass = "",
                     ingredients = ingredients,
                     ingredientName = "",
                     ingredientQty = "",
@@ -126,7 +132,7 @@ sealed class CustomFormStates {
 
 sealed class CustomFormEvents {
     data class IsAlcoholicClicked(val checked: Boolean) : CustomFormEvents()
-    object OnGlassClicked : CustomFormEvents()
+    data class OnGlassClicked(val glass: String) : CustomFormEvents()
     data class AddIngredient(
         val name: String,
         val type: String,

@@ -3,11 +3,12 @@ package com.ivanmorgillo.corsoandroid.teamb.custom
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.apperol.R
+import com.apperol.R.string
 import com.apperol.databinding.CustomFormBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.ivanmorgillo.corsoandroid.teamb.custom.CustomFormAction.NavigateToCustoms
 import com.ivanmorgillo.corsoandroid.teamb.custom.CustomFormEvents.AddIngredient
 import com.ivanmorgillo.corsoandroid.teamb.custom.CustomFormEvents.OnReady
@@ -40,11 +41,14 @@ class CustomForm : Fragment(R.layout.custom_form) {
                 NavigateToCustoms -> findNavController().navigate(R.id.customListFragment)
             }.exhaustive
         }
+        binding.customDrinkGlass.setOnClickListener {
+            selectGlass()
+        }
         binding.customDrinkAddIngredient.setOnClickListener {
             onAddClick()
         }
         binding.customDrinkUnitMeasure.setOnClickListener {
-            withItems()
+            selectUM()
         }
         binding.customDrinkSave.setOnClickListener {
 
@@ -133,15 +137,68 @@ class CustomForm : Fragment(R.layout.custom_form) {
         }
     }
 
-    private fun withItems() {
-        val items = arrayOf("ml", "cl", "oz", "g", "q.b")
-        val builder = AlertDialog.Builder(context!!)
-        with(builder, {
-            setItems(items) { dialog, which ->
-                binding.customDrinkUnitMeasure.text = items[which]
+    private fun selectGlass() {
+        val items = arrayOf(
+            "Cocktail glass",
+            "Highball glass",
+            "Old-fashioned glass",
+            "Whiskey glass",
+            "Pousse cafe glass",
+            "Collins glass",
+            "Champagne flute",
+            "Whiskey sour glass",
+            "Cordial glass",
+            "Brandy snifter",
+            "White wine glass",
+            "Nick and Nora glass",
+            "Hurricane glass",
+            "Coffee mug",
+            "Shot glass",
+            "Jar",
+            "Irish coffee cup",
+            "Punch bowl",
+            "Pitcher",
+            "Pint glass",
+            "Copper Mug",
+            "Wine Glass",
+            "Beer mug",
+            "Margarita/Coupette glass",
+            "Beer pilsner",
+            "Beer glass",
+            "Parfait glass",
+            "Mason jar",
+            "Margarita glass",
+            "Martini glass",
+            "Balloon glass",
+            "Coupe glass"
+        )
+        var checkedGlass = 0
+        MaterialAlertDialogBuilder(binding.root.context)
+            .setTitle(getString(string.select_glass))
+            .setNeutralButton(getString(string.cancel)) { _, _ -> }
+            .setPositiveButton(getString(string.ok)) { _, _ ->
+                binding.customDrinkGlassLabel.editText?.setText(items[checkedGlass])
+                viewModel.send(CustomFormEvents.OnGlassClicked(items[checkedGlass]))
             }
-            show()
-        })
+            .setSingleChoiceItems(items, checkedGlass) { _, which ->
+                checkedGlass = which
+            }
+            .show()
+    }
+
+    private fun selectUM() {
+        val items = arrayOf("ml", "cl", "oz", "g", "q.b")
+        var checkedUM = 0
+        MaterialAlertDialogBuilder(binding.root.context)
+            .setTitle(getString(string.select_um))
+            .setNeutralButton(getString(string.cancel)) { _, _ -> }
+            .setPositiveButton(string.ok) { _, _ ->
+                binding.customDrinkUnitMeasure.text = items[checkedUM]
+            }
+            .setSingleChoiceItems(items, checkedUM) { _, which ->
+                checkedUM = which
+            }
+            .show()
     }
 }
 
