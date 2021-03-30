@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 
 class CustomListViewModel(
     val tracking: Tracking,
-    val repository: CustomDrinkRepository
+    val customRepository: CustomDrinkRepository
 ) : ViewModel() {
 
     private var customList: List<CustomDrinkUI>? = null
@@ -47,7 +47,7 @@ class CustomListViewModel(
     private fun loadContent() {
         states.postValue(Loading)
         viewModelScope.launch {
-            val customs = repository.loadAll()
+            val customs = customRepository.loadAll()
             if (customs == null) {
                 states.postValue(Error(CustomListEmpty))
             } else {
@@ -68,7 +68,7 @@ class CustomListViewModel(
     private fun onDeleteClick(cocktail: CustomDrinkUI) {
         tracking.logEvent("custom_drink_delete")
         viewModelScope.launch {
-            repository.delete(cocktail.drinkId)
+            customRepository.delete(cocktail.drinkId)
             loadContent()
         }
     }
