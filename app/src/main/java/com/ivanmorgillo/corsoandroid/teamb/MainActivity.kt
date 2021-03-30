@@ -263,8 +263,10 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
                 // Sign in with credential
                 FirebaseAuth.getInstance().signInWithCredential(nonAnonymousCredential)
                     .addOnSuccessListener {
-                        Timber.d("PIPPO merge conflict utente: ${it.user.uid}")
                     }
+            } else {
+                binding.navView.menu.findItem(id.sign_out).isVisible = false
+                binding.navView.menu.findItem(id.sign_in).isVisible = true
             }
             Timber.e("AUTHENTICATION ERROR: ${response?.error?.errorCode}")
             // Sign in failed. If response is null the user canceled the
@@ -288,9 +290,6 @@ class MainActivity : AppCompatActivity(), OnNavigationItemSelectedListener, Clea
         if (user != null) {
             binding.navView.menu.findItem(id.sign_out).isVisible = true
             binding.navView.menu.findItem(id.sign_in).isVisible = false
-        } else {
-            binding.navView.menu.findItem(id.sign_out).isVisible = false
-            binding.navView.menu.findItem(id.sign_in).isVisible = true
         }
     }
 
