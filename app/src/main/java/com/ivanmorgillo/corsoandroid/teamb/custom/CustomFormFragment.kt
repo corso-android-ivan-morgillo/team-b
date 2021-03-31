@@ -24,6 +24,45 @@ import com.ivanmorgillo.corsoandroid.teamb.utils.gone
 import com.ivanmorgillo.corsoandroid.teamb.utils.visible
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+private val strings: Array<String>
+    get() {
+        val items = arrayOf(
+            "Cocktail glass",
+            "Highball glass",
+            "Old-fashioned glass",
+            "Whiskey glass",
+            "Pousse cafe glass",
+            "Collins glass",
+            "Champagne flute",
+            "Whiskey sour glass",
+            "Cordial glass",
+            "Brandy snifter",
+            "White wine glass",
+            "Nick and Nora glass",
+            "Hurricane glass",
+            "Coffee mug",
+            "Shot glass",
+            "Jar",
+            "Irish coffee cup",
+            "Punch bowl",
+            "Pitcher",
+            "Pint glass",
+            "Copper Mug",
+            "Wine Glass",
+            "Beer mug",
+            "Margarita/Coupette glass",
+            "Beer pilsner",
+            "Beer glass",
+            "Parfait glass",
+            "Mason jar",
+            "Margarita glass",
+            "Martini glass",
+            "Balloon glass",
+            "Coupe glass"
+        )
+        return items
+    }
+
 class CustomForm : Fragment(R.layout.custom_form) {
     private val viewModel: CustomFormViewModel by viewModel()
     private val binding by viewBinding(CustomFormBinding::bind)
@@ -138,40 +177,7 @@ class CustomForm : Fragment(R.layout.custom_form) {
     }
 
     private fun selectGlass() {
-        val items = arrayOf(
-            "Cocktail glass",
-            "Highball glass",
-            "Old-fashioned glass",
-            "Whiskey glass",
-            "Pousse cafe glass",
-            "Collins glass",
-            "Champagne flute",
-            "Whiskey sour glass",
-            "Cordial glass",
-            "Brandy snifter",
-            "White wine glass",
-            "Nick and Nora glass",
-            "Hurricane glass",
-            "Coffee mug",
-            "Shot glass",
-            "Jar",
-            "Irish coffee cup",
-            "Punch bowl",
-            "Pitcher",
-            "Pint glass",
-            "Copper Mug",
-            "Wine Glass",
-            "Beer mug",
-            "Margarita/Coupette glass",
-            "Beer pilsner",
-            "Beer glass",
-            "Parfait glass",
-            "Mason jar",
-            "Margarita glass",
-            "Martini glass",
-            "Balloon glass",
-            "Coupe glass"
-        )
+        val items = strings
         var checkedGlass = 0
         MaterialAlertDialogBuilder(binding.root.context)
             .setTitle(getString(string.select_glass))
