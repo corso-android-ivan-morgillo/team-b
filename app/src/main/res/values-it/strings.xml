@@ -83,7 +83,11 @@
     <string name="save">Salva</string>
     <string name="is_alcoholic">È alcolico?</string>
     <string name="delete_custom">delete_custom_drink</string>
-    <string name="Mydrinks">I miei Drinks</string>
+    <string name="my_drinks">I miei Drinks</string>
+    <string name="select_glass">Seleziona il bicchiere</string>
+    <string name="cancel">Cancella</string>
+    <string name="ok">OK</string>
+    <string name="select_um">Seleziona unità di misura</string>
     <string name="Sign_in_create_drinks">Registrati per creare i tuoi drinks!</string>
     <string name="show_own_drinks">Devi accedere per poter vedere i tuoi drinks</string>
 </resources>
