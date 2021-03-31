@@ -43,11 +43,15 @@ class FavoriteRepositoryImpl(
 
     override suspend fun isFavorite(id: Long): Boolean {
         val uid = authenticationManager.getUId() ?: return false
-        val x = favouritesCollection
-            .document("$uid-$id")
-            .get()
-            .await()
-        return x.exists()
+        return try {
+            val x = favouritesCollection
+                .document("$uid-$id")
+                .get()
+                .await()
+            x.exists()
+        } catch (e: Exception) {
+            false
+        }
     }
 
     override suspend fun loadAll(): List<Favorite>? {
