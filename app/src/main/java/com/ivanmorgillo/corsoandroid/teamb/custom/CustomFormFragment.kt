@@ -178,7 +178,24 @@ class CustomForm : Fragment(R.layout.custom_form) {
             .setNeutralButton(getString(string.cancel)) { _, _ -> }
             .setPositiveButton(getString(string.ok)) { _, _ ->
                 binding.customDrinkGlassLabel.editText?.setText(items[checkedGlass])
-                viewModel.send(CustomFormEvents.OnGlassClicked(items[checkedGlass]))
+                val glass = binding.customDrinkGlass.text.toString()
+                val ingredientName = binding.customIngredientName.text.toString()
+                val ingredientQty = binding.customIngredientQuantity.text.toString()
+                val ingredientUM = binding.customDrinkUnitMeasure.text.toString()
+                // Mandare unità di misura presa dal dialog
+                val name = binding.customDrinkName.text.toString()
+                val type = binding.customDrinkCategory.text.toString()
+                val isAlcoholic = binding.customDrinkIsAlcoholic.isChecked
+                val instructions = binding.customDrinkInstructions.text.toString()
+                viewModel.send(CustomFormEvents.OnGlassClicked(
+                    name,
+                    type,
+                    isAlcoholic,
+                    glass,
+                    ingredientName,
+                    ingredientQty,
+                    ingredientUM,
+                    instructions))
             }
             .setSingleChoiceItems(items, checkedGlass) { _, which ->
                 checkedGlass = which
