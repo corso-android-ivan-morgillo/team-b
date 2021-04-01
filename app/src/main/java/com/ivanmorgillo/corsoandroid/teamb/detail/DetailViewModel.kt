@@ -4,6 +4,7 @@ import android.content.DialogInterface
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.apperol.AuthenticationManager
 import com.apperol.CocktailRepository
 import com.apperol.Detail
 import com.apperol.DetailLoadCocktailError.NoDetailFound
@@ -12,8 +13,6 @@ import com.apperol.DetailLoadCocktailError.ServerError
 import com.apperol.DetailLoadCocktailError.SlowInternet
 import com.apperol.FavoriteRepository
 import com.apperol.LoadDetailCocktailResult
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowNoDetailFound
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowNoInternetMessage
 import com.ivanmorgillo.corsoandroid.teamb.detail.DetailErrorStates.ShowNoLoggedUserError
@@ -40,6 +39,7 @@ import timber.log.Timber
 class DetailViewModel(
     private val repository: CocktailRepository,
     private val favoriteRepository: FavoriteRepository,
+    private val authenticationManager: AuthenticationManager,
     private val tracking: Tracking
 ) : ViewModel() {
     val states = MutableLiveData<DetailScreenStates>()
@@ -53,14 +53,16 @@ class DetailViewModel(
             is LoadDrink -> loadDetails(event.id, event.isCustom)
             is LoadRandomDrink -> loadRandomDrink()
             OnFavoriteClick -> {
-                if (Firebase.auth.currentUser != null) {
-                    if (isFavorite) {
-                        viewModelScope.launch { removeFavorite() }
+                viewModelScope.launch {
+                    if (authenticationManager.isUserLoggedIn()) {
+                        if (isFavorite) {
+                            removeFavorite()
+                        } else {
+                            saveFavorite()
+                        }
                     } else {
-                        viewModelScope.launch { saveFavorite() }
+                        states.postValue(Error(ShowNoLoggedUserError))
                     }
-                } else {
-                    states.postValue(Error(ShowNoLoggedUserError))
                 }
             }
             OnSettingClick -> {
@@ -119,13 +121,8 @@ class DetailViewModel(
 
     private suspend fun createContent(details: Detail) {
         this.cocktailDetail = details
-        isFavorite = if (Firebase.auth.currentUser != null) {
-            Timber.d("USER: ${Firebase.auth.currentUser}")
-            favoriteRepository.isFavorite(details.id)
-        } else {
-            Timber.d("USER NULL")
-            false
-        }
+        isFavorite = favoriteRepository.isFavorite(details.id)
+
         // this.isFavorite = isFavorite
         val ingredientsUI = details.ingredients
             .filter { it.name.isNotBlank() && it.quantity.isNotBlank() }

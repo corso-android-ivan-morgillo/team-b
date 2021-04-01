@@ -12,6 +12,7 @@ import com.ivanmorgillo.corsoandroid.teamb.custom.CustomErrorStates.ShowNoIntern
 import com.ivanmorgillo.corsoandroid.teamb.custom.CustomErrorStates.ShowServerError
 import com.ivanmorgillo.corsoandroid.teamb.custom.CustomErrorStates.ShowSlowInternet
 import com.ivanmorgillo.corsoandroid.teamb.custom.CustomScreenAction.NavigateToDetail
+import com.ivanmorgillo.corsoandroid.teamb.custom.CustomScreenAction.NavigatetoCustomForm
 import com.ivanmorgillo.corsoandroid.teamb.custom.CustomScreenEvent.OnCustomClick
 import com.ivanmorgillo.corsoandroid.teamb.custom.CustomScreenEvent.OnDeleteClick
 import com.ivanmorgillo.corsoandroid.teamb.custom.CustomScreenEvent.OnReady
@@ -41,6 +42,9 @@ class CustomListFragment : Fragment(R.layout.fragment_custom_drink_list) {
         observeStates(customAdapter)
         observeActions()
         customViewModel.send(OnReady)
+        binding.floatingActionButton.setOnClickListener {
+            customViewModel.send(CustomScreenEvent.OnFloatingButtonClick)
+        }
     }
 
     private fun observeActions() {
@@ -52,6 +56,7 @@ class CustomListFragment : Fragment(R.layout.fragment_custom_drink_list) {
                         .actionCustomDrinkFragmentToDetailFragment(action.cocktail.drinkId, true)
                     findNavController().navigate(directions)
                 }
+                NavigatetoCustomForm -> findNavController().navigate(R.id.customForm)
             }.exhaustive
         })
     }

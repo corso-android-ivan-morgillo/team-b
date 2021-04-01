@@ -8,6 +8,7 @@ import com.ivanmorgillo.corsoandroid.teamb.custom.CustomErrorStates.CustomListEm
 import com.ivanmorgillo.corsoandroid.teamb.custom.CustomScreenAction.NavigateToDetail
 import com.ivanmorgillo.corsoandroid.teamb.custom.CustomScreenEvent.OnCustomClick
 import com.ivanmorgillo.corsoandroid.teamb.custom.CustomScreenEvent.OnDeleteClick
+import com.ivanmorgillo.corsoandroid.teamb.custom.CustomScreenEvent.OnFloatingButtonClick
 import com.ivanmorgillo.corsoandroid.teamb.custom.CustomScreenEvent.OnReady
 import com.ivanmorgillo.corsoandroid.teamb.custom.CustomScreenStates.Content
 import com.ivanmorgillo.corsoandroid.teamb.custom.CustomScreenStates.Error
@@ -41,6 +42,7 @@ class CustomListViewModel(
                 onDeleteClick(event.cocktail) //
             }
             OnReady -> loadContent()
+            OnFloatingButtonClick -> actions.postValue(CustomScreenAction.NavigatetoCustomForm)
         }.exhaustive
     }
 
@@ -78,9 +80,12 @@ sealed class CustomScreenEvent {
     data class OnCustomClick(val cocktail: CustomDrinkUI) : CustomScreenEvent()
     data class OnDeleteClick(val cocktail: CustomDrinkUI) : CustomScreenEvent()
     object OnReady : CustomScreenEvent()
+    object OnFloatingButtonClick : CustomScreenEvent()
+
 }
 
 sealed class CustomScreenAction {
+    object NavigatetoCustomForm : CustomScreenAction()
     data class NavigateToDetail(val cocktail: CustomDrinkUI) : CustomScreenAction()
 }
 
